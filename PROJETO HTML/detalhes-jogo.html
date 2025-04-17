@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detalhes do Jogo - Bitcrítico</title>
+  <link rel="stylesheet" href="estilos/index.css" />
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Bitcrítico</a></div>
+    <nav>
+      <a href="#">Jogos A-Z</a>
+      <a href="#"><i class="fas fa-search"></i></a>
+    </nav>
+    <div class="telas">
+      <button>Login</button>
+      <button>Cadastro</button>
+    </div>
+  </header>
+
+  <main class="form-box perfil">
+    <a href="index.html" style="color: var(--cor-primaria); text-decoration: none;">&larr; Voltar</a>
+
+    <div style="margin-top: 30px;">
+      <img src="img/jogo-exemplo.jpg" alt="Imagem do Jogo" style="width: 100%; border-radius: 10px; border: 2px solid #333;">
+    </div>
+
+    <h1 style="color: var(--cor-primaria); margin-top: 30px;">Título do Jogo</h1>
+    <p style="color: #ccc; margin: 10px 0 30px;">
+      Aqui vai uma descrição detalhada sobre o jogo, gênero, desenvolvedora, e outras informações relevantes que o usuário precisa saber antes de dar uma nota.
+    </p>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+      <div>
+        <strong style="color: var(--cor-destaque); font-size: 1.5rem;">Nota do Jogo:</strong>
+        <div style="font-size: 2rem; color: var(--cor-primaria);">8.5</div>
+      </div>
+    </div>
+
+    <!-- Campo de avaliação lembrar tbm de arrumar mais tarde-->
+    <div style="margin-bottom: 30px;">
+      <label for="grafico">Gráfico:</label>
+      <input type="range" id="grafico" name="grafico" min="0" max="10" style="width: 100%;">
+
+      <label for="jogabilidade">Jogabilidade:</label>
+      <input type="range" id="jogabilidade" name="jogabilidade" min="0" max="10" style="width: 100%;">
+
+      <label for="historia">História:</label>
+      <input type="range" id="historia" name="historia" min="0" max="10" style="width: 100%;">
+    </div>
+
+    <button style="
+      width: 100%;
+      padding: 15px;
+      background-color: var(--cor-destaque);
+      color: #fff;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    ">
+      Clique aqui para deixar sua nota
+    </button>
+  </main>
+
+  <footer>
+    <p>© 2025 Bitcrítico. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

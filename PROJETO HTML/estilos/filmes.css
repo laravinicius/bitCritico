@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+
+:root {
+    --cor-primaria: #00ffc3;
+    --cor-secundaria: #1f1f1f;
+    --cor-fundo: #121212;
+    --cor-texto: #eaeaea;
+    --cor-destaque: #ff007a;
+    --cor-hover: #00aaff;
+    --cor-botao: #242424;
+}
+
+/* Reset de estilos gerais, lembrar de perguntar se pode usar estilos diferentes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+/* Estilo geral do body */
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background-color: var(--cor-fundo);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--cor-primaria);
+}
+
+.logo a {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.logo a:hover {
+    color: var(--cor-destaque);
+}
+
+nav a {
+    color: var(--cor-texto);
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--cor-hover);
+}
+
+.telas button {
+    background: var(--cor-botao);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-primaria);
+    padding: 8px 16px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.telas button:hover {
+    background: var(--cor-primaria);
+    color: #000;
+    border-color: var(--cor-destaque);
+}
+
+/* Seção Principal */
+.Principal {
+    padding: 100px 30px 60px;
+    text-align: center;
+    background: linear-gradient(to right, #1f1f1f, #121212);
+}
+
+.Principal h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: var(--cor-primaria);
+}
+
+.Principal p {
+    font-size: 1.3rem;
+    color: #ccc;
+}
+
+/* Filmes */
+.filmes {
+    padding: 60px 30px;
+    background-color: var(--cor-secundaria);
+}
+
+.filmes h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: var(--cor-primaria);
+    text-align: center;
+}
+
+.filme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.filme {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 15px rgba(0, 255, 195, 0.05);
+}
+
+.filme:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 25px rgba(0, 255, 195, 0.2);
+}
+
+.filme img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.filme h3 {
+    font-size: 1.4rem;
+    color: var(--cor-hover);
+}
+
+/* Footer */
+footer {
+    background-color: var(--cor-fundo);
+    color: #aaa;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 0.9rem;
+    border-top: 1px solid #333;
+}
+
+footer .midiaSocial a {
+    color: var(--cor-primaria);
+    margin: 0 8px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer .midiaSocial a:hover {
+    color: var(--cor-destaque);
+}
+
+/* BitCrit */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#chat-toggle {
+    background-color: var(--cor-destaque);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 0, 122, 0.4);
+}
+
+#chat-box {
+    width: 300px;
+    height: 400px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 195, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-primaria);
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid var(--cor-destaque);
+}
+
+#chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 10px;
+    background-color: #121212;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #fff;
+    color: #000;
+}
+
+#send-button {
+    background-color: var(--cor-primaria);
+    border: none;
+    margin-left: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #000;
+    cursor: pointer;
+}
+
+#send-button:hover {
+    background-color: var(--cor-destaque);
+    color: #fff;
+}
+
+.game-reviews {
+    padding: 60px 30px;
+    background-color: var(--cor-secundaria);
+}
+
+.game-reviews h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--cor-primaria);
+    border-bottom: 2px solid var(--cor-destaque);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.game-reviews {
+    padding: 60px 30px;
+    background-color: var(--cor-secundaria);
+}
+
+.game-reviews h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--cor-primaria);
+    border-bottom: 2px solid var(--cor-destaque);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/*Css da Barra de pesquisa, Lembrar de mudar o houver*/
+.search-bar form {
+    display: flex;
+    align-items: center;
+    background-color: var(--cor-botao);
+    border: 1px solid var(--cor-primaria);
+    border-radius: 25px;
+    overflow: hidden;
+    padding: 2px 5px;
+    height: 40px;
+}
+
+.search-bar input[type="text"] {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    color: var(--cor-texto);
+    font-size: 1rem;
+    width: 200px;
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    color: var(--cor-primaria);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding-right: 10px;
+    transition: color 0.3s;
+}
+
+.search-bar button:hover {
+    color: var(--cor-destaque);
+}

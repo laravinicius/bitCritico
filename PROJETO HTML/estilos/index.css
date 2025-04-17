@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+
+/*Css feito para todas as paginas, Algumas eu fiz no proprio Html para poupar tempo*/
+:root {
+    --cor-primaria: #00ffc3;
+    --cor-secundaria: #1f1f1f;
+    --cor-fundo: #121212;
+    --cor-texto: #eaeaea;
+    --cor-destaque: #ff007a;
+    --cor-hover: #00aaff;
+    --cor-botao: #242424;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--cor-fundo);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--cor-primaria);
+}
+
+.logo a {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.logo a:hover {
+    color: var(--cor-destaque);
+}
+
+nav a {
+    color: var(--cor-texto);
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--cor-hover);
+}
+
+.telas button {
+    background: var(--cor-botao);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-primaria);
+    padding: 8px 16px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.telas button:hover {
+    background: var(--cor-primaria);
+    color: #000;
+    border-color: var(--cor-destaque);
+}
+
+.Principal {
+    padding: 100px 30px 60px;
+    text-align: center;
+    background: linear-gradient(to right, #1f1f1f, #121212);
+}
+
+.Principal h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: var(--cor-primaria);
+}
+
+.Principal p {
+    font-size: 1.3rem;
+    color: #ccc;
+}
+
+.game-reviews {
+    padding: 60px 30px;
+    background-color: var(--cor-secundaria);
+}
+
+.game-reviews h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--cor-primaria);
+    border-bottom: 2px solid var(--cor-destaque);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.review-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.game {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 10px;
+    width: 260px;
+    box-shadow: 0 0 15px rgba(0, 255, 195, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 25px rgba(0, 255, 195, 0.2);
+}
+
+.game img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.game h3 {
+    font-size: 1.4rem;
+    color: var(--cor-hover);
+}
+
+footer {
+    background-color: var(--cor-fundo);
+    color: #aaa;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 0.9rem;
+    border-top: 1px solid #333;
+}
+
+footer .midiaSocial a {
+    color: var(--cor-primaria);
+    margin: 0 8px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer .midiaSocial a:hover {
+    color: var(--cor-destaque);
+}
+
+/* Css feito para chat bot no nosso caso BitCrit*/
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#chat-toggle {
+    background-color: var(--cor-destaque);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 0, 122, 0.4);
+}
+
+#chat-box {
+    width: 300px;
+    height: 400px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 195, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-primaria);
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid var(--cor-destaque);
+}
+
+#chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 10px;
+    background-color: #121212;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #fff;
+    color: #000;
+}
+
+#send-button {
+    background-color: var(--cor-primaria);
+    border: none;
+    margin-left: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #000;
+    cursor: pointer;
+}
+
+#send-button:hover {
+    background-color: var(--cor-destaque);
+    color: #fff;
+}
+
+/*Css exclusivo para o perfil lembrar de adicionar um icone mais tarde*/
+    .perfil-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+      
+      .perfil-info {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #fff;
+        flex: 1;
+      }
+      
+      .perfil-foto {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        background-color: #444;
+        margin-left: 40px;
+      }
+      
+      .perfil-secao {
+        margin-top: 40px;
+      }
+      
+      .perfil-secao h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #fff;
+      }
+      
+      .jogos-top, .plataformas {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      
+      .jogo-box {
+        width: 140px;
+        height: 200px;
+        border: 2px solid #555;
+        border-radius: 8px;
+        background-color: #222;
+        transition: transform 0.2s ease;
+      }
+      
+      .jogo-box:hover {
+        transform: scale(1.05);
+      }
+      
+      .plataforma-box {
+        width: 80px;
+        height: 80px;
+        border: 2px solid #555;
+        border-radius: 8px;
+        background-color: #222;
+        transition: transform 0.2s ease;
+      }
+      
+      .plataforma-box:hover {
+        transform: scale(1.05);
+      }
+      
+      .form-box.perfil {
+        max-width: 700px;
+        background-color: #111;
+        border: 1px solid #333;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #000;
+      }
+      
+      .form-box.perfil {
+        max-width: 700px;
+        background-color: #111;
+        border: 1px solid #333;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #000;
+        
+        margin: 60px auto;
+      }
+      
+      .perfil-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        gap: 40px;
+        text-align: left;
+      }
+      

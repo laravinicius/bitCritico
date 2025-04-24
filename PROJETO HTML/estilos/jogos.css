@@ -94,26 +94,26 @@ nav a:hover {
     color: #ccc;
 }
 
-/* Filmes */
-.filmes {
+/* jogos */
+.jogo {
     padding: 60px 30px;
     background-color: var(--cor-secundaria);
 }
 
-.filmes h2 {
+.jogo h2 {
     font-size: 2.5rem;
     margin-bottom: 30px;
     color: var(--cor-primaria);
     text-align: center;
 }
 
-.filme-grid {
+.jogos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
 }
 
-.filme {
+.jogos {
     background-color: #1a1a1a;
     border: 1px solid #333;
     padding: 20px;
@@ -122,18 +122,18 @@ nav a:hover {
     box-shadow: 0 0 15px rgba(0, 255, 195, 0.05);
 }
 
-.filme:hover {
+.jogos:hover {
     transform: translateY(-10px);
     box-shadow: 0 0 25px rgba(0, 255, 195, 0.2);
 }
 
-.filme img {
+.jogos img {
     width: 100%;
     border-radius: 8px;
     margin-bottom: 10px;
 }
 
-.filme h3 {
+.jogos h3 {
     font-size: 1.4rem;
     color: var(--cor-hover);
 }

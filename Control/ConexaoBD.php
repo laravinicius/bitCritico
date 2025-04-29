@@ -1,10 +1,12 @@
 <?php
 
-$hostName = "switchyard.proxy.rlwy.net";
+//Conexão com a conta do projeto.
+
+$hostName = "maglev.proxy.rlwy.net";
 $dataBase = "railway";
 $user = "root";
-$password = "HuvLgAmmNGLqApLFOfIRjVixgrHRfqIs";
-$port = 17920; 
+$password = "OzlayXCzKOvSuxUIQPDiAlSXLvmwIbWr";
+$port = 26839; 
 
 $mysqli = new mysqli($hostName, $user, $password, $dataBase, $port);
 

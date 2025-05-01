@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de jogos</title>
 </head>
-<>
+<body>
     <div>
         <h1>Cadastro de jogos</h1>
         <form action="teste.php" method="post" name="jogo">
@@ -29,7 +29,7 @@
         $ano_lancamento_jogo = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['ano_lancamento_jogo']));
         $descricao_jogo = mysqli_real_escape_string($mysqli, htmlspecialchars($_POST['descricao_jogo']));
         
-        $insere = "INSERT INTO funcionario (nome_jogo, ano_lancamento_jogo, descricao_jogo) VALUES ('$nome_jogo', '$ano_lancamento_jogo', '$descricao_jogo')";
+        $insere = "INSERT INTO Jogo (nome_jogo, ano_lancamento_jogo, descricao_jogo) VALUES ('$nome_jogo', '$ano_lancamento_jogo', '$descricao_jogo')";
         if (mysqli_query($mysqli, $insere)) {
             echo "<script>alert('Dados gravados com sucesso!');</script>";
         } else {

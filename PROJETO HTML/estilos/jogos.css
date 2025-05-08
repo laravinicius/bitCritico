@@ -298,3 +298,24 @@ footer .midiaSocial a:hover {
 .search-bar button:hover {
     color: var(--cor-destaque);
 }
+
+.game-reviews h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre os elementos */
+}
+
+#filtro, #genero-filtro, #desenvolvedora-filtro {
+    background-color: #2a2a2a; /* Cor de fundo escura */
+    color: #fff; /* Texto branco */
+    border: 1px solid #444; /* Borda sutil */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 5px 10px; /* Espaçamento interno */
+    font-size: 16px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor de ponteiro */
+}
+
+#filtro option, #genero-filtro option, #desenvolvedora-filtro option {
+    background-color: #2a2a2a; /* Cor de fundo das opções */
+    color: #fff; /* Texto branco nas opções */
+}

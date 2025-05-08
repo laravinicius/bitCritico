@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jogos - Bit Crítico</title>
+    <link rel="stylesheet" href="estilos/jogos.css">
+    <link rel="icon" href="assets/favicon.ico">
+    <meta name="description" content="Site voltado para Reviews de jogos">
+    <script src="Scripts/bot.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo"><a class="logo titulo" href="index.html">Bit Crítico</a></div>
+        
+        <nav class="search-bar">
+            <form action="busca.html" method="get">
+                <input type="text" name="q" placeholder="Pesquisar jogos..." required>
+                <button type="submit">🔍</button>
+            </form>
+        </nav>
+
+        <div class="telas">
+            <button class="voltar" onclick="history.back()">⬅️</button>
+            <button class="login" onclick="window.location.href='login.html'">Entrar</button>
+            <button class="signup" onclick="window.location.href='cadastro.html'">Cadastrar</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="jogos game-reviews">
+            <h2>De A - Z por: 
+                <select name="genero-filtro" id="genero-filtro">
+                    <option value="" selected>Todos os gêneros</option>
+                    <option value="acao">Ação</option>
+                    <option value="terror">Terror</option>
+                    <option value="fps">FPS</option>
+                    <option value="aventura">Aventura</option>
+                    <option value="rpg">RPG</option>
+                    <option value="estrategia">Estratégia</option>
+                    <option value="simulacao">Simulação</option>
+                </select>
+                <select name="desenvolvedora-filtro" id="desenvolvedora-filtro">
+                    <option value="" selected>Todas as desenvolvedoras</option>
+                    <option value="valve">Valve</option>
+                    <option value="rockstar">Rockstar</option>
+                    <option value="bethesda">Bethesda</option>
+                    <option value="ubisoft">Ubisoft</option>
+                    <option value="ea">EA</option>
+                </select>
+            </h2>
+
+            <div class="jogos-grid">
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="acao" data-dev="rockstar">
+                        <img src="jogos1.jpg" alt="jogos 1">
+                        <h3>GTA V</h3>
+                        <p>Rockstar/Ação</p>
+                    </div>
+                </a>
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="terror" data-dev="rockstar">
+                        <img src="jogos2.jpg" alt="jogos 2">
+                        <h3>Man Hunt</h3>
+                        <p>Rockstar/Terror</p>
+                    </div>
+                </a>
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="fps" data-dev="valve">
+                        <img src="jogos3.jpg" alt="jogos 3">
+                        <h3>CS 2</h3>
+                        <p>Valve/FPS</p>
+                    </div>
+                </a>
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="acao" data-dev="valve">
+                        <img src="jogos4.jpg" alt="jogos 4">
+                        <h3>Half Life</h3>
+                        <p>Valve/Ação</p>
+                    </div>
+                </a>
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="aventura" data-dev="team cherry">
+                        <img src="jogos5.jpg" alt="jogos 5">
+                        <h3>Hollow Knight</h3>
+                        <p>Team Cherry/Aventura</p>
+                    </div>
+                </a>
+            </div>
+
+            <h2>Últimos jogos</h2>
+            <div class="jogos-grid">
+                <!-- Repita com dados reais e atributos -->
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="acao" data-dev="ea">
+                        <img src="jogos1.jpg" alt="jogos 1">
+                        <h3>Nome do jogo 1</h3>
+                        <p>EA/Ação</p>
+                    </div>
+                </a>
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="rpg" data-dev="ubisoft">
+                        <img src="jogos2.jpg" alt="jogos 2">
+                        <h3>Nome do jogo 2</h3>
+                        <p>Ubisoft/RPG</p>
+                    </div>
+                </a>
+                <!-- Adicione mais conforme necessário -->
+            </div>
+
+            <h2>TOP 5 DO MÊS</h2>
+            <div class="jogos-grid">
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="acao" data-dev="rockstar">
+                        <img src="jogos1.jpg" alt="jogos 1">
+                        <h3>Nome do jogo 1</h3>
+                        <p>Rockstar/Ação</p>
+                    </div>
+                </a>
+                <a href="detalhes-jogo.html">
+                    <div class="jogos" data-genero="aventura" data-dev="bethesda">
+                        <img src="jogos2.jpg" alt="jogos 2">
+                        <h3>Nome do jogo 2</h3>
+                        <p>Bethesda/Aventura</p>
+                    </div>
+                </a>
+                <!-- Mais jogos... -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
+        <div class="midiaSocial">
+            <a href="index.html">Bit Crítico</a>
+            <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
+        </div>
+    </footer>
+
+    <script>
+        const generoFiltro = document.getElementById('genero-filtro');
+        const devFiltro = document.getElementById('desenvolvedora-filtro');
+        const jogos = document.querySelectorAll('.jogos-grid .jogos');
+
+        function filtrarJogos() {
+            const generoSelecionado = generoFiltro.value.toLowerCase();
+            const devSelecionada = devFiltro.value.toLowerCase();
+
+            jogos.forEach(jogo => {
+                const genero = jogo.dataset.genero?.toLowerCase() || "";
+                const dev = jogo.dataset.dev?.toLowerCase() || "";
+
+                const generoMatch = !generoSelecionado || genero === generoSelecionado;
+                const devMatch = !devSelecionada || dev === devSelecionada;
+
+                jogo.parentElement.style.display = (generoMatch && devMatch) ? 'block' : 'none';
+            });
+        }
+
+        generoFiltro.addEventListener('change', filtrarJogos);
+        devFiltro.addEventListener('change', filtrarJogos);
+    </script>
+</body>
+</html>
+

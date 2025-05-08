@@ -11,7 +11,7 @@
 
 
     
-    <script src="backend/index.js"></script>
+    <script src="scripts/bot.js"></script>
 </head>
 <body>
     <header>
@@ -21,7 +21,119 @@
         </nav>
         <div class="telas">
             <!--<button class="changecor" onclick="window.location.href='Perfil.html'">👤</button>-->
-            <button class="login" onclick="window.location.href='login.html'">Entrar</button>
+            <!-- ... (Inicio do botão Login) -->
+    <div class="telas">
+        <button class="login" onclick="abrirModal()">Entrar</button>
+        <button class="signup" onclick="window.location.href='cadastro.html'">Cadastrar</button>
+    </div>
+        <!-- ... -->
+
+    <!-- Modal de Login -->
+    <div class="modal-bg" id="modalLogin">
+        <div class="modal">
+            <span class="close-modal" onclick="fecharModal()">✖</span>
+            <form>
+                <h2>Login</h2>
+
+                <label for="usuario">Email ou Usuário</label><br>
+                <input type="text" id="usuario" name="usuario"><br>
+
+                <label for="senha">Senha</label><br>
+                <input type="password" id="senha" name="senha"><br>
+
+                <div class="modal-buttons">
+                    <button type="button" onclick="location.href='cadastro.html'">Cadastrar</button>
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Estilos do Modal (adicione dentro da <head>) -->
+    <style>
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal {
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 8px;
+            min-width: 300px;
+            color: var(--cor-texto);
+            border: 1px solid #ccc;
+            position: relative;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: var(--cor-botao);
+            color: var(--cor-texto);
+            border: 1px solid var(--cor-primaria);
+            cursor: pointer;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+
+    <!-- Scripts do Modal (adicione antes do fechamento do </body>) -->
+    <script>
+        function abrirModal() {
+            document.getElementById('modalLogin').style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalLogin').style.display = 'none';
+        }
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('modalLogin');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        });
+
+        // (Opcional) Fechar com ESC
+        window.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                fecharModal();
+            }
+        });
+    </script>
+
+    <!--Fim do Botão de Login-->
+
             <button class="signup" onclick="window.location.href='cadastro.html'">Cadastrar</button>
         </div>
     </header>

@@ -14,21 +14,18 @@
     <script src="scripts/bot.js"></script>
 </head>
 <body>
+    <!--Nome usurio, senha, email-->
     <header>
         <div class="logo"><a class="logo titulo" href="index.html">Bit Crítico</a></div>
         <nav>
             <a class="teste" href="jogos.html">Jogos A-Z</a>
         </nav>
         <div class="telas">
-            <!--<button class="changecor" onclick="window.location.href='Perfil.html'">👤</button>-->
-            <!-- ... (Inicio do botão Login) -->
+
     <div class="telas">
         <button class="login" onclick="abrirModal()">Entrar</button>
-        <button class="signup" onclick="window.location.href='cadastro.html'">Cadastrar</button>
     </div>
-        <!-- ... -->
 
-    <!-- Modal de Login -->
     <div class="modal-bg" id="modalLogin">
         <div class="modal">
             <span class="close-modal" onclick="fecharModal()">✖</span>
@@ -42,14 +39,33 @@
                 <input type="password" id="senha" name="senha"><br>
 
                 <div class="modal-buttons">
-                    <button type="button" onclick="location.href='cadastro.html'">Cadastrar</button>
                     <button type="submit">Login</button>
                 </div>
             </form>
         </div>
+
+        <div class="modal">
+            <span class="close-modal" onclick="fecharModal()">✖</span>
+            <form>
+                <h2>Cadastro</h2>
+
+                <label for="usuario">Nome de Usuário</label><br>
+                <input type="text" id="usuario" name="usuario"><br>
+
+                <label for="usuario">Email</label><br>
+                <input type="text" id="usuario" name="usuario"><br>
+
+                <label for="senha">Senha</label><br>
+                <input type="password" id="senha" name="senha"><br>
+
+                <div class="modal-buttons">
+                    <button type="button" onclick="location.href='cadastro.html'">Cadastrar</button>
+                </div>
+            </form>
+            
+        </div>
     </div>
 
-    <!-- Estilos do Modal (adicione dentro da <head>) -->
     <style>
         .modal-bg {
             display: none;
@@ -107,7 +123,6 @@
         }
     </style>
 
-    <!-- Scripts do Modal (adicione antes do fechamento do </body>) -->
     <script>
         function abrirModal() {
             document.getElementById('modalLogin').style.display = 'flex';
@@ -124,7 +139,6 @@
             }
         });
 
-        // (Opcional) Fechar com ESC
         window.addEventListener('keydown', function(event) {
             if (event.key === "Escape") {
                 fecharModal();
@@ -132,9 +146,6 @@
         });
     </script>
 
-    <!--Fim do Botão de Login-->
-
-            <button class="signup" onclick="window.location.href='cadastro.html'">Cadastrar</button>
         </div>
     </header>
 

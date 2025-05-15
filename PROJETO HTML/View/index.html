@@ -14,13 +14,12 @@
     <script src="scripts/bot.js"></script>
 </head>
 <body>
-    <!--Nome usurio, senha, email-->
     <header>
+    <!--Inicio das Telas de Cadastro e Login-->
         <div class="logo"><a class="logo titulo" href="index.html">Bit Crítico</a></div>
         <nav>
             <a class="teste" href="jogos.html">Jogos A-Z</a>
         </nav>
-        <div class="telas">
 
     <div class="telas">
         <button class="login" onclick="abrirModal()">Entrar</button>
@@ -39,7 +38,7 @@
                 <input type="password" id="senha" name="senha"><br>
 
                 <div class="modal-buttons">
-                    <button type="submit">Login</button>
+                    <button type="submit"><a href="Perfil.html">Login</a></button>
                 </div>
             </form>
         </div>
@@ -59,69 +58,12 @@
                 <input type="password" id="senha" name="senha"><br>
 
                 <div class="modal-buttons">
-                    <button type="button" onclick="location.href='cadastro.html'">Cadastrar</button>
+                    <button type="button"><a href="Perfil.html">Cadastrar</a></button>
                 </div>
             </form>
             
         </div>
     </div>
-
-    <style>
-        .modal-bg {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .modal {
-            background-color: #1f1f1f;
-            padding: 30px;
-            border-radius: 8px;
-            min-width: 300px;
-            color: var(--cor-texto);
-            border: 1px solid #ccc;
-            position: relative;
-        }
-
-        .modal h2 {
-            margin-bottom: 20px;
-        }
-
-        .modal input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .modal-buttons button {
-            padding: 10px 20px;
-            border-radius: 8px;
-            background: var(--cor-botao);
-            color: var(--cor-texto);
-            border: 1px solid var(--cor-primaria);
-            cursor: pointer;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 20px;
-            color: #fff;
-            cursor: pointer;
-        }
-    </style>
 
     <script>
         function abrirModal() {
@@ -147,6 +89,7 @@
     </script>
 
         </div>
+    <!--Fim da Parte de Cadastro-->
     </header>
 
     <main>

@@ -319,3 +319,61 @@ footer .midiaSocial a:hover {
     background-color: #2a2a2a; /* Cor de fundo das opções */
     color: #fff; /* Texto branco nas opções */
 }
+
+      /* CSS DO CADASTRO */
+      /*                 */
+      
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal {
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 8px;
+            min-width: 300px;
+            color: var(--cor-texto);
+            border: 1px solid #ccc;
+            position: relative;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: var(--cor-botao);
+            color: var(--cor-texto);
+            border: 1px solid var(--cor-primaria);
+            cursor: pointer;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+        }

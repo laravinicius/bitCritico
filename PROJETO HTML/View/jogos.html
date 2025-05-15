@@ -12,6 +12,7 @@
 
 <body>
     <header>
+        <!--Inicio das Telas de Cadastro e Login-->
         <div class="logo"><a class="logo titulo" href="index.html">Bit Crítico</a></div>
         
         <nav class="search-bar">
@@ -21,10 +22,76 @@
             </form>
         </nav>
 
-        <div class="telas">
-            <button class="voltar" onclick="history.back()">⬅️</button>
-            <button class="login" onclick="window.location.href='login.html'">Entrar</button>
+    <div class="telas">
+        <button class="voltar" onclick="history.back()">⬅️</button>
+        <button class="login" onclick="abrirModal()">Entrar</button>
+    </div>
+
+    <div class="modal-bg" id="modalLogin">
+        <div class="modal">
+            <span class="close-modal" onclick="fecharModal()">✖</span>
+            <form>
+                <h2>Login</h2>
+
+                <label for="usuario">Email ou Usuário</label><br>
+                <input type="text" id="usuario" name="usuario"><br>
+
+                <label for="senha">Senha</label><br>
+                <input type="password" id="senha" name="senha"><br>
+
+                <div class="modal-buttons">
+                    <button type="submit"><a href="Perfil.html">Login</a></button>
+                </div>
+            </form>
         </div>
+
+        <div class="modal">
+            <span class="close-modal" onclick="fecharModal()">✖</span>
+            <form>
+                <h2>Cadastro</h2>
+
+                <label for="usuario">Nome de Usuário</label><br>
+                <input type="text" id="usuario" name="usuario"><br>
+
+                <label for="usuario">Email</label><br>
+                <input type="text" id="usuario" name="usuario"><br>
+
+                <label for="senha">Senha</label><br>
+                <input type="password" id="senha" name="senha"><br>
+
+                <div class="modal-buttons">
+                    <button type="button"><a href="Perfil.html">Cadastrar</a></button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+
+    <script>
+        function abrirModal() {
+            document.getElementById('modalLogin').style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalLogin').style.display = 'none';
+        }
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('modalLogin');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        });
+
+        window.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                fecharModal();
+            }
+        });
+    </script>
+
+        </div>
+    <!--Fim da Parte de Cadastro-->
     </header>
 
     <main>

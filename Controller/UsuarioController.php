@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../Model/UsuarioModel.php';
-require_once __DIR__ . '/../Controller/ConexaoBD.php';
+require_once __DIR__ . '/../Control/ConexaoBD.php';
 
 $mysqli = require 'ConexaoBD.php';
 if (!$mysqli || !$mysqli instanceof mysqli) {

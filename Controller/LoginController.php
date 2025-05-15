@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$stmt) {
         $_SESSION['erro_login'] = "Erro ao preparar a query: " . $conn->error;
-        header('Location: ../PROJETO HTML/View/login.php');
+        header('Location: ../View/login.php');
         exit();
     }
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['email_usuario'] = $user['email_usuario'];
 
                 // Redireciona para a página inicial
-                header('Location: ../PROJETO HTML/View/index.html');
+                header('Location: ../View/index.html');
                 exit();
             } else {
                 // Senha incorreta
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
     
     // Redireciona de volta para a página de login com a mensagem de erro
-    header('Location: ../PROJETO HTML/View/login.php');
+    header('Location: ../View/login.php');
     exit();
 }
 

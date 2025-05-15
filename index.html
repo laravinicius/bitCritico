@@ -25,7 +25,7 @@
             <!-- Modal de Login -->
             <div class="modal" id="loginModal">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formLogin">
+                <form id="formLogin" action="../Controller/LoginController.php" method="POST">
                     <h2>Login</h2>
 
                     <label for="loginUsuario">Email ou Usuário</label><br>
@@ -45,7 +45,7 @@
             <!-- Modal de Cadastro -->
             <div class="modal" id="cadastroModal" style="display: none;">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formCadastro">
+                <form id="formCadastro" action="../../Controller/UsuarioController.php" method="POST">
                     <h2>Cadastro</h2>
 
                     <label for="cadUsuario">Nome de Usuário</label><br>

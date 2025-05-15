@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmtCheck->store_result();
 
     if ($stmtCheck->num_rows > 0) {
-        header("Location: cadastro.html?erro=1");
+        header("Location: index.html?erro=1");
         exit();
     }
 
@@ -32,10 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("sss", $email, $senhaHash, $dataCriacao);
 
     if ($stmt->execute()) {
-        header("Location: cadastro.html?sucesso=1");
+        header("Location: index.html?sucesso=1");
         exit();
     } else {
-        header("Location: cadastro.html?erro=1");
+        header("Location: index.html?erro=1");
         exit();
     }
 

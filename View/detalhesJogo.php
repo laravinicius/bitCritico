@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Detalhes do Jogo - Bitcrítico</title>
-  <link rel="stylesheet" href="estilos/index.css" />
+  <link rel="stylesheet" href="./estilos/index.css" />
 </head>
 <body>
   <header>
         <!--Inicio das Telas de Cadastro e Login-->
-    <div class="logo"><a class="logo titulo" href="index.html">Bit Crítico</a></div>
+    <div class="logo"><a class="logo titulo" href="../index.html">Bit Crítico</a></div>
      <nav>
-            <a class="teste" href="jogos.html">Jogos A-Z</a>
+            <a class="teste" href="./jogos.html">Jogos A-Z</a>
         </nav>
 
     <div class="telas">
@@ -32,7 +32,7 @@
                 <input type="password" id="senha" name="senha"><br>
 
                 <div class="modal-buttons">
-                    <button type="submit"><a href="Perfil.html">Login</a></button>
+                    <button type="submit"><a href="./Perfil.html">Login</a></button>
                 </div>
             </form>
         </div>
@@ -52,48 +52,26 @@
                 <input type="password" id="senha" name="senha"><br>
 
                 <div class="modal-buttons">
-                    <button type="button"><a href="Perfil.html">Cadastrar</a></button>
+                    <button type="button"><a href="./Perfil.html">Cadastrar</a></button>
                 </div>
             </form>
             
         </div>
     </div>
 
-    <script>
-        function abrirModal() {
-            document.getElementById('modalLogin').style.display = 'flex';
-        }
 
-        function fecharModal() {
-            document.getElementById('modalLogin').style.display = 'none';
-        }
-
-        window.addEventListener('click', function(event) {
-            const modal = document.getElementById('modalLogin');
-            if (event.target === modal) {
-                fecharModal();
-            }
-        });
-
-        window.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                fecharModal();
-            }
-        });
-    </script>
-
-        </div>
     <!--Fim da Parte de Cadastro-->
   </header>
 
   <main class="form-box perfil">
-    <a href="index.html" style="color: var(--cor-primaria); text-decoration: none;">&larr; Voltar</a>
+    <a href="../index.html" style="color: var(--cor-primaria); text-decoration: none;">&larr; Voltar</a>
 
     <div style="margin-top: 30px;">
-      <img src="img/jogo-exemplo.jpg" alt="Imagem do Jogo" style="width: 100%; border-radius: 10px; border: 2px solid #333;">
+      <img src="images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Imagem do Jogo" style="width: 100%; border-radius: 10px; border: 2px solid #333;">
     </div>
 
-    <h1 style="color: var(--cor-primaria); margin-top: 30px;">Título do Jogo</h1>
+    <h1 style="color: var(--cor-primaria); margin-top: 30px;"><?= htmlspecialchars($jogo['nome_jogo']) ?> </h1>
+    
     <p style="color: #ccc; margin: 10px 0 30px;">
       Aqui vai uma descrição detalhada sobre o jogo, gênero, desenvolvedora, e outras informações relevantes que o usuário precisa saber antes de dar uma nota.
     </p>
@@ -135,7 +113,7 @@
   <footer class="rodape">
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
         <div class="midiaSocial">
-            <a href="index.html">Bit Crítico</a>
+            <a href="../index.html">Bit Crítico</a>
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
     </footer>

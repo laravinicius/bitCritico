@@ -1,5 +1,5 @@
 <?php
-require_once '/../Control/ConexaoBD.php';
+require_once './controller/ConexaoBD.php';
 
 class Jogo {
     private $conn;

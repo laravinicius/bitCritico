@@ -93,8 +93,8 @@
       <img src="images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Imagem do Jogo" style="width: 100%; border-radius: 10px; border: 2px solid #333;">
     </div>
 
-    <h1 style="color: var(--cor-primaria); margin-top: 30px;">htmlspecialchars($jogo['nome_jogo']) ?></h1>
-    >
+    <h1 style="color: var(--cor-primaria); margin-top: 30px;"><?= htmlspecialchars($jogo['nome_jogo']) ?> </h1>
+    
     <p style="color: #ccc; margin: 10px 0 30px;">
       Aqui vai uma descrição detalhada sobre o jogo, gênero, desenvolvedora, e outras informações relevantes que o usuário precisa saber antes de dar uma nota.
     </p>

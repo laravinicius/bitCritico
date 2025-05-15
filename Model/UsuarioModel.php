@@ -1,5 +1,5 @@
 <?php
-$db = require_once __DIR__ . '/../Control/ConexaoBD.php';
+$db = require_once __DIR__ . './Controller/ConexaoBD.php';
 $usuario = new Usuario($db);
 
 class Usuario {

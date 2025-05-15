@@ -1,11 +1,11 @@
 <?php
 session_start(); // Inicia a sessão
 
-require_once __DIR__ . '/../Model/UsuarioModel.php';
-require_once __DIR__ . '/../Controller/ConexaoBD.php';
+require_once __DIR__ . '../Model/UsuarioModel.php';
+require_once __DIR__ . './Controller/ConexaoBD.php';
 
 // Carrega a conexão com o banco de dados
-$mysqli = require 'ConexaoBD.php';
+$mysqli = require './Controller/ConexaoBD.php';
 if (!$mysqli || !$mysqli instanceof mysqli) {
     die("Erro: A conexão com o banco não foi estabelecida corretamente.");
 }
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['email_usuario'] = $user['email_usuario'];
 
                 // Redireciona para a página inicial
-                header('Location: ../View/index.html');
+                header('Location: ../index.html');
                 exit();
             } else {
                 // Senha incorreta

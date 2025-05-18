@@ -14,7 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmtCheck = $mysqli->prepare("SELECT id_usuario FROM Usuario WHERE email_usuario = ?");
     if ($stmtCheck === false) {
         $_SESSION['erro_cadastro'] = "Erro ao preparar a consulta: " . $mysqli->error;
+<<<<<<< HEAD
         header("Location: ../index.php");
+=======
+        header("Location: /bitCritico/index.php");
+>>>>>>> parent of a9169b8 (Update CadastroController.php)
         exit();
     }
     $stmtCheck->bind_param("s", $email);
@@ -23,7 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($stmtCheck->num_rows > 0) {
         $_SESSION['erro_cadastro'] = "Este email já está cadastrado.";
+<<<<<<< HEAD
         header("Location: ../index.php");
+=======
+        header("Location: /bitCritico/index.php");
+>>>>>>> parent of a9169b8 (Update CadastroController.php)
         exit();
     }
 
@@ -33,7 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt = $mysqli->prepare("INSERT INTO Usuario (nome_usuario, email_usuario, senha_usuario, data_criacao_usuario) VALUES (?, ?, ?, ?)");
     if (!$stmt) {
         $_SESSION['erro_cadastro'] = "Erro ao preparar a query: " . $mysqli->error;
+<<<<<<< HEAD
         header("Location: ../index.php");
+=======
+        header("Location: /bitCritico/index.php");
+>>>>>>> parent of a9169b8 (Update CadastroController.php)
         exit();
     }
 
@@ -41,11 +53,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($stmt->execute()) {
         $_SESSION['sucesso_cadastro'] = "Usuário cadastrado com sucesso!";
+<<<<<<< HEAD
         header("Location: ../index.php");
         exit();
     } else {
         $_SESSION['erro_cadastro'] = "Erro ao cadastrar usuário: " . $stmt->error;
         header("Location: ../index.php");
+=======
+        header("Location: /bitCritico/index.php");
+        exit();
+    } else {
+        $_SESSION['erro_cadastro'] = "Erro ao cadastrar usuário: " . $stmt->error;
+        header("Location: /bitCritico/index.php");
+>>>>>>> parent of a9169b8 (Update CadastroController.php)
         exit();
     }
 

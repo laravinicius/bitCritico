@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario, senha_usuario FROM Usuario WHERE email_usuario = ?");
     if (!$stmt) {
         $_SESSION['erro_login'] = "Erro ao preparar query: " . $mysqli->error;
-        header('Location: ./index.php');
+        header('Location: ../index.php');
         exit();
     }
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['id_usuario'] = $user['id_usuario'];
             $_SESSION['nome_usuario'] = $user['nome_usuario'];
             $_SESSION['email_usuario'] = $user['email_usuario'];
-            header('Location: ./index.php');
+            header('Location: ../index.php');
             exit();
         } else {
             $_SESSION['erro_login'] = "Senha incorreta.";
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $stmt->close();
-    header('Location: ./View/Perfil.php');
+    header('Location: ../View/Perfil.php');
     exit();
 }
 

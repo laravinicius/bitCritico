@@ -29,7 +29,7 @@ session_start();
             <!-- Modal de Login -->
             <div class="modal" id="loginModal">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formLogin" action="./controller/LoginController.php" method="POST">
+                <form id="formLogin" action="/controller/LoginController.php" method="POST">
                     <h2>Login</h2>
 
                     <label for="loginUsuario">Email ou Usuário</label><br>
@@ -55,7 +55,7 @@ session_start();
             <!-- Modal de Cadastro -->
             <div class="modal" id="cadastroModal" style="display: none;">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formCadastro" action="./controller/CadastroController.php" method="POST">
+                <form id="formCadastro" action="/controller/CadastroController.php" method="POST">
                     <h2>Cadastro</h2>
 
                     <label for="cadUsuario">Nome de Usuário</label><br>

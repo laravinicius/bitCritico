@@ -129,19 +129,19 @@ session_start();
         <section class="game-reviews">
             <h2>Últimos Reviews</h2>
             <div class="review-grid">
-                <a href="./View/detalhes-jogo.php">
+                <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
                 </a>                  
-                <a href="./View/detalhes-jogo.php">
+                <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
                 </a>   
-                <a href="./View/detalhes-jogo.php">
+                <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
@@ -151,19 +151,19 @@ session_start();
 
             <h2>TOP 3 Reviews</h2>
             <div class="review-grid">
-                <a href="./View/detalhes-jogo.php">
+                <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
                 </a>   
-                <a href="./View/detalhes-jogo.php">
+                <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
                 </a>   
-                <a href="./View/detalhes-jogo.php">
+                <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>

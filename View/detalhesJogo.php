@@ -9,7 +9,7 @@
 <body>
   <header>
         <!--Inicio das Telas de Cadastro e Login-->
-    <div class="logo"><a class="logo titulo" href="../index.html">Bit Crítico</a></div>
+    <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
      <nav>
             <a class="teste" href="./jogos.html">Jogos A-Z</a>
         </nav>
@@ -64,7 +64,7 @@
   </header>
 
   <main class="form-box perfil">
-    <a href="../index.html" style="color: var(--cor-primaria); text-decoration: none;">&larr; Voltar</a>
+    <a href="../index.php" style="color: var(--cor-primaria); text-decoration: none;">&larr; Voltar</a>
 
     <div style="margin-top: 30px;">
       <img src="images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Imagem do Jogo" style="width: 100%; border-radius: 10px; border: 2px solid #333;">
@@ -113,7 +113,7 @@
   <footer class="rodape">
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
         <div class="midiaSocial">
-            <a href="../index.html">Bit Crítico</a>
+            <a href="../index.php">Bit Crítico</a>
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
     </footer>

@@ -15,11 +15,11 @@ function responderPergunta(pergunta) {
     // Mapeamento de padrões (usando RegEx) para respostas
     const respostas = [
         {
-            padrao: /(^|\s)(oi|ola|bom dia)(\s|$)/,
+            padrao: /(^|\s)(oi|ola|bom dia|oii|oiii)(\s|$)/,
             resposta: "Bom dia! Posso te ajudar com algo hoje?"
         },
         {
-            padrao: /(^|\s)(sim|pode|claro)(\s|$)/,
+            padrao: /(^|\s)(sim|pode|claro|yes|depende)(\s|$)/,
             resposta: "Que tal, melhor jogo de ação ou melhor jogo de aventura?"
         },
         {
@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Permitir envio com Enter
     chatInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
             sendButton.click();

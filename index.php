@@ -184,3 +184,16 @@ session_start();
                 <input type="text" id="chat-input" placeholder="Digite sua pergunta...">
                 <button id="send-button">➤</button>
             </div>
+        </div>
+    </div>
+
+    <footer class="rodape">
+        <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
+        <div class="midiaSocial">
+            <a href="index.html">Bit Critico</a>
+            <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
+        </div>
+    </footer>
+</body>
+
+</html>

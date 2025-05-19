@@ -1,5 +1,5 @@
 <?php
-include('./ConexaoBD.php');
+include('/ConexaoBD.php');
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -24,5 +24,5 @@ while ($review = $resultadoReviews->fetch_assoc()) {
 }
 
 // Inclui o HTML e passa as variáveis
-include('./view/detalhesJogo.php');
+include('../view/detalhesJogo.php');
 ?>

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . './controller/ConexaoBD.php';
+require_once __DIR__ . '/../Controller/ConexaoBD.php';
 
 class Jogo {
     private $conn;

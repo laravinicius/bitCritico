@@ -4,6 +4,7 @@ session_start();
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@ session_start();
     <meta name="description" content="Site voltado para Reviews de todos os tipos de jogos">
     <script src="./View/scripts/bot.js"></script>
 </head>
+
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="index.php">Bit Crítico</a></div>
@@ -134,19 +136,19 @@ session_start();
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>                  
+                </a>
                 <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>   
+                </a>
                 <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>   
+                </a>
             </div>
 
             <h2>TOP 3 Reviews</h2>
@@ -156,19 +158,19 @@ session_start();
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>   
+                </a>
                 <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>   
+                </a>
                 <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>   
+                </a>
             </div>
         </section>
     </main>
@@ -182,4 +184,3 @@ session_start();
                 <input type="text" id="chat-input" placeholder="Digite sua pergunta...">
                 <button id="send-button">➤</button>
             </div>
-       

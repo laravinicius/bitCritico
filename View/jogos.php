@@ -253,7 +253,7 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
         </div>
     </footer>
 
-    <script>
+    <!-- <script>
         const generoFiltro = document.getElementById('genero-filtro');
         const devFiltro = document.getElementById('desenvolvedora-filtro');
         const jogos = document.querySelectorAll('.jogos-grid .jogos');
@@ -287,7 +287,7 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
             jogo.parentElement.style.display = titulo.includes(termo) ? 'block' : 'none';
             });
         });
-    </script>
+    </script> -->
 </body>
 </html>
 

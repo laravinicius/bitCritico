@@ -22,7 +22,7 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
     <header>
         <div class="logo"><a class="logo titulo" href="index.php">Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="./View/jogos.html">Jogos A-Z</a>
+            <a class="teste" href="./View/jogos.php">Jogos A-Z</a>
         </nav>
 
         <div class="telas">
@@ -133,61 +133,36 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
         <section class="game-reviews">
             <h2>Últimos Reviews</h2>
             <?php while ($jogo = $resultado->fetch_assoc()): ?>
+                <div class="review-grid">
+                    <a href="./View/detalhesJogo.php?id=<?= $jogo['id_jogo'] ?>">
+                        <div class="game">
+                            <img src="./View/images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Jogo Exemplo">
+                            <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
+                        </div>
+                    </a>
+                </div>
+            <?php endwhile; ?>
+            <h2>TOP 3 Reviews</h2>
             <div class="review-grid">
-                <a href="./View/detalhesJogo.php?id=<?= $jogo['id_jogo']?>">
+                <a href="./View/detalhesJogo.php">
                     <div class="game">
-                        <img src="./View/images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Jogo Exemplo">
-                        <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
+                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                        <h3>Jogo Exemplo</h3>
+                    </div>
+                </a>
+                <a href="./View/detalhesJogo.php">
+                    <div class="game">
+                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                        <h3>Jogo Exemplo</h3>
+                    </div>
+                </a>
+                <a href="./View/detalhesJogo.php">
+                    <div class="game">
+                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                        <h3>Jogo Exemplo</h3>
                     </div>
                 </a>
             </div>
-            <?php endwhile; ?>
-
-
-
-
-                    <!-- <div class="review-grid">
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
-            </div> -->
-
-                    <h2>TOP 3 Reviews</h2>
-                    <div class="review-grid">
-                        <a href="./View/detalhesJogo.php">
-                            <div class="game">
-                                <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                                <h3>Jogo Exemplo</h3>
-                            </div>
-                        </a>
-                        <a href="./View/detalhesJogo.php">
-                            <div class="game">
-                                <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                                <h3>Jogo Exemplo</h3>
-                            </div>
-                        </a>
-                        <a href="./View/detalhesJogo.php">
-                            <div class="game">
-                                <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                                <h3>Jogo Exemplo</h3>
-                            </div>
-                        </a>
-                    </div>
         </section>
     </main>
 

@@ -1,5 +1,7 @@
 <?php
 session_start();
+include('./Controller/ConexaoBD.php');
+$resultado = $mysqli->query("SELECT * FROM Jogo")
 ?>
 
 <!DOCTYPE html>
@@ -130,29 +132,21 @@ session_start();
 
         <section class="game-reviews">
             <h2>Últimos Reviews</h2>
+            <?php while ($jogo = $resultado->fetch_assoc()): ?>
             <div class="review-grid">
-                <a href="./View/detalhesJogo.php">
+                <a href="./View/detalhesJogo.php?id=<?= $jogo['id_jogo']?>">
                     <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
+                        <img src="./View/images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Jogo Exemplo">
+                        <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                     </div>
                 </a>
             </div>
+            <?php endwhile; ?>
 
-            <h2>TOP 3 Reviews</h2>
-            <div class="review-grid">
+
+
+
+                    <!-- <div class="review-grid">
                 <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
@@ -171,7 +165,29 @@ session_start();
                         <h3>Jogo Exemplo</h3>
                     </div>
                 </a>
-            </div>
+            </div> -->
+
+                    <h2>TOP 3 Reviews</h2>
+                    <div class="review-grid">
+                        <a href="./View/detalhesJogo.php">
+                            <div class="game">
+                                <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                                <h3>Jogo Exemplo</h3>
+                            </div>
+                        </a>
+                        <a href="./View/detalhesJogo.php">
+                            <div class="game">
+                                <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                                <h3>Jogo Exemplo</h3>
+                            </div>
+                        </a>
+                        <a href="./View/detalhesJogo.php">
+                            <div class="game">
+                                <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                                <h3>Jogo Exemplo</h3>
+                            </div>
+                        </a>
+                    </div>
         </section>
     </main>
 

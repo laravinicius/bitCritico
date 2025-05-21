@@ -2,6 +2,8 @@
 session_start();
 include('./Controller/ConexaoBD.php');
 $resultado = $mysqli->query("SELECT * FROM Jogo")
+// $resultado = $mysqli->query("SELECT * FROM Jogo JOIN Review ON Jogo.id_jogo = Review.id_jogo ORDER BY Review.id_jogo")
+// para filrar por data da review, testar após criar alguma review
 ?>
 
 <!DOCTYPE html>

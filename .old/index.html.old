@@ -1,14 +1,5 @@
-<?php
-session_start();
-include('./Controller/ConexaoBD.php');
-$resultado = $mysqli->query("SELECT * FROM Jogo")
-// $resultado = $mysqli->query("SELECT * FROM Jogo JOIN Review ON Jogo.id_jogo = Review.id_jogo ORDER BY Review.id_jogo")
-// para filrar por data da review, testar após criar alguma review
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,12 +10,11 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
     <meta name="description" content="Site voltado para Reviews de todos os tipos de jogos">
     <script src="./View/scripts/bot.js"></script>
 </head>
-
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="index.php">Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="index.html">Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="./View/jogos.php">Jogos A-Z</a>
+            <a class="teste" href="./View/jogos.html">Jogos A-Z</a>
         </nav>
 
         <div class="telas">
@@ -35,7 +25,7 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
             <!-- Modal de Login -->
             <div class="modal" id="loginModal">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formLogin" action="Controller/LoginController.php" method="POST">
+                <form id="formLogin" action="./Controller/LoginController.php" method="POST">
                     <h2>Login</h2>
 
                     <label for="loginUsuario">Email ou Usuário</label><br>
@@ -49,19 +39,13 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
                     </div>
 
                     <p>Não tem uma conta? <a href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
-                    <?php
-                    if (isset($_SESSION['erro_login'])) {
-                        echo '<p style="color: red;">' . $_SESSION['erro_login'] . '</p>';
-                        unset($_SESSION['erro_login']);
-                    }
-                    ?>
                 </form>
             </div>
 
             <!-- Modal de Cadastro -->
             <div class="modal" id="cadastroModal" style="display: none;">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formCadastro" action="Controller/LoginController.php" method="POST">
+                <form id="formCadastro" action="./Controller/CadastroController.php" method="POST">
                     <h2>Cadastro</h2>
 
                     <label for="cadUsuario">Nome de Usuário</label><br>
@@ -78,16 +62,6 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
                     </div>
 
                     <p>Já tem uma conta? <a href="#" onclick="abrirLogin()">Fazer login</a></p>
-                    <?php
-                    if (isset($_SESSION['erro_cadastro'])) {
-                        echo '<p style="color: red;">' . $_SESSION['erro_cadastro'] . '</p>';
-                        unset($_SESSION['erro_cadastro']);
-                    }
-                    if (isset($_SESSION['sucesso_cadastro'])) {
-                        echo '<p style="color: green;">' . $_SESSION['sucesso_cadastro'] . '</p>';
-                        unset($_SESSION['sucesso_cadastro']);
-                    }
-                    ?>
                 </form>
             </div>
         </div>
@@ -135,15 +109,26 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
         <section class="game-reviews">
             <h2>Últimos Reviews</h2>
             <div class="review-grid">
-                <?php while ($jogo = $resultado->fetch_assoc()): ?>
-                    <a href="./View/detalhesJogo.php?id=<?= $jogo['id_jogo'] ?>">
-                        <div class="game">
-                            <img src="./View/images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Jogo Exemplo">
-                            <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
-                        </div>
-                    </a>
-                <?php endwhile; ?>
+                <a href="./View/detalhesJogo.php">
+                    <div class="game">
+                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                        <h3>Jogo Exemplo</h3>
+                    </div>
+                </a>                  
+                <a href="./View/detalhesJogo.php">
+                    <div class="game">
+                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                        <h3>Jogo Exemplo</h3>
+                    </div>
+                </a>   
+                <a href="./View/detalhesJogo.php">
+                    <div class="game">
+                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
+                        <h3>Jogo Exemplo</h3>
+                    </div>
+                </a>   
             </div>
+
             <h2>TOP 3 Reviews</h2>
             <div class="review-grid">
                 <a href="./View/detalhesJogo.php">
@@ -151,19 +136,19 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>
+                </a>   
                 <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>
+                </a>   
                 <a href="./View/detalhesJogo.php">
                     <div class="game">
                         <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
                         <h3>Jogo Exemplo</h3>
                     </div>
-                </a>
+                </a>   
             </div>
         </section>
     </main>
@@ -188,5 +173,4 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
         </div>
     </footer>
 </body>
-
 </html>

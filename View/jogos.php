@@ -1,10 +1,49 @@
 <?php
 session_start();
 include('../Controller/ConexaoBD.php');
-$resultado = $mysqli->query("SELECT * FROM Jogo")
+//query para ordem de ano de lancamento
+$resultadoAnoLancamento = $mysqli->query(
+    "SELECT 
+        j.id_jogo,
+        j.nome_jogo,
+        j.ano_lancamento_jogo,
+        j.descricao_jogo,
+        j.capa_jogo,
+        j.trailer_jogo,
+        g.nome_genero
+    FROM 
+        Jogo j
+    INNER JOIN 
+        Jogo_Genero jg ON j.id_jogo = jg.id_jogo
+    INNER JOIN 
+        Genero g ON jg.id_genero = g.id_genero
+    ORDER BY ano_lancamento_jogo DESC");
+// query para generos
+$generoJogo = $mysqli->query("SELECT * FROM Genero");
+// query para 
+$resultadoJogoGenero = $mysqli->query(
+    "SELECT 
+        j.id_jogo,
+        j.nome_jogo,
+        j.ano_lancamento_jogo,
+        j.descricao_jogo,
+        j.capa_jogo,
+        j.trailer_jogo,
+        g.nome_genero
+    FROM 
+        Jogo j
+    INNER JOIN 
+        Jogo_Genero jg ON j.id_jogo = jg.id_jogo
+    INNER JOIN 
+        Genero g ON jg.id_genero = g.id_genero
+    ORDER BY nome_jogo ASC;");
+
+// MAIS UMA QUERY PARA TOP 5 DO MÊS
+//query para lista de generos
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +61,7 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
     <header>
         <!--Inicio das Telas de Cadastro e Login-->
         <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
-        
+
         <nav class="search-bar">
             <form id="barra-pesquisa" method="get" onsubmit="return false;">
                 <input type="text" id="pesquisa-jogo" name="q" placeholder="Pesquisar jogos..." required>
@@ -30,10 +69,10 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
             </form>
         </nav>
 
-    <div class="telas">
-        <button class="voltar" onclick="history.back()">⬅️</button>
-        <button class="login" onclick="abrirModal()">Entrar</button>
-    </div>
+        <div class="telas">
+            <button class="voltar" onclick="history.back()">⬅️</button>
+            <button class="login" onclick="abrirModal()">Entrar</button>
+        </div>
 
 
         <div class="modal-bg" id="modalLogin">
@@ -130,86 +169,53 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
             });
         </script>
     </header>
-
     <main>
         <section class="jogos game-reviews">
-            <h2>De A - Z por: 
+            <h2>De A - Z por:
                 <select name="genero-filtro" id="genero-filtro">
-                    <option value="" selected>Todos os gêneros</option>
-                    <option value="acao">Ação</option>
-                    <option value="terror">Terror</option>
-                    <option value="fps">FPS</option>
-                    <option value="aventura">Aventura</option>
-                    <option value="rpg">RPG</option>
-                    <option value="estrategia">Estratégia</option>
-                    <option value="simulacao">Simulação</option>
+                    <option value="valve">Todos os gêneros</option>
+                    <?php while ($genero = $generoJogo->fetch_assoc()): ?>
+                        <option value="<?= htmlspecialchars($genero['nome_genero']) ?>" selected><?= htmlspecialchars($genero['nome_genero']) ?></option>
+                    <?php endwhile ?>
                 </select>
+
                 <select name="desenvolvedora-filtro" id="desenvolvedora-filtro">
                     <option value="" selected>Todas as desenvolvedoras</option>
-                    <option value="valve">Valve</option>
-                    <option value="rockstar">Rockstar</option>
-                    <option value="bethesda">Bethesda</option>
-                    <option value="ubisoft">Ubisoft</option>
-                    <option value="ea">EA</option>
                 </select>
             </h2>
 
             <div class="jogos-grid">
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="acao" data-dev="rockstar">
-                        <img src="jogos1.jpg" alt="jogos 1">
-                        <h3>GTA V</h3>
-                        <p>Rockstar/Ação</p>
-                    </div>
-                </a>
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="terror" data-dev="rockstar">
-                        <img src="jogos2.jpg" alt="jogos 2">
-                        <h3>Man Hunt</h3>
-                        <p>Rockstar/Terror</p>
-                    </div>
-                </a>
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="fps" data-dev="valve">
-                        <img src="jogos3.jpg" alt="jogos 3">
-                        <h3>CS 2</h3>
-                        <p>Valve/FPS</p>
-                    </div>
-                </a>
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="acao" data-dev="valve">
-                        <img src="jogos4.jpg" alt="jogos 4">
-                        <h3>Half Life</h3>
-                        <p>Valve/Ação</p>
-                    </div>
-                </a>
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="aventura" data-dev="team cherry">
-                        <img src="jogos5.jpg" alt="jogos 5">
-                        <h3>Hollow Knight</h3>
-                        <p>Team Cherry/Aventura</p>
-                    </div>
-                </a>
+                <?php while ($jogo = $resultadoJogoGenero->fetch_assoc()): ?>
+                    <a href="./detalhesJogo.php?id=<?= $jogo['id_jogo'] ?>">
+                        <div class="jogos">
+                            <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
+                            <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
+                            <p>Desenvolvedora</p>
+                            <p><?= htmlspecialchars($jogo['nome_genero'])?></p>
+                            <p>nota</p>
+                        </div>
+                    <?php endwhile; ?>
+
+                    </a>
             </div>
 
-            <h2>Últimos jogos</h2>
+            <h2>Últimos lançamentos</h2>
             <div class="jogos-grid">
-                <!-- Repita com dados reais e atributos -->
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="acao" data-dev="ea">
-                        <img src="jogos1.jpg" alt="jogos 1">
-                        <h3>Nome do jogo 1</h3>
-                        <p>EA/Ação</p>
-                    </div>
-                </a>
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="rpg" data-dev="ubisoft">
-                        <img src="jogos2.jpg" alt="jogos 2">
-                        <h3>Nome do jogo 2</h3>
-                        <p>Ubisoft/RPG</p>
-                    </div>
-                </a>
-                <!-- Adicione mais conforme necessário -->
+                <?php while ($jogo = $resultadoAnoLancamento->fetch_assoc()): ?>
+                    <a href="./detalhesJogo.php?id=<?= $jogo['id_jogo'] ?>">
+                        <div class="jogos">
+                            <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
+                            <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
+                            <p>Desenvolvedora</p>
+                            <p><?= htmlspecialchars($jogo['nome_genero'])?></p>
+                            <p>Nota</p>
+                            <p><?= htmlspecialchars($jogo['ano_lancamento_jogo']) ?></p>
+
+                        </div>
+
+                    <?php endwhile; ?>
+
+                    </a>
             </div>
 
             <h2>TOP 5 DO MÊS</h2>
@@ -221,14 +227,6 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
                         <p>Rockstar/Ação</p>
                     </div>
                 </a>
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="aventura" data-dev="bethesda">
-                        <img src="jogos2.jpg" alt="jogos 2">
-                        <h3>Nome do jogo 2</h3>
-                        <p>Bethesda/Aventura</p>
-                    </div>
-                </a>
-                <!-- Mais jogos... -->
             </div>
         </section>
     </main>
@@ -289,5 +287,5 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
         });
     </script> -->
 </body>
-</html>
 
+</html>

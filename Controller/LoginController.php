@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 session_start();
 
 require_once __DIR__ . '/../Model/UsuarioModel.php';
@@ -6,21 +8,27 @@ require_once __DIR__ . '/ConexaoBD.php';
 
 $mysqli = require './ConexaoBD.php';
 if (!$mysqli || !$mysqli instanceof mysqli) {
-    die("Erro: Conexão inválida.");
+    echo json_encode(['success' => false, 'message' => 'Erro: Conexão inválida.']);
+    exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $usuarioInput = $_POST['usuario'] ?? '';
-    $senha = $_POST['senha'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
+    $usuarioInput = trim($_POST['usuario'] ?? '');
+    $senha = trim($_POST['senha'] ?? '');
 
-    $stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario, senha_usuario FROM Usuario WHERE email_usuario = ?");
-    if (!$stmt) {
-        $_SESSION['erro_login'] = "Erro ao preparar query: " . $mysqli->error;
-        header('Location: ../index.php');
+    if (empty($usuarioInput) || empty($senha)) {
+        echo json_encode(['success' => false, 'message' => 'Por favor, preencha todos os campos.']);
         exit();
     }
 
-    $stmt->bind_param("s", $usuarioInput);
+    // Consulta que verifica tanto email quanto nome de usuário
+    $stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario, senha_usuario FROM Usuario WHERE email_usuario = ? OR nome_usuario = ?");
+    if (!$stmt) {
+        echo json_encode(['success' => false, 'message' => 'Erro ao preparar query: ' . $mysqli->error]);
+        exit();
+    }
+
+    $stmt->bind_param("ss", $usuarioInput, $usuarioInput);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -30,18 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['id_usuario'] = $user['id_usuario'];
             $_SESSION['nome_usuario'] = $user['nome_usuario'];
             $_SESSION['email_usuario'] = $user['email_usuario'];
-            header('Location: ../index.php');
-            exit();
+            echo json_encode(['success' => true]);
         } else {
-            $_SESSION['erro_login'] = "Senha incorreta.";
+            echo json_encode(['success' => false, 'message' => 'Senha incorreta.']);
         }
     } else {
-        $_SESSION['erro_login'] = "Usuário ou email não encontrado.";
+        echo json_encode(['success' => false, 'message' => 'Usuário ou email não encontrado.']);
     }
 
     $stmt->close();
-    header('Location: ../View/Perfil.php');
-    exit();
 }
 
 $mysqli->close();

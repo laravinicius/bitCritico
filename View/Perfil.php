@@ -3,7 +3,7 @@ session_start();
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['id_usuario'])) {
-    header('Location: ../index.php');
+    header('Location: /bitCritico/index.php');
     exit();
 }
 

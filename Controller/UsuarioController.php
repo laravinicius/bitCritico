@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../Model/UsuarioModel.php';
 require_once __DIR__ . '/ConexaoBD.php'; // Mesmo diretório
 
-$mysqli = require '/ConexaoBD.php'; // Carregar conexão corretamente
+$mysqli = require 'ConexaoBD.php'; // Carregar conexão corretamente
 if (!$mysqli || !$mysqli instanceof mysqli) {
     die("Erro: A conexão com o banco não foi estabelecida corretamente.");
 }
@@ -40,12 +40,12 @@ $stmt->bind_param(
 if ($stmt->execute()) {
     echo "Usuário cadastrado com sucesso!";
     // Redireciona para uma página após o cadastro (opcional)
-    header('Location: ../index.php');
+    header('Location: /bitCritico/ADM/index.html');
     exit();
 } else {
     echo "Erro ao cadastrar usuário: " . $stmt->error;
     // Redireciona para a página de cadastro com erro (opcional)
-    header('Location: ../View/ADM/cadastro.html');
+    header('Location: /bitCritico/ADM/cadastro.html');
     exit();
 }
 

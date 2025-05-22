@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+
+:root {
+    --cor-primaria: #00ffc3;
+    --cor-secundaria: #1f1f1f;
+    --cor-fundo: #121212;
+    --cor-texto: #eaeaea;
+    --cor-destaque: #ff007a;
+    --cor-hover: #00aaff;
+    --cor-botao: #242424;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: var(--cor-fundo);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--cor-primaria);
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo a {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.logo a:hover {
+    color: var(--cor-destaque);
+}
+
+nav a {
+    color: var(--cor-texto);
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--cor-hover);
+}
+
+.links-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+.link-item {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    background-color: var(--cor-botao);
+    color: var(--cor-texto);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.link-item:hover {
+    background-color: var(--cor-hover);
+    color: var(--cor-fundo);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+
+    .logo a {
+        font-size: 1.8rem;
+    }
+
+    nav a {
+        margin: 0 10px;
+        font-size: 1rem;
+    }
+
+    .links-container {
+        padding: 20px 15px;
+    }
+
+    .link-item {
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+}

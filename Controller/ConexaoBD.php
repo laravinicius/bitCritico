@@ -1,15 +1,11 @@
 <?php
-// $hostName = "turntable.proxy.rlwy.net";
-$hostName = "localhost";
+$hostName = "turntable.proxy.rlwy.net";
 $dataBase = "railway";
 $user = "root";
-// $password = "WnmoCEaIpHlEBfvYojoKSTfEeijnmPyk";
-$password = "";
-// $port = 52444;
+$password = "WnmoCEaIpHlEBfvYojoKSTfEeijnmPyk";
+$port = 52444;
 
-// $mysqli = new mysqli($hostName, $user, $password, $dataBase, $port);
-$mysqli = new mysqli($hostName, $user, $password, $dataBase);
-
+$mysqli = new mysqli($hostName, $user, $password, $dataBase, $port);
 
 if ($mysqli->connect_errno) {
     echo "Falha ao conectar: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;

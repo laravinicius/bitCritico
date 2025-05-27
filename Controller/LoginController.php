@@ -3,12 +3,11 @@ header('Content-Type: application/json');
 
 session_start();
 
-require_once __DIR__ . '/../Model/UsuarioModel.php';
 require_once __DIR__ . '/ConexaoBD.php';
+$mysqli = require __DIR__ . '/ConexaoBD.php';
 
-$mysqli = require './ConexaoBD.php';
 if (!$mysqli || !$mysqli instanceof mysqli) {
-    echo json_encode(['success' => false, 'message' => 'Erro: Conexão inválida.']);
+    echo json_encode(['success' => false, 'message' => 'Erro: Conexão com o banco falhou.']);
     exit();
 }
 
@@ -21,8 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
         exit();
     }
 
-    // Consulta que verifica tanto email quanto nome de usuário
-    $stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario, senha_usuario FROM Usuario WHERE email_usuario = ? OR nome_usuario = ?");
+    $stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario, senha_usuario, status_usuario FROM Usuario WHERE email_usuario = ? OR nome_usuario = ?");
     if (!$stmt) {
         echo json_encode(['success' => false, 'message' => 'Erro ao preparar query: ' . $mysqli->error]);
         exit();
@@ -38,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
             $_SESSION['id_usuario'] = $user['id_usuario'];
             $_SESSION['nome_usuario'] = $user['nome_usuario'];
             $_SESSION['email_usuario'] = $user['email_usuario'];
+            $_SESSION['status_usuario'] = $user['status_usuario']; // Inclui status_usuario
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Senha incorreta.']);
@@ -50,4 +49,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'login') {
 }
 
 $mysqli->close();
+exit();
 ?>

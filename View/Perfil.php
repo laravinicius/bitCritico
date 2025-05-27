@@ -74,7 +74,7 @@ $mysqli->close();
     <header>
         <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="../View/jogos.html">Jogos A-Z</a>
+            <a class="teste" href="../View/jogos.php">Jogos A-Z</a>
         </nav>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>

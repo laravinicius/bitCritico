@@ -1,11 +1,18 @@
 <?php
+ob_clean();
 header('Content-Type: application/json');
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-require_once __DIR__ . '/../Controller/ConexaoBD.php';
+require_once __DIR__ . '/ConexaoBD.php';
+$mysqli = require __DIR__ . '/ConexaoBD.php';
 
-$mysqli = require 'ConexaoBD.php';
+if (!$mysqli || !$mysqli instanceof mysqli) {
+    echo json_encode(['success' => false, 'message' => 'Erro: Conexão com o banco falhou.']);
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
     $nome = trim($_POST['usuario'] ?? '');
@@ -18,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
         exit();
     }
 
-    // Verifica duplicatas manualmente antes de inserir
     $stmtCheck = $mysqli->prepare("SELECT id_usuario FROM Usuario WHERE email_usuario = ? OR nome_usuario = ?");
     if ($stmtCheck === false) {
         echo json_encode(['success' => false, 'message' => 'Erro ao preparar a consulta: ' . $mysqli->error]);
@@ -30,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
 
     if ($stmtCheck->num_rows > 0) {
         $stmtCheck->close();
-        // Verifica qual campo está duplicado
         $stmtEmail = $mysqli->prepare("SELECT id_usuario FROM Usuario WHERE email_usuario = ?");
         $stmtEmail->bind_param("s", $email);
         $stmtEmail->execute();
@@ -41,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
             exit();
         }
         $stmtEmail->close();
-
         echo json_encode(['success' => false, 'message' => 'Este nome de usuário já está em uso.']);
         exit();
     }
@@ -49,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
     $stmtCheck->close();
 
     $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-    $stmt = $mysqli->prepare("INSERT INTO Usuario (nome_usuario, email_usuario, senha_usuario, data_criacao_usuario) VALUES (?, ?, ?, ?)");
+    $stmt = $mysqli->prepare("INSERT INTO Usuario (nome_usuario, email_usuario, senha_usuario, data_criacao_usuario, status_usuario) VALUES (?, ?, ?, ?, 0)");
     if (!$stmt) {
         echo json_encode(['success' => false, 'message' => 'Erro ao preparar a query: ' . $mysqli->error]);
         exit();
@@ -59,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
 
     if ($stmt->execute()) {
         $stmt->close();
-        $stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario FROM Usuario WHERE email_usuario = ?");
+        $stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario, status_usuario FROM Usuario WHERE email_usuario = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -67,11 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
         $_SESSION['id_usuario'] = $user['id_usuario'];
         $_SESSION['nome_usuario'] = $user['nome_usuario'];
         $_SESSION['email_usuario'] = $user['email_usuario'];
+        $_SESSION['status_usuario'] = $user['status_usuario']; // Inclui status_usuario
         $stmt->close();
         echo json_encode(['success' => true]);
     } else {
-        // Captura erro de duplicação caso a verificação inicial falhe
-        if ($mysqli->errno === 1062) { // Código de erro para duplicação
+        if ($mysqli->errno === 1062) {
             if (strpos($mysqli->error, 'nome_usuario') !== false) {
                 echo json_encode(['success' => false, 'message' => 'Este nome de usuário já está em uso.']);
             } elseif (strpos($mysqli->error, 'email_usuario') !== false) {
@@ -87,4 +91,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'cadastro') {
     $stmt->close();
     $mysqli->close();
 }
+exit();
 ?>

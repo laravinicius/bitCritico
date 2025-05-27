@@ -1,14 +1,21 @@
 <?php
 session_start();
+
+// Inclui a conexão com o banco e trata possíveis erros
 include('./Controller/ConexaoBD.php');
-$resultado = $mysqli->query("SELECT * FROM Jogo")
-// $resultado = $mysqli->query("SELECT * FROM Jogo JOIN Review ON Jogo.id_jogo = Review.id_jogo ORDER BY Review.id_jogo")
-// para filrar por data da review, testar após criar alguma review
+$resultado = null;
+if ($mysqli && $mysqli instanceof mysqli) {
+    $resultado = $mysqli->query("SELECT * FROM Jogo");
+    if (!$resultado) {
+        error_log("Erro na consulta ao banco: " . $mysqli->error);
+    }
+} else {
+    error_log("Falha na conexão com o banco.");
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +26,6 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
     <meta name="description" content="Site voltado para Reviews de todos os tipos de jogos">
     <script src="./View/scripts/bot.js"></script>
 </head>
-
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="index.php">Bit Crítico</a></div>
@@ -28,66 +34,54 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
         </nav>
 
         <div class="telas">
-            <button class="login" onclick="abrirModal()">Entrar</button>
+            <?php if (isset($_SESSION['id_usuario'])): ?>
+                <a href="./View/Perfil.php" class="login">Perfil</a>
+                <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
+                    <a href="./View/ADM/AdminCenter023839.php" class="login">Sessão Adm</a>
+                <?php endif; ?>
+                <a href="./Controller/LogoutController.php" class="login">Sair</a>
+            <?php else: ?>
+                <button class="login" onclick="abrirModal()">Entrar</button>
+            <?php endif; ?>
         </div>
 
         <div class="modal-bg" id="modalLogin">
             <!-- Modal de Login -->
             <div class="modal" id="loginModal">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formLogin" action="Controller/LoginController.php" method="POST">
+                <form id="formLogin" method="POST">
+                    <input type="hidden" name="action" value="login">
                     <h2>Login</h2>
-
                     <label for="loginUsuario">Email ou Usuário</label><br>
                     <input type="text" id="loginUsuario" name="usuario"><br>
-
                     <label for="loginSenha">Senha</label><br>
                     <input type="password" id="loginSenha" name="senha"><br>
-
                     <div class="modal-buttons">
-                        <button type="submit" onclick="return validarLogin()">Login</button>
+                        <button type="button" onclick="submitForm('login')">Login</button>
                     </div>
-
                     <p>Não tem uma conta? <a href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
-                    <?php
-                    if (isset($_SESSION['erro_login'])) {
-                        echo '<p style="color: red;">' . $_SESSION['erro_login'] . '</p>';
-                        unset($_SESSION['erro_login']);
-                    }
-                    ?>
+                    <div id="loginError" style="color: red;"></div>
                 </form>
             </div>
 
             <!-- Modal de Cadastro -->
             <div class="modal" id="cadastroModal" style="display: none;">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formCadastro" action="Controller/LoginController.php" method="POST">
+feeds                <form id="formCadastro" method="POST">
+                    <input type="hidden" name="action" value="cadastro">
                     <h2>Cadastro</h2>
-
                     <label for="cadUsuario">Nome de Usuário</label><br>
                     <input type="text" id="cadUsuario" name="usuario"><br>
-
                     <label for="cadEmail">Email</label><br>
                     <input type="text" id="cadEmail" name="email"><br>
-
                     <label for="cadSenha">Senha</label><br>
                     <input type="password" id="cadSenha" name="senha"><br>
-
                     <div class="modal-buttons">
-                        <button type="submit" onclick="return validarCadastro()">Cadastrar</button>
+                        <button type="button" onclick="submitForm('cadastro')">Cadastrar</button>
                     </div>
-
                     <p>Já tem uma conta? <a href="#" onclick="abrirLogin()">Fazer login</a></p>
-                    <?php
-                    if (isset($_SESSION['erro_cadastro'])) {
-                        echo '<p style="color: red;">' . $_SESSION['erro_cadastro'] . '</p>';
-                        unset($_SESSION['erro_cadastro']);
-                    }
-                    if (isset($_SESSION['sucesso_cadastro'])) {
-                        echo '<p style="color: green;">' . $_SESSION['sucesso_cadastro'] . '</p>';
-                        unset($_SESSION['sucesso_cadastro']);
-                    }
-                    ?>
+                    <div id="cadastroError" style="color: red;"></div>
+                    <div id="cadastroSuccess" style="color: green;"></div>
                 </form>
             </div>
         </div>
@@ -104,11 +98,43 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
             function abrirCadastro() {
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('cadastroModal').style.display = 'block';
+                document.getElementById('cadastroError').textContent = '';
+                document.getElementById('cadastroSuccess').textContent = '';
             }
 
             function abrirLogin() {
                 document.getElementById('cadastroModal').style.display = 'none';
                 document.getElementById('loginModal').style.display = 'block';
+                document.getElementById('loginError').textContent = '';
+            }
+
+            function submitForm(action) {
+                const form = document.getElementById(action === 'login' ? 'formLogin' : 'formCadastro');
+                const errorDiv = document.getElementById(action === 'login' ? 'loginError' : 'cadastroError');
+                const successDiv = document.getElementById('cadastroSuccess');
+
+                const formData = new FormData(form);
+
+                fetch(`./Controller/${action === 'login' ? 'LoginController.php' : 'CadastroController.php'}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = './View/Perfil.php';
+                    } else {
+                        errorDiv.textContent = data.message;
+                        if (action === 'cadastro' && data.success === false && data.message !== 'Este email já está cadastrado.') {
+                            successDiv.textContent = '';
+                        }
+                    }
+                })
+                .catch(error => {
+                    errorDiv.textContent = 'Erro na requisição: ' + error.message;
+                });
+
+                return false;
             }
 
             window.addEventListener('click', function(event) {
@@ -135,14 +161,18 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
         <section class="game-reviews">
             <h2>Últimos Reviews</h2>
             <div class="review-grid">
-                <?php while ($jogo = $resultado->fetch_assoc()): ?>
-                    <a href="./View/detalhesJogo.php?id=<?= $jogo['id_jogo'] ?>">
-                        <div class="game">
-                            <img src="./View/images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="Jogo Exemplo">
-                            <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
-                        </div>
-                    </a>
-                <?php endwhile; ?>
+                <?php if ($resultado && $resultado->num_rows > 0): ?>
+                    <?php while ($jogo = $resultado->fetch_assoc()): ?>
+                        <a href="./View/detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
+                            <div class="game">
+                                <img src="./View/images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
+                                <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>Nenhum jogo cadastrado no momento.</p>
+                <?php endif; ?>
             </div>
             <h2>TOP 3 Reviews</h2>
             <div class="review-grid">
@@ -183,10 +213,9 @@ $resultado = $mysqli->query("SELECT * FROM Jogo")
     <footer class="rodape">
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
         <div class="midiaSocial">
-            <a href="index.html">Bit Critico</a>
+            <a href="index.php">Bit Crítico</a>
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
     </footer>
 </body>
-
 </html>

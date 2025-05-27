@@ -1,7 +1,10 @@
 <?php
 session_start();
+
+// Inclui a conexão com o banco e trata possíveis erros
 include('../Controller/ConexaoBD.php');
-//query para ordem de ano de lancamento
+
+// Query para ordem de ano de lançamento
 $resultadoAnoLancamento = $mysqli->query(
     "SELECT 
         j.id_jogo,
@@ -17,10 +20,13 @@ $resultadoAnoLancamento = $mysqli->query(
         Jogo_Genero jg ON j.id_jogo = jg.id_jogo
     INNER JOIN 
         Genero g ON jg.id_genero = g.id_genero
-    ORDER BY ano_lancamento_jogo DESC");
-// query para generos
+    ORDER BY ano_lancamento_jogo DESC"
+);
+
+// Query para gêneros
 $generoJogo = $mysqli->query("SELECT * FROM Genero");
-// query para 
+
+// Query para ordem alfabética
 $resultadoJogoGenero = $mysqli->query(
     "SELECT 
         j.id_jogo,
@@ -36,14 +42,12 @@ $resultadoJogoGenero = $mysqli->query(
         Jogo_Genero jg ON j.id_jogo = jg.id_jogo
     INNER JOIN 
         Genero g ON jg.id_genero = g.id_genero
-    ORDER BY nome_jogo ASC;");
-
-// MAIS UMA QUERY PARA TOP 5 DO MÊS
-//query para lista de generos
+    ORDER BY nome_jogo ASC"
+);
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,12 +58,9 @@ $resultadoJogoGenero = $mysqli->query(
     <script src="./scripts/bot.js"></script>
     <script src="./scripts/cadastro.js"></script>
     <script src="./Teste.js/pesquisa.js"></script>
-
 </head>
-
 <body>
     <header>
-        <!--Inicio das Telas de Cadastro e Login-->
         <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
 
         <nav class="search-bar">
@@ -71,67 +72,51 @@ $resultadoJogoGenero = $mysqli->query(
 
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <button class="login" onclick="abrirModal()">Entrar</button>
+            <?php if (isset($_SESSION['id_usuario'])): ?>
+                <a href="./Perfil.php" class="login">Perfil</a>
+                <a href="../Controller/LogoutController.php" class="login">Sair</a>
+            <?php else: ?>
+                <button class="login" onclick="abrirModal()">Entrar</button>
+            <?php endif; ?>
         </div>
-
 
         <div class="modal-bg" id="modalLogin">
             <!-- Modal de Login -->
             <div class="modal" id="loginModal">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formLogin" action="Controller/LoginController.php" method="POST">
+                <form id="formLogin" method="POST">
+                    <input type="hidden" name="action" value="login">
                     <h2>Login</h2>
-
                     <label for="loginUsuario">Email ou Usuário</label><br>
                     <input type="text" id="loginUsuario" name="usuario"><br>
-
                     <label for="loginSenha">Senha</label><br>
                     <input type="password" id="loginSenha" name="senha"><br>
-
                     <div class="modal-buttons">
-                        <button type="submit" onclick="return validarLogin()">Login</button>
+                        <button type="button" onclick="submitForm('login')">Login</button>
                     </div>
-
                     <p>Não tem uma conta? <a href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
-                    <?php
-                    if (isset($_SESSION['erro_login'])) {
-                        echo '<p style="color: red;">' . $_SESSION['erro_login'] . '</p>';
-                        unset($_SESSION['erro_login']);
-                    }
-                    ?>
+                    <div id="loginError" style="color: red;"></div>
                 </form>
             </div>
 
             <!-- Modal de Cadastro -->
             <div class="modal" id="cadastroModal" style="display: none;">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formCadastro" action="Controller/LoginController.php" method="POST">
+                <form id="formCadastro" method="POST">
+                    <input type="hidden" name="action" value="cadastro">
                     <h2>Cadastro</h2>
-
                     <label for="cadUsuario">Nome de Usuário</label><br>
                     <input type="text" id="cadUsuario" name="usuario"><br>
-
                     <label for="cadEmail">Email</label><br>
                     <input type="text" id="cadEmail" name="email"><br>
-
                     <label for="cadSenha">Senha</label><br>
                     <input type="password" id="cadSenha" name="senha"><br>
-
                     <div class="modal-buttons">
-                        <button type="submit" onclick="return validarCadastro()">Cadastrar</button>
+                        <button type="button" onclick="submitForm('cadastro')">Cadastrar</button>
                     </div>
-
                     <p>Já tem uma conta? <a href="#" onclick="abrirLogin()">Fazer login</a></p>
-                    <?php
-                    if (isset($_SESSION['erro_cadastro'])) {
-                        echo '<p style="color: red;">' . $_SESSION['erro_cadastro'] . '</p>';
-                        unset($_SESSION['erro_cadastro']);
-                    }
-                    if (isset($_SESSION['sucesso_cadastro'])) {
-                        echo '<p style="color: green;">' . $_SESSION['sucesso_cadastro'] . '</p>';
-                        unset($_SESSION['sucesso_cadastro']);
-                    }
-                    ?>
+                    <div id="cadastroError" style="color: red;"></div>
+                    <div id="cadastroSuccess" style="color: green;"></div>
                 </form>
             </div>
         </div>
@@ -148,11 +133,43 @@ $resultadoJogoGenero = $mysqli->query(
             function abrirCadastro() {
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('cadastroModal').style.display = 'block';
+                document.getElementById('cadastroError').textContent = '';
+                document.getElementById('cadastroSuccess').textContent = '';
             }
 
             function abrirLogin() {
                 document.getElementById('cadastroModal').style.display = 'none';
                 document.getElementById('loginModal').style.display = 'block';
+                document.getElementById('loginError').textContent = '';
+            }
+
+            function submitForm(action) {
+                const form = document.getElementById(action === 'login' ? 'formLogin' : 'formCadastro');
+                const errorDiv = document.getElementById(action === 'login' ? 'loginError' : 'cadastroError');
+                const successDiv = document.getElementById('cadastroSuccess');
+
+                const formData = new FormData(form);
+
+                fetch(`../Controller/${action === 'login' ? 'LoginController.php' : 'CadastroController.php'}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = './Perfil.php';
+                    } else {
+                        errorDiv.textContent = data.message;
+                        if (action === 'cadastro' && data.success === false && data.message !== 'Este email já está cadastrado.') {
+                            successDiv.textContent = '';
+                        }
+                    }
+                })
+                .catch(error => {
+                    errorDiv.textContent = 'Erro na requisição: ' + error.message;
+                });
+
+                return false;
             }
 
             window.addEventListener('click', function(event) {
@@ -175,10 +192,9 @@ $resultadoJogoGenero = $mysqli->query(
                 <select name="genero-filtro" id="genero-filtro">
                     <option value="valve">Todos os gêneros</option>
                     <?php while ($genero = $generoJogo->fetch_assoc()): ?>
-                        <option value="<?= htmlspecialchars($genero['nome_genero']) ?>" selected><?= htmlspecialchars($genero['nome_genero']) ?></option>
+                        <option value="<?= htmlspecialchars($genero['nome_genero']) ?>"><?= htmlspecialchars($genero['nome_genero']) ?></option>
                     <?php endwhile ?>
                 </select>
-
                 <select name="desenvolvedora-filtro" id="desenvolvedora-filtro">
                     <option value="" selected>Todas as desenvolvedoras</option>
                 </select>
@@ -186,36 +202,32 @@ $resultadoJogoGenero = $mysqli->query(
 
             <div class="jogos-grid">
                 <?php while ($jogo = $resultadoJogoGenero->fetch_assoc()): ?>
-                    <a href="./detalhesJogo.php?id=<?= $jogo['id_jogo'] ?>">
+                    <a href="./detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
                         <div class="jogos">
                             <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                             <p>Desenvolvedora</p>
-                            <p><?= htmlspecialchars($jogo['nome_genero'])?></p>
-                            <p>nota</p>
+                            <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
+                            <p>Nota</p>
                         </div>
-                    <?php endwhile; ?>
-
                     </a>
+                <?php endwhile; ?>
             </div>
 
             <h2>Últimos lançamentos</h2>
             <div class="jogos-grid">
                 <?php while ($jogo = $resultadoAnoLancamento->fetch_assoc()): ?>
-                    <a href="./detalhesJogo.php?id=<?= $jogo['id_jogo'] ?>">
+                    <a href="./detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
                         <div class="jogos">
                             <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                             <p>Desenvolvedora</p>
-                            <p><?= htmlspecialchars($jogo['nome_genero'])?></p>
+                            <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
                             <p>Nota</p>
                             <p><?= htmlspecialchars($jogo['ano_lancamento_jogo']) ?></p>
-
                         </div>
-
-                    <?php endwhile; ?>
-
                     </a>
+                <?php endwhile; ?>
             </div>
 
             <h2>TOP 5 DO MÊS</h2>
@@ -280,12 +292,11 @@ $resultadoJogoGenero = $mysqli->query(
             const termo = campoPesquisa.value.toLowerCase();
             const jogos = document.querySelectorAll('.jogos-grid .jogos');
 
-        jogos.forEach(jogo => {
-            const titulo = jogo.querySelector('h3')?.textContent.toLowerCase() || '';
-            jogo.parentElement.style.display = titulo.includes(termo) ? 'block' : 'none';
+            jogos.forEach(jogo => {
+                const titulo = jogo.querySelector('h3')?.textContent.toLowerCase() || '';
+                jogo.parentElement.style.display = titulo.includes(termo) ? 'block' : 'none';
             });
         });
     </script> -->
 </body>
-
 </html>

@@ -71,13 +71,15 @@ $resultadoJogoGenero = $mysqli->query(
         </nav>
 
         <div class="telas">
-            <button class="voltar" onclick="history.back()">⬅️</button>
-            <?php if (isset($_SESSION['id_usuario'])): ?>
-                <a href="./Perfil.php" class="login">Perfil</a>
-                <a href="../Controller/LogoutController.php" class="login">Sair</a>
-            <?php else: ?>
-                <button class="login" onclick="abrirModal()">Entrar</button>
+        <?php if (isset($_SESSION['id_usuario'])): ?>
+            <button class="login" onclick="window.location.href='../View/Perfil.php'">Perfil</button>
+            <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
+                <button class="login" onclick="window.location.href='../View/ADM/AdminCenter023839.php'">Sessão Adm</button>
             <?php endif; ?>
+            <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</button>
+        <?php else: ?>
+            <button class="login" onclick="abrirModal()">Entrar</button>
+        <?php endif; ?>
         </div>
 
         <div class="modal-bg" id="modalLogin">

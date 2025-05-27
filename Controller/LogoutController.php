@@ -8,6 +8,6 @@ $_SESSION = array();
 session_destroy();
 
 // Redireciona para a página inicial
-header('Location: /bitCritico/index.php');
+header('Location: ../index.php');
 exit();
 ?>

@@ -12,7 +12,7 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['status_usuario']) || $_
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bit Crítico</title>
-    <link rel="stylesheet" href="/View/estilos/adm.css">
+    <link rel="stylesheet" href="../estilos/adm.css">
     <link rel="icon" href="../assets/favicon.ico">
 </head>
 <body>
@@ -24,11 +24,11 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['status_usuario']) || $_
     </header>
 
     <div class="links-container">
-        <div class="logo"><a class="logo titulo" href="CadastroDesenvolvedora.html">Cadastro de Desenvolvedora</a></div>
-        <div class="logo"><a class="logo titulo" href="CadastroGenero.html">Cadastro de Gênero</a></div>
-        <div class="logo"><a class="logo titulo" href="cadastroJogo.html">Cadastro de Jogo</a></div>
-        <div class="logo"><a class="logo titulo" href="cadastroPlataforma.html">Cadastro de Plataforma</a></div>
-        <div class="logo"><a class="logo titulo" href="editarUsuarios.php">Gerenciar Usuários</a></div>
+        <a class="link-item" href="/View/ADM/CadastroDesenvolvedora.html">Cadastro de Desenvolvedora</a>
+        <a class="link-item" href="/View/ADM/CadastroGenero.html">Cadastro de Gênero</a>
+        <a class="link-item" href="/View/ADM/cadastroJogo.html">Cadastro de Jogo</a>
+        <a class="link-item" href="/View/ADM/cadastroPlataforma.html">Cadastro de Plataforma</a>
+        <a class="link-item" href="editarUsuarios.php">Gerenciar Usuários</a>
     </div>
 
     <footer class="rodape">

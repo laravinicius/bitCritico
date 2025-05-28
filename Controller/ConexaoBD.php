@@ -1,4 +1,6 @@
 <?php
+
+// CONEXÃO RAILWAY
 $hostName = "yamabiko.proxy.rlwy.net";
 $dataBase = "railway";
 $user = "root";

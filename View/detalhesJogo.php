@@ -132,6 +132,20 @@ $genero = $resultadoGenero->fetch_assoc();
     ">
       Clique aqui para deixar sua nota
     </button>
+    <!--POP-UP DE NOTA-->
+    <div class="telas">
+      <button class="login" onclick="abrirModal()">Clique aqui para deixar sua Review</button>
+    </div>
+
+    <div class="modal-bg" id="modalReview">
+      <div class="modal">
+        <span class="close-modal" onclick="fecharModal()">✖</span>
+        <form>
+          <label for="review">Compartilhe aqui sua experiencia</label><br>
+          <input type="text" id="review" name="review" placeholder="Escreva Aqui..."><br>
+        </form>
+      </div>
+    <!---->
   </main>
 
   <footer class="rodape">

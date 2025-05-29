@@ -56,9 +56,9 @@ function validarLogin(event) {
         return false;
     }
 
-    // Redirecionar após validação
+    /* Redirecionar após validação
     window.location.href = "./View/Perfil.html";
-    return false;
+    return false;*/
 }
 
 // Validação do cadastro
@@ -84,7 +84,53 @@ function validarCadastro(event) {
         return false;
     }
 
-    // Redirecionar após validação
+    /* Redirecionar após validação
     window.location.href = "./View/Perfil.html";
+    return false;*/
+}
+
+/*MODAL REVEIW*/
+function abrirModal() {
+    document.getElementById('modalReview').style.display = 'flex';
+    abrirLogin(); // abrir a tela de login ao abrir o modal
+}
+
+function fecharModal() {
+    document.getElementById('modalReview').style.display = 'none';
+}
+// Fechar modal clicando fora
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modalReview');
+    if (event.target === modal) {
+        fecharModal();
+    }
+});
+
+// Fechar modal com Esc
+window.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        fecharModal();
+    }
+});
+
+
+// Validação do cadastro
+function validarCadastro(event) {
+    event.preventDefault(); // Impede o envio do formulário
+
+    const usuario = document.getElementById("review").value.trim();
+
+    if (review === "") {
+        alert("Por favor, preencha todos os campos.");
+        return false;
+    }
+
+    if (!validarEmail(email)) {
+        alert("Insira um email válido.");
+        return false;
+    }
+
+    // Redirecionar após validação
+    window.location.href = "./View/detalhesJogo.php";
     return false;
 }

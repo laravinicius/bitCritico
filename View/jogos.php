@@ -13,18 +13,26 @@ $resultadoAnoLancamento = $mysqli->query(
         j.descricao_jogo,
         j.capa_jogo,
         j.trailer_jogo,
-        g.nome_genero
+        g.nome_genero,
+        d.nome_desenvolvedora
     FROM 
         Jogo j
     INNER JOIN 
         Jogo_Genero jg ON j.id_jogo = jg.id_jogo
     INNER JOIN 
         Genero g ON jg.id_genero = g.id_genero
+    LEFT JOIN 
+        Jogo_Desenvolvedora jd ON j.id_jogo = jd.id_jogo
+    LEFT JOIN 
+        Desenvolvedora d ON jd.id_desenvolvedora = d.id_desenvolvedora
     ORDER BY ano_lancamento_jogo DESC"
 );
 
 // Query para gêneros
 $generoJogo = $mysqli->query("SELECT * FROM Genero");
+
+// Query para desenvolvedoras
+$desenvolvedoraJogo = $mysqli->query("SELECT * FROM Desenvolvedora");
 
 // Query para ordem alfabética
 $resultadoJogoGenero = $mysqli->query(
@@ -35,19 +43,48 @@ $resultadoJogoGenero = $mysqli->query(
         j.descricao_jogo,
         j.capa_jogo,
         j.trailer_jogo,
-        g.nome_genero
+        g.nome_genero,
+        d.nome_desenvolvedora
     FROM 
         Jogo j
     INNER JOIN 
         Jogo_Genero jg ON j.id_jogo = jg.id_jogo
     INNER JOIN 
         Genero g ON jg.id_genero = g.id_genero
+    LEFT JOIN 
+        Jogo_Desenvolvedora jd ON j.id_jogo = jd.id_jogo
+    LEFT JOIN 
+        Desenvolvedora d ON jd.id_desenvolvedora = d.id_desenvolvedora
     ORDER BY nome_jogo ASC"
 );
+
+// querry top 5
+
+// $resultadoTop5 = $mysqli->query(
+//     "SELECT 
+//         j.id_jogo,
+//         j.nome_jogo,
+//         j.capa_jogo,
+//         g.nome_genero,
+//         d.nome_desenvolvedora
+//     FROM 
+//         Jogo j
+//     INNER JOIN 
+//         Jogo_Genero jg ON j.id_jogo = jg.id_jogo
+//     INNER JOIN 
+//         Genero g ON jg.id_genero = g.id_genero
+//     LEFT JOIN 
+//         Jogo_Desenvolvedora jd ON j.id_jogo = jd.id_jogo
+//     LEFT JOIN 
+//         Desenvolvedora d ON jd.id_desenvolvedora = d.id_desenvolvedora
+//     ORDER BY j.nota DESC
+//     LIMIT 5"
+// );
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,6 +96,7 @@ $resultadoJogoGenero = $mysqli->query(
     <script src="./scripts/cadastro.js"></script>
     <script src="./Teste.js/pesquisa.js"></script>
 </head>
+
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
@@ -71,15 +109,15 @@ $resultadoJogoGenero = $mysqli->query(
         </nav>
 
         <div class="telas">
-        <?php if (isset($_SESSION['id_usuario'])): ?>
-            <button class="login" onclick="window.location.href='../View/Perfil.php'">Perfil</button>
-            <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
-                <button class="login" onclick="window.location.href='../View/ADM/AdminCenter023839.php'">Sessão Adm</button>
+            <?php if (isset($_SESSION['id_usuario'])): ?>
+                <button class="login" onclick="window.location.href='../View/Perfil.php'">Perfil</button>
+                <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
+                    <button class="login" onclick="window.location.href='../View/ADM/AdminCenter023839.php'">Sessão Adm</button>
+                <?php endif; ?>
+                <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</button>
+            <?php else: ?>
+                <button class="login" onclick="abrirModal()">Entrar</button>
             <?php endif; ?>
-            <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</button>
-        <?php else: ?>
-            <button class="login" onclick="abrirModal()">Entrar</button>
-        <?php endif; ?>
         </div>
 
         <div class="modal-bg" id="modalLogin">
@@ -156,32 +194,32 @@ $resultadoJogoGenero = $mysqli->query(
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = './Perfil.php';
-                    } else {
-                        errorDiv.textContent = data.message;
-                        if (action === 'cadastro' && data.success === false && data.message !== 'Este email já está cadastrado.') {
-                            successDiv.textContent = '';
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = './Perfil.php';
+                        } else {
+                            errorDiv.textContent = data.message;
+                            if (action === 'cadastro' && data.success === false && data.message !== 'Este email já está cadastrado.') {
+                                successDiv.textContent = '';
+                            }
                         }
-                    }
-                })
-                .catch(error => {
-                    errorDiv.textContent = 'Erro na requisição: ' + error.message;
-                });
+                    })
+                    .catch(error => {
+                        errorDiv.textContent = 'Erro na requisição: ' + error.message;
+                    });
 
                 return false;
             }
 
-            window.addEventListener('click', function(event) {
+            window.addEventListener('click', function (event) {
                 const modal = document.getElementById('modalLogin');
                 if (event.target === modal) {
                     fecharModal();
                 }
             });
 
-            window.addEventListener('keydown', function(event) {
+            window.addEventListener('keydown', function (event) {
                 if (event.key === "Escape") {
                     fecharModal();
                 }
@@ -192,23 +230,32 @@ $resultadoJogoGenero = $mysqli->query(
         <section class="jogos game-reviews">
             <h2>De A - Z por:
                 <select name="genero-filtro" id="genero-filtro">
-                    <option value="valve">Todos os gêneros</option>
-                    <?php while ($genero = $generoJogo->fetch_assoc()): ?>
+                    <option value="">Todos os gêneros</option>
+                    <?php
+                    $generoJogo->data_seek(0); // Reset para reutilizar o resultado
+                    while ($genero = $generoJogo->fetch_assoc()): ?>
                         <option value="<?= htmlspecialchars($genero['nome_genero']) ?>"><?= htmlspecialchars($genero['nome_genero']) ?></option>
-                    <?php endwhile ?>
+                    <?php endwhile; ?>
                 </select>
                 <select name="desenvolvedora-filtro" id="desenvolvedora-filtro">
-                    <option value="" selected>Todas as desenvolvedoras</option>
+                    <option value="">Todas as desenvolvedoras</option>
+                    <?php
+                    $desenvolvedoraJogo->data_seek(0); // Reset para reutilizar o resultado
+                    while ($desenvolvedora = $desenvolvedoraJogo->fetch_assoc()): ?>
+                        <option value="<?= htmlspecialchars($desenvolvedora['nome_desenvolvedora']) ?>"><?= htmlspecialchars($desenvolvedora['nome_desenvolvedora']) ?></option>
+                    <?php endwhile; ?>
                 </select>
             </h2>
 
             <div class="jogos-grid">
-                <?php while ($jogo = $resultadoJogoGenero->fetch_assoc()): ?>
+                <?php
+                $resultadoJogoGenero->data_seek(0); // Reset para reutilizar o resultado
+                while ($jogo = $resultadoJogoGenero->fetch_assoc()): ?>
                     <a href="./detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
-                        <div class="jogos">
+                        <div class="jogos" data-genero="<?= htmlspecialchars($jogo['nome_genero']) ?>" data-dev="<?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?>">
                             <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
-                            <p>Desenvolvedora</p>
+                            <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
                             <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
                             <p>Nota</p>
                         </div>
@@ -218,12 +265,14 @@ $resultadoJogoGenero = $mysqli->query(
 
             <h2>Últimos lançamentos</h2>
             <div class="jogos-grid">
-                <?php while ($jogo = $resultadoAnoLancamento->fetch_assoc()): ?>
+                <?php
+                $resultadoAnoLancamento->data_seek(0); // Reset para reutilizar o resultado
+                while ($jogo = $resultadoAnoLancamento->fetch_assoc()): ?>
                     <a href="./detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
-                        <div class="jogos">
+                        <div class="jogos" data-genero="<?= htmlspecialchars($jogo['nome_genero']) ?>" data-dev="<?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?>">
                             <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
-                            <p>Desenvolvedora</p>
+                            <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
                             <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
                             <p>Nota</p>
                             <p><?= htmlspecialchars($jogo['ano_lancamento_jogo']) ?></p>
@@ -232,16 +281,19 @@ $resultadoJogoGenero = $mysqli->query(
                 <?php endwhile; ?>
             </div>
 
-            <h2>TOP 5 DO MÊS</h2>
+            <!-- <h2>TOP 5 DO MÊS</h2>
             <div class="jogos-grid">
-                <a href="./detalhesJogo.php">
-                    <div class="jogos" data-genero="acao" data-dev="rockstar">
-                        <img src="jogos1.jpg" alt="jogos 1">
-                        <h3>Nome do jogo 1</h3>
-                        <p>Rockstar/Ação</p>
-                    </div>
-                </a>
-            </div>
+                <?php while ($jogo = $resultadoTop5->fetch_assoc()): ?>
+                    <a href="./detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
+                        <div class="jogos" data-genero="<?= htmlspecialchars($jogo['nome_genero']) ?>" data-dev="<?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? '') ?>">
+                            <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
+                            <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
+                            <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
+                            <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
+                        </div>
+                    </a>
+                <?php endwhile; ?>
+            </div> -->
         </section>
     </main>
 
@@ -264,41 +316,41 @@ $resultadoJogoGenero = $mysqli->query(
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
     </footer>
-
-    <!-- <script>
+    <script>
         const generoFiltro = document.getElementById('genero-filtro');
         const devFiltro = document.getElementById('desenvolvedora-filtro');
-        const jogos = document.querySelectorAll('.jogos-grid .jogos');
+        const campoPesquisa = document.getElementById('pesquisa-jogo');
+        const jogosGrids = document.querySelectorAll('.jogos-grid');
 
         function filtrarJogos() {
-            const generoSelecionado = generoFiltro.value.toLowerCase();
-            const devSelecionada = devFiltro.value.toLowerCase();
+            const generoSelecionado = generoFiltro.value.toLowerCase().trim();
+            const devSelecionada = devFiltro.value.toLowerCase().trim();
+            const termoPesquisa = campoPesquisa.value.toLowerCase().trim();
 
-            jogos.forEach(jogo => {
-                const genero = jogo.dataset.genero?.toLowerCase() || "";
-                const dev = jogo.dataset.dev?.toLowerCase() || "";
+            jogosGrids.forEach(grid => {
+                const jogos = grid.querySelectorAll('.jogos');
+                jogos.forEach(jogo => {
+                    const genero = (jogo.dataset.genero || '').toLowerCase().trim();
+                    const dev = (jogo.dataset.dev || '').toLowerCase().trim();
+                    const titulo = (jogo.querySelector('h3')?.textContent || '').toLowerCase().trim();
 
-                const generoMatch = !generoSelecionado || genero === generoSelecionado;
-                const devMatch = !devSelecionada || dev === devSelecionada;
+                    const generoMatch = generoSelecionado === '' || genero === generoSelecionado;
+                    const devMatch = devSelecionada === '' || dev === devSelecionada || dev === 'desconhecida';
+                    const pesquisaMatch = termoPesquisa === '' || titulo.includes(termoPesquisa);
 
-                jogo.parentElement.style.display = (generoMatch && devMatch) ? 'block' : 'none';
+                    jogo.parentElement.style.display = (generoMatch && devMatch && pesquisaMatch) ? 'block' : 'none';
+                });
             });
         }
 
         generoFiltro.addEventListener('change', filtrarJogos);
         devFiltro.addEventListener('change', filtrarJogos);
+        campoPesquisa.addEventListener('input', filtrarJogos);
 
-        const campoPesquisa = document.getElementById('pesquisa-jogo');
+        // Executar o filtro inicialmente para garantir o estado correto
+        filtrarJogos();
+    </script>
 
-        campoPesquisa.addEventListener('input', () => {
-            const termo = campoPesquisa.value.toLowerCase();
-            const jogos = document.querySelectorAll('.jogos-grid .jogos');
-
-            jogos.forEach(jogo => {
-                const titulo = jogo.querySelector('h3')?.textContent.toLowerCase() || '';
-                jogo.parentElement.style.display = titulo.includes(termo) ? 'block' : 'none';
-            });
-        });
-    </script> -->
 </body>
+
 </html>

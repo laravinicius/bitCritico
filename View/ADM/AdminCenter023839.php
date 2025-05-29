@@ -24,10 +24,10 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['status_usuario']) || $_
     </header>
 
     <div class="links-container">
-        <a class="link-item" href="/View/ADM/CadastroDesenvolvedora.html">Cadastro de Desenvolvedora</a>
-        <a class="link-item" href="/View/ADM/CadastroGenero.html">Cadastro de Gênero</a>
-        <a class="link-item" href="/View/ADM/cadastroJogo.html">Cadastro de Jogo</a>
-        <a class="link-item" href="/View/ADM/cadastroPlataforma.html">Cadastro de Plataforma</a>
+        <a class="link-item" href="CadastroDesenvolvedora.php">Cadastro de Desenvolvedora</a>
+        <a class="link-item" href="CadastroGenero.php">Cadastro de Gênero</a>
+        <a class="link-item" href="CadastroJogo.php">Cadastro de Jogo</a>
+        <a class="link-item" href="CadastroPlataforma.php">Cadastro de Plataforma</a>
         <a class="link-item" href="editarUsuarios.php">Gerenciar Usuários</a>
     </div>
 

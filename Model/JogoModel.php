@@ -15,7 +15,7 @@ class Jogo {
     public function getIdJogo() { return $this->id_jogo; }
     public function setNomeJogo($nome) { $this->nome_jogo = $nome; }
     public function getNomeJogo() { return $this->nome_jogo; }
-    public function setAnoLancamentoJogo($nome) { $this->ano_lancamento_jogo = $nome; }
+    public function setAnoLancamentoJogo($ano) { $this->ano_lancamento_jogo = $ano; }
     public function getAnoLancamentoJogo() { return $this->ano_lancamento_jogo; }
     public function setDescricaoJogo($descricao) { $this->descricao_jogo = $descricao; }
     public function getDescricaoJogo() { return $this->descricao_jogo; }

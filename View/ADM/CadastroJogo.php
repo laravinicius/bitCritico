@@ -59,13 +59,10 @@ $mysqli->close();
         <nav>
             <a class="teste" href="AdminCenter023839.php">Voltar</a>
         </nav>
-<<<<<<< HEAD
-=======
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
             <a href="/../index.php" class="login">Login</a>
         </div>
->>>>>>> 34fd4a02d5b36569d3cf89bed905a5991f663fdf
     </header>
 
     <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
@@ -84,9 +81,9 @@ $mysqli->close();
                 <input type="text" id="nome_jogo" name="nome_jogo" style="width: 100%; padding: 10px;" required>
             </div>
 
-             <div class="form-group">
-                <label for="nome_jogo">Ano de Lançamento do Jogo</label><br>
-                <input type="text" id="ano_lancamento_jogo" name="ano_lancamento_jogo" style="width: 100%; padding: 10px;" required>
+            <div class="form-group">
+                <label for="ano_lancamento_jogo">Ano de Lançamento do Jogo</label><br>
+                <input type="number" id="ano_lancamento_jogo" name="ano_lancamento_jogo" style="width: 100%; padding: 10px;" required>
             </div>
 
             <div class="form-group">
@@ -143,15 +140,11 @@ $mysqli->close();
     </main>
 
     <footer class="rodape">
-<<<<<<< HEAD
-        <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Edu.</p>
-=======
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
         <div class="midiaSocial">
             <a href="/../index.php">Bit Crítico</a>
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
->>>>>>> 34fd4a02d5b36569d3cf89bed905a5991f663fdf
     </footer>
 
     <script>

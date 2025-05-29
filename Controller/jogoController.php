@@ -25,13 +25,15 @@ class JogoController {
             exit();
         }
 
-        if (!isset($_POST['nome_jogo']) || !isset($_POST['descricao_jogo']) || !isset($_POST['genero_jogo']) ||
-            !isset($_POST['desenvolvedora_jogo']) || !isset($_POST['plataforma_jogo']) || !isset($_FILES['capa_jogo'])) {
+        // Verificar se todos os campos necessários foram enviados
+        if (!isset($_POST['nome_jogo']) || !isset($_POST['ano_lancamento_jogo']) || !isset($_POST['descricao_jogo']) ||
+            !isset($_FILES['capa_jogo']) || !isset($_POST['genero_jogo']) || !isset($_POST['desenvolvedora_jogo']) || !isset($_POST['plataforma_jogo'])) {
             header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Todos os campos são obrigatórios'));
             exit();
         }
 
         $this->jogo->setNomeJogo($_POST['nome_jogo']);
+        $this->jogo->setAnoLancamentoJogo($_POST['ano_lancamento_jogo']);
         $this->jogo->setDescricaoJogo($_POST['descricao_jogo']);
 
         $capa_jogo = $_FILES['capa_jogo'];
@@ -43,7 +45,7 @@ class JogoController {
             $this->jogo->setCapaJogo($capa_nome);
 
             // Inserir na tabela Jogo
-            $stmt = $this->conn->prepare("INSERT INTO Jogo (nome_jogo, ano_lancamento_jogo descricao_jogo, capa_jogo) VALUES (?, ?, ?)");
+            $stmt = $this->conn->prepare("INSERT INTO Jogo (nome_jogo, ano_lancamento_jogo, descricao_jogo, capa_jogo) VALUES (?, ?, ?, ?)");
             if (!$stmt) {
                 unlink($capa_destino);
                 header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error));
@@ -51,10 +53,10 @@ class JogoController {
             }
 
             $nomeJogo = $this->jogo->getNomeJogo();
-            $ano_lancamento_jogo = $this ->jogo->getAnoLancamentoJogo();
+            $anoLancamento = (int)$_POST['ano_lancamento_jogo'];
             $descricaoJogo = $this->jogo->getDescricaoJogo();
             $capaJogo = $this->jogo->getCapaJogo();
-            $stmt->bind_param("sss", $nomeJogo, $ano_lancamento_jogo, $descricaoJogo, $capaJogo);
+            $stmt->bind_param("siss", $nomeJogo, $anoLancamento, $descricaoJogo, $capaJogo);
 
             if ($stmt->execute()) {
                 $id_jogo = $this->conn->insert_id;
@@ -65,7 +67,7 @@ class JogoController {
                     $this->rollback($id_jogo, $capa_destino);
                     exit();
                 }
-                $idGenero = $_POST['genero_jogo'];
+                $idGenero = (int)$_POST['genero_jogo'];
                 $stmt_genero->bind_param("ii", $id_jogo, $idGenero);
                 $stmt_genero->execute();
                 $stmt_genero->close();
@@ -76,7 +78,7 @@ class JogoController {
                     $this->rollback($id_jogo, $capa_destino);
                     exit();
                 }
-                $idDesenvolvedora = $_POST['desenvolvedora_jogo'];
+                $idDesenvolvedora = (int)$_POST['desenvolvedora_jogo'];
                 $stmt_desenvolvedora->bind_param("ii", $id_jogo, $idDesenvolvedora);
                 $stmt_desenvolvedora->execute();
                 $stmt_desenvolvedora->close();
@@ -87,7 +89,7 @@ class JogoController {
                     $this->rollback($id_jogo, $capa_destino);
                     exit();
                 }
-                $idPlataforma = $_POST['plataforma_jogo'];
+                $idPlataforma = (int)$_POST['plataforma_jogo'];
                 $stmt_plataforma->bind_param("ii", $id_jogo, $idPlataforma);
                 $stmt_plataforma->execute();
                 $stmt_plataforma->close();
@@ -105,7 +107,6 @@ class JogoController {
     }
 
     private function rollback($id_jogo, $capa_destino) {
-        // Remover o jogo e a imagem em caso de erro
         $this->conn->query("DELETE FROM Jogo WHERE id_jogo = $id_jogo");
         unlink($capa_destino);
         header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao associar relacionamentos: ' . $this->conn->error));

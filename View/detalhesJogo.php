@@ -39,7 +39,6 @@ $genero = $resultadoGenero->fetch_assoc();
     </nav>
 
     <div class="telas">
-      <button class="voltar" onclick="history.back()">⬅️</button>
       <button class="login" onclick="abrirModal()">Entrar</button>
     </div>
 

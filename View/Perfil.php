@@ -94,7 +94,7 @@ $mysqli->close();
                     <?php if ($user['foto_perfil_usuario']) {
                         echo '<img src="' . htmlspecialchars($user['foto_perfil_usuario']) . '" alt="Foto de Perfil" style="max-width: 200px;">';
                     } else {
-                        echo '<p>Nenhuma foto cadastrada.</p>';
+                        echo '<p></p>';
                     } ?>
                 </div>
             </div>

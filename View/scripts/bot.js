@@ -15,28 +15,36 @@ function responderPergunta(pergunta) {
     // Mapeamento de padrões (usando RegEx) para respostas
     const respostas = [
         {
-            padrao: /(^|\s)(oi|ola|bom dia|oii|oiii)(\s|$)/,
+            padrao: /(^|\s)(oi|ola|bom dia|oii|oiii|oie|oie|oiiee|ooie|ooiiee|sim|simm|ssiimm)(\s|$)/,
             resposta: "Bom dia! Posso te ajudar com algo hoje?"
         },
         {
-            padrao: /(^|\s)(sim|pode|claro|yes|depende)(\s|$)/,
+            padrao: /(^|\s)(nao|não|nnaaoo|naaooo|hoje nao|a principio nao)(\s|$)/,
+            resposta: "Certo se precisar só chamar!"
+        },
+        {
+            padrao: /(^|\s)(sim|pode|claro|yes|depende|por favor|certamente)(\s|$)/,
             resposta: "Que tal, melhor jogo de ação ou melhor jogo de aventura?"
         },
         {
-            padrao: /melhor jogo de acao/,
-            resposta: "Um dos melhores jogos de ação é God of War."
+            padrao: /(^|\s)(melhor jogo de acao)(\s|$)/,
+            resposta: "Um dos melhores jogos de ação é God of War, Procure por ele e veja as melhores Reviews :D"
         },
         {
-            padrao: /melhor jogo de aventura/,
+            padrao: /(^|\s)(melhor jogo de aventura)(\s|$)/,
             resposta: "The Legend of Zelda: Breath of the Wild é altamente recomendado!"
         },
         {
-            padrao: /(jogo mais popular|jogo famoso)/,
+            padrao: /(^|\s)(jogo mais popular|jogo famoso)(\s|$)/,
             resposta: "Atualmente, jogos como Fortnite e GTA V estão entre os mais populares."
         },
         {
-            padrao: /seu jogo favorito/,
+            padrao: /(^|\s)(seu jogo favorito)(\s|$)/,
             resposta: "Não tenho favoritos, mas adoro ajudar com reviews!"
+        },
+        {
+            padrao: /(^|\s)(jogo mais jogado|jogo com mais players| jogo com mais pessoas)(\s|$)/,
+            resposta: "Atualmente, em 2025, o jogo mais jogado do mundo é o Minecraft, com mais de 200 milhões de jogadores ativos mensais."
         }
     ];
 

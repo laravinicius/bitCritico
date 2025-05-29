@@ -23,14 +23,10 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 </head>
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="/../index.php">Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="/../index.php">Admin Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="../jogos.php">Jogos A-Z</a>
+            <a class="teste" href="AdminCenter023839.php">Voltar</a>
         </nav>
-        <div class="telas">
-            <button class="voltar" onclick="history.back()">⬅️</button>
-            <button class="login">Login</button>
-        </div>
     </header>
 
     <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
@@ -54,10 +50,6 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 
     <footer class="rodape">
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Edu.</p>
-        <div class="midiaSocial">
-            <a href="/../index.php">Bit Crítico</a>
-            <a href="#">Instagram</a>
-        </div>
     </footer>
 </body>
 </html>

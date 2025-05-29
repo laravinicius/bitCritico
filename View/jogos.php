@@ -60,26 +60,32 @@ $resultadoJogoGenero = $mysqli->query(
 
 // querry top 5
 
-// $resultadoTop5 = $mysqli->query(
-//     "SELECT 
-//         j.id_jogo,
-//         j.nome_jogo,
-//         j.capa_jogo,
-//         g.nome_genero,
-//         d.nome_desenvolvedora
-//     FROM 
-//         Jogo j
-//     INNER JOIN 
-//         Jogo_Genero jg ON j.id_jogo = jg.id_jogo
-//     INNER JOIN 
-//         Genero g ON jg.id_genero = g.id_genero
-//     LEFT JOIN 
-//         Jogo_Desenvolvedora jd ON j.id_jogo = jd.id_jogo
-//     LEFT JOIN 
-//         Desenvolvedora d ON jd.id_desenvolvedora = d.id_desenvolvedora
-//     ORDER BY j.nota DESC
-//     LIMIT 5"
-// );
+$resultadoTop5 = $mysqli->query(
+    "SELECT 
+        j.id_jogo,
+        j.nome_jogo,
+        j.capa_jogo,
+        g.nome_genero,
+        d.nome_desenvolvedora,
+        COALESCE(AVG(r.nota_review), 0) as media_nota
+    FROM 
+        Jogo j
+    INNER JOIN 
+        Jogo_Genero jg ON j.id_jogo = jg.id_jogo
+    INNER JOIN 
+        Genero g ON jg.id_genero = g.id_genero
+    LEFT JOIN 
+        Jogo_Desenvolvedora jd ON j.id_jogo = jd.id_jogo
+    LEFT JOIN 
+        Desenvolvedora d ON jd.id_desenvolvedora = d.id_desenvolvedora
+    LEFT JOIN 
+        Review r ON j.id_jogo = r.id_jogo
+    GROUP BY 
+        j.id_jogo, j.nome_jogo, j.capa_jogo, g.nome_genero, d.nome_desenvolvedora
+    ORDER BY 
+        media_nota DESC
+    LIMIT 5"
+);
 ?>
 
 <!DOCTYPE html>
@@ -274,14 +280,13 @@ $resultadoJogoGenero = $mysqli->query(
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                             <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
                             <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
-                            <p>Nota</p>
                             <p><?= htmlspecialchars($jogo['ano_lancamento_jogo']) ?></p>
                         </div>
                     </a>
                 <?php endwhile; ?>
             </div>
 
-            <!-- <h2>TOP 5 DO MÊS</h2>
+            <h2>TOP 5 DO MÊS</h2>
             <div class="jogos-grid">
                 <?php while ($jogo = $resultadoTop5->fetch_assoc()): ?>
                     <a href="./detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
@@ -290,10 +295,11 @@ $resultadoJogoGenero = $mysqli->query(
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                             <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
                             <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
+                            <p><?= htmlspecialchars($jogo['media_nota'])?></p>
                         </div>
                     </a>
                 <?php endwhile; ?>
-            </div> -->
+            </div>
         </section>
     </main>
 

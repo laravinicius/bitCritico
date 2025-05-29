@@ -90,43 +90,38 @@ function validarCadastro(event) {
 }
 
 /*MODAL REVEIW*/
-function abrirModal() {
+function abrirModall() {
     document.getElementById('modalReview').style.display = 'flex';
-    abrirLogin(); // abrir a tela de login ao abrir o modal
+    abrirReview(); // abrir a tela de login ao abrir o modal
 }
 
-function fecharModal() {
+function fecharModall() {
     document.getElementById('modalReview').style.display = 'none';
 }
 // Fechar modal clicando fora
 window.addEventListener('click', function(event) {
-    const modal = document.getElementById('modalReview');
-    if (event.target === modal) {
-        fecharModal();
+    const modall = document.getElementById('modalReview');
+    if (event.target === modall) {
+        fecharModall();
     }
 });
 
 // Fechar modal com Esc
 window.addEventListener('keydown', function(event) {
     if (event.key === "Escape") {
-        fecharModal();
+        fecharModall();
     }
 });
 
 
 // Validação do cadastro
-function validarCadastro(event) {
+function validarReview(event) {
     event.preventDefault(); // Impede o envio do formulário
 
-    const usuario = document.getElementById("review").value.trim();
+    const review = document.getElementById("review").value.trim();
 
     if (review === "") {
         alert("Por favor, preencha todos os campos.");
-        return false;
-    }
-
-    if (!validarEmail(email)) {
-        alert("Insira um email válido.");
         return false;
     }
 

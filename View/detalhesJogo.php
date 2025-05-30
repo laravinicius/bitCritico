@@ -32,9 +32,9 @@ $genero = $resultadoGenero->fetch_assoc();
 
 <body>
   <header>
-        <div class="logo"><a class="logo titulo" href="index.php">Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="./View/jogos.php">Jogos A-Z</a>
+            <a class="teste" href="./jogos.php">Jogos A-Z</a>
         </nav>
 
         <div class="telas">

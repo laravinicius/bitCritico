@@ -4,11 +4,38 @@ session_start();
 // Inclui a conexão com o banco e trata possíveis erros
 include('./Controller/ConexaoBD.php');
 $resultado = null;
+$resultadoTop3 = null; // Inicializa a variável para o Top 3
+
 if ($mysqli && $mysqli instanceof mysqli) {
-    $resultado = $mysqli->query("SELECT * FROM Jogo");
+    // Consulta para os últimos jogos cadastrados
+    $resultado = $mysqli->query("SELECT * FROM Jogo ORDER BY id_jogo DESC");
     if (!$resultado) {
-        error_log("Erro na consulta ao banco: " . $mysqli->error);
+        error_log("Erro na consulta ao banco (últimos jogos): " . $mysqli->error);
     }
+
+    // Consulta para o TOP 3 jogos mais bem avaliados
+    $queryTop3 = "
+        SELECT
+            J.id_jogo,
+            J.nome_jogo,
+            J.capa_jogo,
+            AVG(R.nota_review) AS media_notas
+        FROM
+            Jogo AS J
+        JOIN
+            Review AS R ON J.id_jogo = R.id_jogo
+        GROUP BY
+            J.id_jogo,
+            J.nome_jogo,
+            J.capa_jogo
+        ORDER BY
+            media_notas DESC
+        LIMIT 3";
+    $resultadoTop3 = $mysqli->query($queryTop3);
+    if (!$resultadoTop3) {
+        error_log("Erro na consulta ao banco (TOP 3): " . $mysqli->error);
+    }
+
 } else {
     error_log("Falha na conexão com o banco.");
 }
@@ -46,7 +73,6 @@ if ($mysqli && $mysqli instanceof mysqli) {
         </div>
 
         <div class="modal-bg" id="modalLogin">
-            <!-- Modal de Login -->
             <div class="modal" id="loginModal">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
                 <form id="formLogin" method="POST">
@@ -64,10 +90,9 @@ if ($mysqli && $mysqli instanceof mysqli) {
                 </form>
             </div>
 
-            <!-- Modal de Cadastro -->
             <div class="modal" id="cadastroModal" style="display: none;">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
-feeds                <form id="formCadastro" method="POST">
+                <form id="formCadastro" method="POST">
                     <input type="hidden" name="action" value="cadastro">
                     <h2>Cadastro</h2>
                     <label for="cadUsuario">Nome de Usuário</label><br>
@@ -159,7 +184,7 @@ feeds                <form id="formCadastro" method="POST">
         </section>
 
         <section class="game-reviews">
-            <h2>Últimos Reviews</h2>
+            <h2>Últimos Jogos Cadastrados</h2>
             <div class="review-grid">
                 <?php if ($resultado && $resultado->num_rows > 0): ?>
                     <?php while ($jogo = $resultado->fetch_assoc()): ?>
@@ -176,24 +201,19 @@ feeds                <form id="formCadastro" method="POST">
             </div>
             <h2>TOP 3 Reviews</h2>
             <div class="review-grid">
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
-                <a href="./View/detalhesJogo.php">
-                    <div class="game">
-                        <img src="img/jogo-exemplo.jpg" alt="Jogo Exemplo">
-                        <h3>Jogo Exemplo</h3>
-                    </div>
-                </a>
+                <?php if ($resultadoTop3 && $resultadoTop3->num_rows > 0): ?>
+                    <?php while ($jogo = $resultadoTop3->fetch_assoc()): ?>
+                        <a href="./View/detalhesJogo.php?id=<?= htmlspecialchars($jogo['id_jogo']) ?>">
+                            <div class="game">
+                                <img src="./View/images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
+                                <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
+                                <p style="color: var(--cor-primaria); font-weight: bold;">Nota: <?= htmlspecialchars(number_format($jogo['media_notas'], 1)) ?></p>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>Nenhuma review encontrada para gerar o TOP 3.</p>
+                <?php endif; ?>
             </div>
         </section>
     </main>

@@ -127,7 +127,6 @@ $resultadoTop5 = $mysqli->query(
         </div>
 
         <div class="modal-bg" id="modalLogin">
-            <!-- Modal de Login -->
             <div class="modal" id="loginModal">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
                 <form id="formLogin" method="POST">
@@ -145,7 +144,6 @@ $resultadoTop5 = $mysqli->query(
                 </form>
             </div>
 
-            <!-- Modal de Cadastro -->
             <div class="modal" id="cadastroModal" style="display: none;">
                 <span class="close-modal" onclick="fecharModal()">✖</span>
                 <form id="formCadastro" method="POST">
@@ -295,7 +293,7 @@ $resultadoTop5 = $mysqli->query(
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                             <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
                             <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
-                            <p><?= htmlspecialchars($jogo['media_nota'])?></p>
+                            <p>Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p>
                         </div>
                     </a>
                 <?php endwhile; ?>

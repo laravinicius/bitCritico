@@ -3,7 +3,7 @@ session_start();
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['id_usuario'])) {
-    header('Location: ../index.php');
+    header('Location: /bitCritico/index.php');
     exit();
 }
 
@@ -78,7 +78,7 @@ $mysqli->close();
         </nav>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</a>
+            <a href="../Controller/LogoutController.php">Sair</a>
         </div>
     </header>
 
@@ -94,7 +94,7 @@ $mysqli->close();
                     <?php if ($user['foto_perfil_usuario']) {
                         echo '<img src="' . htmlspecialchars($user['foto_perfil_usuario']) . '" alt="Foto de Perfil" style="max-width: 200px;">';
                     } else {
-                        echo '<p></p>';
+                        echo '<p>Nenhuma foto cadastrada.</p>';
                     } ?>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 <?php
+// Verifica mensagens de erro ou sucesso na URL
 $msg = isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : '';
 $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 ?>
@@ -22,23 +23,21 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 </head>
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="/../index.php">Admin Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="/../index.php">Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="AdminCenter023839.php">Voltar</a>
+            <a class="teste" href="../jogos.php">Jogos A-Z</a>
         </nav>
-<<<<<<< HEAD
-=======
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <a href="/../index.php" class="login">Login</a>
+            <button class="login">Login</button>
         </div>
->>>>>>> 34fd4a02d5b36569d3cf89bed905a5991f663fdf
     </header>
 
     <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
-        <form action="/BitCritico/Controller/DesenvolvedoraController.php?action=create" method="POST" style="border: 1px solid #ccc; padding: 30px; border-radius: 8px; background-color: #1f1f1f; color: var(--cor-texto);">
+        <form action="../Controller/DesenvolvedoraController.php?action=create" method="POST" style="border: 1px solid #ccc; padding: 30px; border-radius: 8px; background-color: #1f1f1f; color: var(--cor-texto);">
             <h2 style="margin-bottom: 20px;">Cadastro de Desenvolvedora</h2>
             
+            <!-- Exibe mensagens de sucesso ou erro -->
             <?php if ($msg): ?>
                 <div class="mensagem sucesso"><?php echo $msg; ?></div>
             <?php endif; ?>
@@ -54,15 +53,11 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
     </main>
 
     <footer class="rodape">
-<<<<<<< HEAD
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Edu.</p>
-=======
-        <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
         <div class="midiaSocial">
             <a href="/../index.php">Bit Crítico</a>
-            <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
+            <a href="#">Instagram</a>
         </div>
->>>>>>> 34fd4a02d5b36569d3cf89bed905a5991f663fdf
     </footer>
 </body>
 </html>

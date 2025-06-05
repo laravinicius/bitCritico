@@ -32,129 +32,60 @@ $genero = $resultadoGenero->fetch_assoc();
 
 <body>
   <header>
-        <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
-        <nav>
-            <a class="teste" href="./jogos.php">Jogos A-Z</a>
-        </nav>
+    <!--Inicio das Telas de Cadastro e Login-->
+    <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
+    <nav>
+      <a class="teste" href="./View/jogos.php">Jogos A-Z</a>
+    </nav>
 
-        <div class="telas">
-        <?php if (isset($_SESSION['id_usuario'])): ?>
-            <button class="login" onclick="window.location.href='./View/Perfil.php'">Perfil</button>
-            <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
-                <button class="login" onclick="window.location.href='./View/ADM/AdminCenter023839.php'">Sessão Adm</button>
-            <?php endif; ?>
-            <button class="login" onclick="window.location.href='./Controller/LogoutController.php'">Sair</button>
-        <?php else: ?>
-            <button class="login" onclick="abrirModal()">Entrar</button>
-        <?php endif; ?>
-        </div>
+    <div class="telas">
+      <button class="voltar" onclick="history.back()">⬅️</button>
+      <button class="login" onclick="abrirModal()">Entrar</button>
+    </div>
 
-        <div class="modal-bg" id="modalLogin">
-            <!-- Modal de Login -->
-            <div class="modal" id="loginModal">
-                <span class="close-modal" onclick="fecharModal()">✖</span>
-                <form id="formLogin" method="POST">
-                    <input type="hidden" name="action" value="login">
-                    <h2>Login</h2>
-                    <label for="loginUsuario">Email ou Usuário</label><br>
-                    <input type="text" id="loginUsuario" name="usuario"><br>
-                    <label for="loginSenha">Senha</label><br>
-                    <input type="password" id="loginSenha" name="senha"><br>
-                    <div class="modal-buttons">
-                        <button type="button" onclick="submitForm('login')">Login</button>
-                    </div>
-                    <p>Não tem uma conta? <a href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
-                    <div id="loginError" style="color: red;"></div>
-                </form>
-            </div>
+    <div class="modal-bg" id="modalLogin">
+      <div class="modal">
+        <span class="close-modal" onclick="fecharModal()">✖</span>
+        <form>
+          <h2>Login</h2>
 
-            <!-- Modal de Cadastro -->
-            <div class="modal" id="cadastroModal" style="display: none;">
-                <span class="close-modal" onclick="fecharModal()">✖</span>
-feeds                <form id="formCadastro" method="POST">
-                    <input type="hidden" name="action" value="cadastro">
-                    <h2>Cadastro</h2>
-                    <label for="cadUsuario">Nome de Usuário</label><br>
-                    <input type="text" id="cadUsuario" name="usuario"><br>
-                    <label for="cadEmail">Email</label><br>
-                    <input type="text" id="cadEmail" name="email"><br>
-                    <label for="cadSenha">Senha</label><br>
-                    <input type="password" id="cadSenha" name="senha"><br>
-                    <div class="modal-buttons">
-                        <button type="button" onclick="submitForm('cadastro')">Cadastrar</button>
-                    </div>
-                    <p>Já tem uma conta? <a href="#" onclick="abrirLogin()">Fazer login</a></p>
-                    <div id="cadastroError" style="color: red;"></div>
-                    <div id="cadastroSuccess" style="color: green;"></div>
-                </form>
-            </div>
-        </div>
+          <label for="usuario">Email ou Usuário</label><br>
+          <input type="text" id="usuario" name="usuario"><br>
 
-        <script>
-            function abrirModal() {
-                document.getElementById('modalLogin').style.display = 'flex';
-            }
+          <label for="senha">Senha</label><br>
+          <input type="password" id="senha" name="senha"><br>
 
-            function fecharModal() {
-                document.getElementById('modalLogin').style.display = 'none';
-            }
+          <div class="modal-buttons">
+            <button type="submit"><a href="./Perfil.html">Login</a></button>
+          </div>
+        </form>
+      </div>
 
-            function abrirCadastro() {
-                document.getElementById('loginModal').style.display = 'none';
-                document.getElementById('cadastroModal').style.display = 'block';
-                document.getElementById('cadastroError').textContent = '';
-                document.getElementById('cadastroSuccess').textContent = '';
-            }
+      <div class="modal">
+        <span class="close-modal" onclick="fecharModal()">✖</span>
+        <form>
+          <h2>Cadastro</h2>
 
-            function abrirLogin() {
-                document.getElementById('cadastroModal').style.display = 'none';
-                document.getElementById('loginModal').style.display = 'block';
-                document.getElementById('loginError').textContent = '';
-            }
+          <label for="usuario">Nome de Usuário</label><br>
+          <input type="text" id="usuario" name="usuario"><br>
 
-            function submitForm(action) {
-                const form = document.getElementById(action === 'login' ? 'formLogin' : 'formCadastro');
-                const errorDiv = document.getElementById(action === 'login' ? 'loginError' : 'cadastroError');
-                const successDiv = document.getElementById('cadastroSuccess');
+          <label for="usuario">Email</label><br>
+          <input type="text" id="usuario" name="usuario"><br>
 
-                const formData = new FormData(form);
+          <label for="senha">Senha</label><br>
+          <input type="password" id="senha" name="senha"><br>
 
-                fetch(`./Controller/${action === 'login' ? 'LoginController.php' : 'CadastroController.php'}`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = './View/Perfil.php';
-                    } else {
-                        errorDiv.textContent = data.message;
-                        if (action === 'cadastro' && data.success === false && data.message !== 'Este email já está cadastrado.') {
-                            successDiv.textContent = '';
-                        }
-                    }
-                })
-                .catch(error => {
-                    errorDiv.textContent = 'Erro na requisição: ' + error.message;
-                });
+          <div class="modal-buttons">
+            <button type="button"><a href="./Perfil.html">Cadastrar</a></button>
+          </div>
+        </form>
 
-                return false;
-            }
+      </div>
+    </div>
 
-            window.addEventListener('click', function(event) {
-                const modal = document.getElementById('modalLogin');
-                if (event.target === modal) {
-                    fecharModal();
-                }
-            });
 
-            window.addEventListener('keydown', function(event) {
-                if (event.key === "Escape") {
-                    fecharModal();
-                }
-            });
-        </script>
-    </header>
+    <!--Fim da Parte de Cadastro-->
+  </header>
 
   <main class="form-box perfil">
     <a href="../index.php" style="color: var(--cor-primaria); text-decoration: none;">&larr; Voltar</a>
@@ -202,8 +133,6 @@ feeds                <form id="formCadastro" method="POST">
     ">
       Clique aqui para deixar sua nota
     </button>
-    <!--POP-UP DE NOTA-->
-    <!---->
   </main>
 
   <footer class="rodape">

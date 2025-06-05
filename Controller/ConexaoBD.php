@@ -1,11 +1,9 @@
 <?php
-
-// CONEXÃO RAILWAY
-$hostName = "shuttle.proxy.rlwy.net";
+$hostName = "yamabiko.proxy.rlwy.net";
 $dataBase = "railway";
 $user = "root";
-$password = "zqcxPkSWkISohwgNawPAcEMISOnVzEKI";
-$port = 42238;
+$password = "aVkdQNjtiUHbixjgTThXzblQUSIKKnmh";
+$port = 16099;
 
 $mysqli = new mysqli($hostName, $user, $password, $dataBase, $port);
 

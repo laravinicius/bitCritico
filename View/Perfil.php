@@ -7,7 +7,7 @@ if (!isset($_SESSION['id_usuario'])) {
     exit();
 }
 
-// Corrigido: carrega e recebe a conexão do banco
+// Carrega a conexão do banco
 $mysqli = require_once(__DIR__ . '/../Controller/ConexaoBD.php');
 
 if (!$mysqli || !$mysqli instanceof mysqli) {
@@ -31,36 +31,64 @@ if ($result->num_rows > 0) {
     die("Usuário não encontrado.");
 }
 
-// Busca os jogos favoritos do usuário
-$stmt_favoritos = $mysqli->prepare("SELECT j.nome_jogo, j.id_jogo FROM Favorito f JOIN Jogo j ON f.id_jogo = j.id_jogo WHERE f.id_usuario = ? LIMIT 3");
-if (!$stmt_favoritos) {
-    die("Erro ao preparar query de favoritos: " . $mysqli->error);
+// Busca as últimas 3 reviews do usuário
+$stmt_reviews = $mysqli->prepare("
+    SELECT r.id_review, r.id_jogo, r.nota_review, r.descricao_review, r.likes_review, r.data_review, j.nome_jogo 
+    FROM Review r 
+    JOIN Jogo j ON r.id_jogo = j.id_jogo 
+    WHERE r.id_usuario = ? 
+    ORDER BY r.data_review DESC 
+    LIMIT 3
+");
+if (!$stmt_reviews) {
+    die("Erro ao preparar query de reviews: " . $mysqli->error);
 }
-$stmt_favoritos->bind_param("i", $id_usuario);
-$stmt_favoritos->execute();
-$result_favoritos = $stmt_favoritos->get_result();
-$favoritos = $result_favoritos->fetch_all(MYSQLI_ASSOC);
+$stmt_reviews->bind_param("i", $id_usuario);
+$stmt_reviews->execute();
+$result_reviews = $stmt_reviews->get_result();
+$reviews = $result_reviews->fetch_all(MYSQLI_ASSOC);
+$stmt_reviews->close();
 
-// Busca as plataformas associadas aos jogos favoritos
-$plataformas = [];
-if (!empty($favoritos)) {
-    $jogos_ids = array_column($favoritos, 'id_jogo');
-    $placeholders = implode(',', array_fill(0, count($jogos_ids), '?'));
-
-    $stmt_plataformas = $mysqli->prepare("SELECT DISTINCT p.nome_plataforma FROM Jogo_Plataforma jp JOIN Plataforma p ON jp.id_plataforma = p.id_plataforma WHERE jp.id_jogo IN ($placeholders)");
-    
-    if ($stmt_plataformas) {
-        $stmt_plataformas->bind_param(str_repeat('i', count($jogos_ids)), ...$jogos_ids);
-        $stmt_plataformas->execute();
-        $result_plataformas = $stmt_plataformas->get_result();
-        $plataformas = $result_plataformas->fetch_all(MYSQLI_ASSOC);
-        $stmt_plataformas->close();
-    }
+// Busca as 3 reviews com mais likes do usuário
+$stmt_reviews_likes = $mysqli->prepare("
+    SELECT r.id_review, r.id_jogo, r.nota_review, r.descricao_review, r.likes_review, r.data_review, j.nome_jogo 
+    FROM Review r 
+    JOIN Jogo j ON r.id_jogo = j.id_jogo 
+    WHERE r.id_usuario = ? 
+    ORDER BY r.likes_review DESC, r.data_review DESC 
+    LIMIT 3
+");
+if (!$stmt_reviews_likes) {
+    die("Erro ao preparar query de reviews com mais likes: " . $mysqli->error);
 }
+$stmt_reviews_likes->bind_param("i", $id_usuario);
+$stmt_reviews_likes->execute();
+$result_reviews_likes = $stmt_reviews_likes->get_result();
+$reviews_likes = $result_reviews_likes->fetch_all(MYSQLI_ASSOC);
+$stmt_reviews_likes->close();
+
+// Busca todas as reviews do usuário para a seção "Gerenciar minhas reviews"
+$stmt_all_reviews = $mysqli->prepare("
+    SELECT r.id_review, r.id_jogo, r.nota_review, r.descricao_review, r.likes_review, r.data_review, j.nome_jogo 
+    FROM Review r 
+    JOIN Jogo j ON r.id_jogo = j.id_jogo 
+    WHERE r.id_usuario = ? 
+    ORDER BY r.data_review DESC
+");
+if (!$stmt_all_reviews) {
+    die("Erro ao preparar query de todas as reviews: " . $mysqli->error);
+}
+$stmt_all_reviews->bind_param("i", $id_usuario);
+$stmt_all_reviews->execute();
+$result_all_reviews = $stmt_all_reviews->get_result();
+$all_reviews = $result_all_reviews->fetch_all(MYSQLI_ASSOC);
+$stmt_all_reviews->close();
 
 $stmt->close();
-$stmt_favoritos->close();
 $mysqli->close();
+
+$msg = isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : '';
+$erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 ?>
 
 <!DOCTYPE html>
@@ -69,6 +97,92 @@ $mysqli->close();
     <meta charset="UTF-8" />
     <title>Perfil - Bit Crítico</title>
     <link rel="stylesheet" href="../View/estilos/index.css" />
+    <style>
+        .review-box {
+            background-color: #222;
+            border: 2px solid #555;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: transform 0.2s ease;
+        }
+        .review-box:hover {
+            transform: scale(1.02);
+        }
+        .review-title {
+            font-size: 1.2rem;
+            color: #00aaff;
+            margin-bottom: 5px;
+        }
+        .review-rating {
+            font-size: 1rem;
+            color: #00ffc3;
+            margin-bottom: 5px;
+        }
+        .review-date {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        .review-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .action-button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            transition: background-color 0.3s;
+        }
+        .view-button {
+            background-color: #00aaff;
+            color: #fff;
+        }
+        .view-button:hover {
+            background-color: #0088cc;
+        }
+        .edit-button {
+            background-color: #ff007a;
+            color: #fff;
+        }
+        .edit-button:hover {
+            background-color: #cc005f;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .delete-button:hover {
+            background-color: #b02a37;
+        }
+        .manage-button {
+            padding: 10px 20px;
+            background-color: var(--cor-destaque);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        .manage-button:hover {
+            background-color: var(--cor-hover);
+        }
+        #manage-reviews-section {
+            display: none;
+        }
+        .mensagem {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .sucesso { background-color: #28a745; color: white; }
+        .erro { background-color: #dc3545; color: white; }
+    </style>
 </head>
 <body>
     <header>
@@ -78,7 +192,7 @@ $mysqli->close();
         </nav>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</a>
+            <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</button>
         </div>
     </header>
 
@@ -99,27 +213,73 @@ $mysqli->close();
                 </div>
             </div>
 
+            <?php if ($msg): ?>
+                <div class="mensagem sucesso"><?php echo $msg; ?></div>
+            <?php endif; ?>
+            <?php if ($erro): ?>
+                <div class="mensagem erro"><?php echo $erro; ?></div>
+            <?php endif; ?>
+
             <div class="perfil-secao">
-                <h3>Meu top jogos:</h3>
-                <div class="jogos-top">
-                    <?php foreach ($favoritos as $jogo) : ?>
-                        <div class="jogo-box"><?php echo htmlspecialchars($jogo['nome_jogo']); ?></div>
+                <h3>Minhas Reviews</h3>
+                <?php if (empty($reviews)): ?>
+                    <p>Você ainda não fez nenhuma review.</p>
+                <?php else: ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="review-box">
+                            <div class="review-title"><?php echo htmlspecialchars($review['nome_jogo']); ?></div>
+                            <div class="review-rating">Nota: <?php echo number_format($review['nota_review'], 1); ?></div>
+                            <div class="review-date">Data: <?php echo date('d/m/Y', strtotime($review['data_review'])); ?></div>
+                            <div class="review-actions">
+                                <button class="action-button view-button" onclick="window.location.href='VisualizarReview.php?id_review=<?php echo $review['id_review']; ?>'">Visualizar</button>
+                                <button class="action-button edit-button" onclick="window.location.href='EditarReview.php?id_review=<?php echo $review['id_review']; ?>'">Editar</button>
+                                <button class="action-button delete-button" onclick="if(confirm('Tem certeza que deseja excluir esta review?')) window.location.href='../Controller/ReviewController.php?action=delete&id_review=<?php echo $review['id_review']; ?>'">Excluir</button>
+                            </div>
+                        </div>
                     <?php endforeach; ?>
-                    <?php for ($i = count($favoritos); $i < 3; $i++) : ?>
-                        <div class="jogo-box"></div>
-                    <?php endfor; ?>
-                </div>
+                <?php endif; ?>
             </div>
 
             <div class="perfil-secao">
-                <h3>Minhas plataformas:</h3>
-                <div class="plataformas">
-                    <?php foreach ($plataformas as $plataforma) : ?>
-                        <div class="plataforma-box"><?php echo htmlspecialchars($plataforma['nome_plataforma']); ?></div>
+                <h3>Minhas Reviews com mais likes</h3>
+                <?php if (empty($reviews_likes)): ?>
+                    <p>Você ainda não tem reviews com likes.</p>
+                <?php else: ?>
+                    <?php foreach ($reviews_likes as $review): ?>
+                        <div class="review-box">
+                            <div class="review-title"><?php echo htmlspecialchars($review['nome_jogo']); ?></div>
+                            <div class="review-rating">Nota: <?php echo number_format($review['nota_review'], 1); ?></div>
+                            <div class="review-date">Likes: <?php echo $review['likes_review']; ?></div>
+                            <div class="review-actions">
+                                <button class="action-button view-button" onclick="window.location.href='VisualizarReview.php?id_review=<?php echo $review['id_review']; ?>'">Visualizar</button>
+                                <button class="action-button edit-button" onclick="window.location.href='EditarReview.php?id_review=<?php echo $review['id_review']; ?>'">Editar</button>
+                                <button class="action-button delete-button" onclick="if(confirm('Tem certeza que deseja excluir esta review?')) window.location.href='../Controller/ReviewController.php?action=delete&id_review=<?php echo $review['id_review']; ?>'">Excluir</button>
+                            </div>
+                        </div>
                     <?php endforeach; ?>
-                    <?php for ($i = count($plataformas); $i < 3; $i++) : ?>
-                        <div class="plataforma-box"></div>
-                    <?php endfor; ?>
+                <?php endif; ?>
+            </div>
+
+            <div class="perfil-secao">
+                <button class="manage-button" onclick="toggleManageReviews()">Gerenciar Minhas Reviews</button>
+                <div id="manage-reviews-section">
+                    <h3>Todas as Minhas Reviews</h3>
+                    <?php if (empty($all_reviews)): ?>
+                        <p>Você ainda não fez nenhuma review.</p>
+                    <?php else: ?>
+                        <?php foreach ($all_reviews as $review): ?>
+                            <div class="review-box">
+                                <div class="review-title"><?php echo htmlspecialchars($review['nome_jogo']); ?></div>
+                                <div class="review-rating">Nota: <?php echo number_format($review['nota_review'], 1); ?></div>
+                                <div class="review-date">Data: <?php echo date('d/m/Y', strtotime($review['data_review'])); ?> | Likes: <?php echo $review['likes_review']; ?></div>
+                                <div class="review-actions">
+                                    <button class="action-button view-button" onclick="window.location.href='VisualizarReview.php?id_review=<?php echo $review['id_review']; ?>'">Visualizar</button>
+                                    <button class="action-button edit-button" onclick="window.location.href='EditarReview.php?id_review=<?php echo $review['id_review']; ?>'">Editar</button>
+                                    <button class="action-button delete-button" onclick="if(confirm('Tem certeza que deseja excluir esta review?')) window.location.href='../Controller/ReviewController.php?action=delete&id_review=<?php echo $review['id_review']; ?>'">Excluir</button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -132,5 +292,12 @@ $mysqli->close();
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
     </footer>
+
+    <script>
+        function toggleManageReviews() {
+            const section = document.getElementById('manage-reviews-section');
+            section.style.display = section.style.display === 'none' || section.style.display === '' ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>

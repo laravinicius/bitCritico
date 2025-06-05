@@ -34,7 +34,7 @@ class ReviewController {
         $id_usuario = (int)$_SESSION['id_usuario'];
         $nota_review = floatval($_POST['nota_review']);
         $descricao_review = trim($_POST['descricao_review']);
-        $data_review = date('Y-m-d'); // Formato correto: '2025-06-05'
+        $data_review = date('Y-m-d');
 
         // Validar nota
         if ($nota_review < 0 || $nota_review > 10) {
@@ -60,12 +60,118 @@ class ReviewController {
             exit();
         }
 
-        // Corrigir o tipo de binding: 'd' (double) para 's' (string) para data_review
         $stmt->bind_param("iidss", $id_usuario, $id_jogo, $nota_review, $descricao_review, $data_review);
         if ($stmt->execute()) {
             header('Location: /BitCritico/View/DetalhesJogo.php?id=' . $id_jogo . '&msg=' . urlencode('Review enviada com sucesso!'));
         } else {
             header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('Erro ao salvar review: ' . $stmt->error) . '&id_jogo=' . $id_jogo);
+        }
+        $stmt->close();
+    }
+
+    public function update() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $redirect = isset($_POST['id_review']) ? '/BitCritico/View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?erro=' . urlencode('Método não permitido'));
+            exit();
+        }
+
+        if (!isset($_SESSION['id_usuario'])) {
+            $redirect = isset($_POST['id_review']) ? '/BitCritico/View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?erro=' . urlencode('Você precisa estar logado para editar uma review'));
+            exit();
+        }
+
+        if (!isset($_POST['id_review']) || !isset($_POST['id_jogo']) || !isset($_POST['nota_review']) || !isset($_POST['descricao_review']) || !isset($_POST['source'])) {
+            $redirect = isset($_POST['id_review']) ? '/BitCritico/View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?erro=' . urlencode('Todos os campos são obrigatórios'));
+            exit();
+        }
+
+        $id_review = (int)$_POST['id_review'];
+        $id_jogo = (int)$_POST['id_jogo'];
+        $id_usuario = (int)$_SESSION['id_usuario'];
+        $nota_review = floatval($_POST['nota_review']);
+        $descricao_review = trim($_POST['descricao_review']);
+        $data_review = date('Y-m-d');
+        $source = $_POST['source'];
+
+        // Validar nota
+        if ($nota_review < 0 || $nota_review > 10) {
+            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?erro=' . urlencode('A nota deve estar entre 0 e 10'));
+            exit();
+        }
+
+        // Verificar se a review pertence ao usuário
+        $stmt_check = $this->conn->prepare("SELECT id_review FROM Review WHERE id_review = ? AND id_usuario = ?");
+        $stmt_check->bind_param("ii", $id_review, $id_usuario);
+        $stmt_check->execute();
+        $result_check = $stmt_check->get_result();
+        if ($result_check->num_rows == 0) {
+            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?erro=' . urlencode('Você não tem permissão para editar esta review'));
+            exit();
+        }
+        $stmt_check->close();
+
+        // Atualizar a review
+        $stmt = $this->conn->prepare("UPDATE Review SET nota_review = ?, descricao_review = ?, data_review = ? WHERE id_review = ?");
+        if (!$stmt) {
+            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error));
+            exit();
+        }
+
+        $stmt->bind_param("dssi", $nota_review, $descricao_review, $data_review, $id_review);
+        if ($stmt->execute()) {
+            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?msg=' . urlencode('Review atualizada com sucesso!'));
+        } else {
+            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            header('Location: ' . $redirect . '?erro=' . urlencode('Erro ao atualizar review: ' . $stmt->error));
+        }
+        $stmt->close();
+    }
+
+    public function delete() {
+        if (!isset($_SESSION['id_usuario'])) {
+            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('Você precisa estar logado para excluir uma review'));
+            exit();
+        }
+
+        if (!isset($_GET['id_review'])) {
+            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('ID da review não especificado'));
+            exit();
+        }
+
+        $id_review = (int)$_GET['id_review'];
+        $id_usuario = (int)$_SESSION['id_usuario'];
+
+        // Verificar se a review pertence ao usuário
+        $stmt_check = $this->conn->prepare("SELECT id_review FROM Review WHERE id_review = ? AND id_usuario = ?");
+        $stmt_check->bind_param("ii", $id_review, $id_usuario);
+        $stmt_check->execute();
+        $result_check = $stmt_check->get_result();
+        if ($result_check->num_rows == 0) {
+            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('Você não tem permissão para excluir esta review'));
+            exit();
+        }
+        $stmt_check->close();
+
+        // Excluir os likes associados à review
+        $stmt_delete_likes = $this->conn->prepare("DELETE FROM Like_Review WHERE id_review = ?");
+        $stmt_delete_likes->bind_param("i", $id_review);
+        $stmt_delete_likes->execute();
+        $stmt_delete_likes->close();
+
+        // Excluir a review
+        $stmt = $this->conn->prepare("DELETE FROM Review WHERE id_review = ?");
+        $stmt->bind_param("i", $id_review);
+        if ($stmt->execute()) {
+            header('Location: /BitCritico/View/Perfil.php?msg=' . urlencode('Review excluída com sucesso!'));
+        } else {
+            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('Erro ao excluir review: ' . $stmt->error));
         }
         $stmt->close();
     }
@@ -123,6 +229,12 @@ if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'create':
             $controller->create();
+            break;
+        case 'update':
+            $controller->update();
+            break;
+        case 'delete':
+            $controller->delete();
             break;
         case 'like':
             $controller->likeReview();

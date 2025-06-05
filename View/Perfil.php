@@ -97,92 +97,7 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
     <meta charset="UTF-8" />
     <title>Perfil - Bit Crítico</title>
     <link rel="stylesheet" href="../View/estilos/index.css" />
-    <style>
-        .review-box {
-            background-color: #222;
-            border: 2px solid #555;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            transition: transform 0.2s ease;
-        }
-        .review-box:hover {
-            transform: scale(1.02);
-        }
-        .review-title {
-            font-size: 1.2rem;
-            color: #00aaff;
-            margin-bottom: 5px;
-        }
-        .review-rating {
-            font-size: 1rem;
-            color: #00ffc3;
-            margin-bottom: 5px;
-        }
-        .review-date {
-            font-size: 0.9rem;
-            color: #ccc;
-            margin-bottom: 10px;
-        }
-        .review-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .action-button {
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            transition: background-color 0.3s;
-        }
-        .view-button {
-            background-color: #00aaff;
-            color: #fff;
-        }
-        .view-button:hover {
-            background-color: #0088cc;
-        }
-        .edit-button {
-            background-color: #ff007a;
-            color: #fff;
-        }
-        .edit-button:hover {
-            background-color: #cc005f;
-        }
-        .delete-button {
-            background-color: #dc3545;
-            color: #fff;
-        }
-        .delete-button:hover {
-            background-color: #b02a37;
-        }
-        .manage-button {
-            padding: 10px 20px;
-            background-color: var(--cor-destaque);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: background-color 0.3s;
-        }
-        .manage-button:hover {
-            background-color: var(--cor-hover);
-        }
-        #manage-reviews-section {
-            display: none;
-        }
-        .mensagem {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .sucesso { background-color: #28a745; color: white; }
-        .erro { background-color: #dc3545; color: white; }
-    </style>
+    <link rel="stylesheet" href="../View/estilos/Perfil.css" />
 </head>
 <body>
     <header>
@@ -228,12 +143,10 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
                     <?php foreach ($reviews as $review): ?>
                         <div class="review-box">
                             <div class="review-title"><?php echo htmlspecialchars($review['nome_jogo']); ?></div>
-                            <div class="review-rating">Nota: <?php echo number_format($review['nota_review'], 1); ?></div>
-                            <div class="review-date">Data: <?php echo date('d/m/Y', strtotime($review['data_review'])); ?></div>
-                            <div class="review-actions">
-                                <button class="action-button view-button" onclick="window.location.href='VisualizarReview.php?id_review=<?php echo $review['id_review']; ?>'">Visualizar</button>
-                                <button class="action-button edit-button" onclick="window.location.href='EditarReview.php?id_review=<?php echo $review['id_review']; ?>'">Editar</button>
-                                <button class="action-button delete-button" onclick="if(confirm('Tem certeza que deseja excluir esta review?')) window.location.href='../Controller/ReviewController.php?action=delete&id_review=<?php echo $review['id_review']; ?>'">Excluir</button>
+                            <div class="review-content">
+                                <div class="review-rating">Nota: <span class="nota"><?php echo number_format($review['nota_review'], 1); ?></span></div>
+                                <div class="review-date">Data: <?php echo date('d/m/Y', strtotime($review['data_review'])); ?></div>
+                                <div class="review-body"><?php echo htmlspecialchars($review['descricao_review']); ?></div>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -248,12 +161,10 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
                     <?php foreach ($reviews_likes as $review): ?>
                         <div class="review-box">
                             <div class="review-title"><?php echo htmlspecialchars($review['nome_jogo']); ?></div>
-                            <div class="review-rating">Nota: <?php echo number_format($review['nota_review'], 1); ?></div>
-                            <div class="review-date">Likes: <?php echo $review['likes_review']; ?></div>
-                            <div class="review-actions">
-                                <button class="action-button view-button" onclick="window.location.href='VisualizarReview.php?id_review=<?php echo $review['id_review']; ?>'">Visualizar</button>
-                                <button class="action-button edit-button" onclick="window.location.href='EditarReview.php?id_review=<?php echo $review['id_review']; ?>'">Editar</button>
-                                <button class="action-button delete-button" onclick="if(confirm('Tem certeza que deseja excluir esta review?')) window.location.href='../Controller/ReviewController.php?action=delete&id_review=<?php echo $review['id_review']; ?>'">Excluir</button>
+                            <div class="review-content">
+                                <div class="review-rating">Nota: <span class="nota"><?php echo number_format($review['nota_review'], 1); ?></span></div>
+                                <div class="review-date">Likes: <?php echo $review['likes_review']; ?></div>
+                                <div class="review-body"><?php echo htmlspecialchars($review['descricao_review']); ?></div>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -268,13 +179,28 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
                         <p>Você ainda não fez nenhuma review.</p>
                     <?php else: ?>
                         <?php foreach ($all_reviews as $review): ?>
-                            <div class="review-box">
+                            <div class="review-box" id="review-<?php echo $review['id_review']; ?>">
                                 <div class="review-title"><?php echo htmlspecialchars($review['nome_jogo']); ?></div>
-                                <div class="review-rating">Nota: <?php echo number_format($review['nota_review'], 1); ?></div>
-                                <div class="review-date">Data: <?php echo date('d/m/Y', strtotime($review['data_review'])); ?> | Likes: <?php echo $review['likes_review']; ?></div>
-                                <div class="review-actions">
-                                    <button class="action-button view-button" onclick="window.location.href='VisualizarReview.php?id_review=<?php echo $review['id_review']; ?>'">Visualizar</button>
-                                    <button class="action-button edit-button" onclick="window.location.href='EditarReview.php?id_review=<?php echo $review['id_review']; ?>'">Editar</button>
+                                <div class="review-content">
+                                    <div class="review-rating">Nota: <span class="nota"><?php echo number_format($review['nota_review'], 1); ?></span></div>
+                                    <div class="review-date">Data: <?php echo date('d/m/Y', strtotime($review['data_review'])); ?> | Likes: <?php echo $review['likes_review']; ?></div>
+                                    <div class="review-body"><?php echo htmlspecialchars($review['descricao_review']); ?></div>
+                                </div>
+                                <div class="edit-form">
+                                    <form method="POST" action="../Controller/ReviewController.php?action=update">
+                                        <input type="hidden" name="id_review" value="<?php echo $review['id_review']; ?>">
+                                        <input type="hidden" name="id_jogo" value="<?php echo $review['id_jogo']; ?>">
+                                        <input type="hidden" name="source" value="perfil">
+                                        <input type="number" name="nota_review" min="0" max="10" step="0.1" value="<?php echo htmlspecialchars($review['nota_review']); ?>" required>
+                                        <textarea name="descricao_review" required><?php echo htmlspecialchars($review['descricao_review']); ?></textarea>
+                                        <div class="review-actions">
+                                            <button type="submit" class="action-button save-button">Salvar</button>
+                                            <button type="button" class="action-button cancel-button" onclick="cancelEdit(<?php echo $review['id_review']; ?>)">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="review-actions view-mode">
+                                    <button class="action-button edit-button" onclick="enableEdit(<?php echo $review['id_review']; ?>)">Editar</button>
                                     <button class="action-button delete-button" onclick="if(confirm('Tem certeza que deseja excluir esta review?')) window.location.href='../Controller/ReviewController.php?action=delete&id_review=<?php echo $review['id_review']; ?>'">Excluir</button>
                                 </div>
                             </div>
@@ -297,6 +223,20 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
         function toggleManageReviews() {
             const section = document.getElementById('manage-reviews-section');
             section.style.display = section.style.display === 'none' || section.style.display === '' ? 'block' : 'none';
+        }
+
+        function enableEdit(reviewId) {
+            const reviewBox = document.getElementById('review-' + reviewId);
+            reviewBox.querySelector('.review-content').style.display = 'none';
+            reviewBox.querySelector('.edit-form').style.display = 'block';
+            reviewBox.querySelector('.view-mode').style.display = 'none';
+        }
+
+        function cancelEdit(reviewId) {
+            const reviewBox = document.getElementById('review-' + reviewId);
+            reviewBox.querySelector('.review-content').style.display = 'block';
+            reviewBox.querySelector('.edit-form').style.display = 'none';
+            reviewBox.querySelector('.view-mode').style.display = 'flex';
         }
     </script>
 </body>

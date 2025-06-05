@@ -55,13 +55,9 @@ $mysqli->close();
 </head>
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="/../index.php">Admin Bit Crítico</a></div>
-        <nav>
-            <a class="teste" href="AdminCenter023839.php">Voltar</a>
-        </nav>
+        <div class="logo"><a class="logo titulo" href="/../index.php">Bit Crítico</a></div>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <a href="/../index.php" class="login">Login</a>
         </div>
     </header>
 

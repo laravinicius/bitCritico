@@ -17,7 +17,7 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['status_usuario']) || $_
 </head>
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="../../index.php">Admin Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="../../index.php">Bit Crítico</a></div>
         <nav>
             <a class="teste" href="AdminCenter023839.php">Centro Administrativo</a>
         </nav>

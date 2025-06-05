@@ -22,17 +22,10 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 </head>
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="/../index.php">Admin Bit Crítico</a></div>
-        <nav>
-            <a class="teste" href="AdminCenter023839.php">Voltar</a>
-        </nav>
-<<<<<<< HEAD
-=======
+        <div class="logo"><a class="logo titulo" href="/../index.php">Bit Crítico</a></div>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <a href="/../index.php" class="login">Login</a>
         </div>
->>>>>>> 34fd4a02d5b36569d3cf89bed905a5991f663fdf
     </header>
 
     <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
@@ -54,15 +47,11 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
     </main>
 
     <footer class="rodape">
-<<<<<<< HEAD
-        <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Edu.</p>
-=======
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
         <div class="midiaSocial">
             <a href="/../index.php">Bit Crítico</a>
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
->>>>>>> 34fd4a02d5b36569d3cf89bed905a5991f663fdf
     </footer>
 </body>
 </html>

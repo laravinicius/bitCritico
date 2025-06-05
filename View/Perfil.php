@@ -78,14 +78,7 @@ $mysqli->close();
         </nav>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <?php if (isset($_SESSION['id_usuario'])): ?>
-            <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
-                <button class="login" onclick="window.location.href='./ADM/AdminCenter023839.php'">Sessão Adm</button>
-            <?php endif; ?>
-            <button class="login" onclick="window.location.href='./Controller/LogoutController.php'">Sair</button>
-        <?php else: ?>
-        <?php endif; ?>
-
+            <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</a>
         </div>
     </header>
 

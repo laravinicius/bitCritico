@@ -23,8 +23,12 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="/../index.php">Admin Bit Crítico</a></div>
+        <nav>
+            <a class="teste" href="AdminCenter023839.php">Voltar</a>
+        </nav>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
+            <button class="login">Login</button>
         </div>
     </header>
 

@@ -17,14 +17,8 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['status_usuario']) || $_
 </head>
 <body>
     <header>
-        <div class="logo">
-            
-            <a class="logo titulo" href="../../index.php">Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="../../index.php">Admin Bit Crítico</a></div>
         <nav>
-            <?php if (isset($_SESSION['id_usuario'])): ?>
-                <button class="login" onclick="window.location.href='../Perfil.php'">Perfil</button>
-            <?php endif; ?>
-
             <a class="teste" href="AdminCenter023839.php">Centro Administrativo</a>
         </nav>
     </header>

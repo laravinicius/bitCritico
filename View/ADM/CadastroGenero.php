@@ -23,22 +23,15 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="/../index.php">Admin Bit Crítico</a></div>
-        <nav>
-            <a class="teste" href="AdminCenter023839.php">Voltar</a>
-        </nav>
-<<<<<<< HEAD
-=======
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
-            <a href="/../index.php" class="login">Login</a>
         </div>
->>>>>>> 34fd4a02d5b36569d3cf89bed905a5991f663fdf
     </header>
 
     <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
         <form action="/BitCritico/Controller/GeneroController.php?action=create" method="POST" style="border: 1px solid #ccc; padding: 30px; border-radius: 8px; background-color: #1f1f1f; color: var(--cor-texto);">
             <h2 style="margin-bottom: 20px;">Cadastro de Gênero</h2>
-            
+
             <?php if ($msg): ?>
                 <div class="mensagem sucesso"><?php echo $msg; ?></div>
             <?php endif; ?>

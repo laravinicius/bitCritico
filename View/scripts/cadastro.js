@@ -56,9 +56,9 @@ function validarLogin(event) {
         return false;
     }
 
-    // Redirecionar após validação
+    /* Redirecionar após validação
     window.location.href = "./View/Perfil.html";
-    return false;
+    return false;*/
 }
 
 // Validação do cadastro
@@ -84,7 +84,7 @@ function validarCadastro(event) {
         return false;
     }
 
-    // Redirecionar após validação
+    /* Redirecionar após validação
     window.location.href = "./View/Perfil.html";
-    return false;
+    return false;*/
 }

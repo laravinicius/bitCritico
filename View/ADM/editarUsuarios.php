@@ -88,6 +88,10 @@ $resultadoUsuarios = $mysqli->query("SELECT id_usuario, nome_usuario, email_usua
 
     <footer class="rodape">
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
+        <div class="midiaSocial">
+            <a href="../../index.php">Bit Crítico</a>
+            <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
+        </div>
     </footer>
 </body>
 </html>

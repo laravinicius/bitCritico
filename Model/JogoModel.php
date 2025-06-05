@@ -1,25 +1,25 @@
 <?php
-class Jogo {
-    private $id_jogo;
-    private $nome_jogo;
-    private $ano_lancamento_jogo;
-    private $descricao_jogo;
-    private $capa_jogo;
-    private $conn;
+require_once __DIR__ . '/../Controller/ConexaoBD.php';
 
-    public function __construct($conn) {
-        $this->conn = $conn;
+class Jogo {
+    private $conn;
+    private $table = 'Jogo';
+
+    public function __construct($db) {
+        $this->conn = $db;
     }
 
-    public function setIdJogo($id) { $this->id_jogo = $id; }
-    public function getIdJogo() { return $this->id_jogo; }
-    public function setNomeJogo($nome) { $this->nome_jogo = $nome; }
-    public function getNomeJogo() { return $this->nome_jogo; }
-    public function setAnoLancamentoJogo($ano) { $this->ano_lancamento_jogo = $ano; }
-    public function getAnoLancamentoJogo() { return $this->ano_lancamento_jogo; }
-    public function setDescricaoJogo($descricao) { $this->descricao_jogo = $descricao; }
-    public function getDescricaoJogo() { return $this->descricao_jogo; }
-    public function setCapaJogo($capa) { $this->capa_jogo = $capa; }
-    public function getCapaJogo() { return $this->capa_jogo; }
+    public function criar($dados) {
+        $sql = "INSERT INTO {$this->table}
+            (nome_jogo, ano_lancamento_jogo, descricao_jogo, capa_jogo, trailer_jogo)
+            VALUES (:nome, :ano, :descricao, :capa, :trailer)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            ':nome' => $dados['nome_jogo'],
+            ':ano' => $dados['ano_lancamento_jogo'],
+            ':descricao' => $dados['descricao_jogo'],
+            ':capa' => $dados['capa_jogo'],
+            ':trailer' => $dados['trailer_jogo']
+        ]);
+    }
 }
-?>

@@ -21,12 +21,12 @@ class DesenvolvedoraController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Método não permitido'));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Método não permitido'));
             exit();
         }
 
         if (!isset($_POST['nome_desenvolvedora']) || empty(trim($_POST['nome_desenvolvedora']))) {
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Nome da desenvolvedora é obrigatório'));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Nome da desenvolvedora é obrigatório'));
             exit();
         }
 
@@ -34,25 +34,25 @@ class DesenvolvedoraController {
 
         $stmtCheck = $this->conn->prepare("SELECT id_desenvolvedora FROM Desenvolvedora WHERE nome_desenvolvedora = ?");
         if (!$stmtCheck) {
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao preparar verificação: ' . $this->conn->error));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao preparar verificação: ' . $this->conn->error));
             exit();
         }
         $stmtCheck->bind_param("s", $_POST['nome_desenvolvedora']);
         if (!$stmtCheck->execute()) {
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao executar verificação: ' . $stmtCheck->error));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao executar verificação: ' . $stmtCheck->error));
             exit();
         }
         $stmtCheck->store_result();
         if ($stmtCheck->num_rows > 0) {
             $stmtCheck->close();
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Desenvolvedora já cadastrada'));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Desenvolvedora já cadastrada'));
             exit();
         }
         $stmtCheck->close();
 
         $stmt = $this->conn->prepare("INSERT INTO Desenvolvedora (nome_desenvolvedora) VALUES (?)");
         if (!$stmt) {
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao preparar inserção: ' . $this->conn->error));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao preparar inserção: ' . $this->conn->error));
             exit();
         }
 
@@ -60,9 +60,9 @@ class DesenvolvedoraController {
         $stmt->bind_param("s", $nomeDesenvolvedora);
 
         if ($stmt->execute()) {
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?msg=' . urlencode('Desenvolvedora cadastrada com sucesso!'));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?msg=' . urlencode('Desenvolvedora cadastrada com sucesso!'));
         } else {
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao cadastrar desenvolvedora: ' . $stmt->error));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Erro ao cadastrar desenvolvedora: ' . $stmt->error));
         }
 
         $stmt->close();
@@ -83,11 +83,11 @@ if (isset($_GET['action'])) {
             $controller->create();
             break;
         default:
-            header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Ação inválida'));
+            header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Ação inválida'));
             exit();
     }
 } else {
-    header('Location: /BitCritico/View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Ação não especificada'));
+    header('Location: ../View/ADM/CadastroDesenvolvedora.php?erro=' . urlencode('Ação não especificada'));
     exit();
 }
 ?>

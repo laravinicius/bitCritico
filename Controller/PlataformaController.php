@@ -21,13 +21,13 @@ class PlataformaController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Método não permitido'));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Método não permitido'));
             exit();
         }
 
         if (!isset($_POST['nome_plataforma']) || !isset($_POST['empresa_plataforma']) || 
             empty(trim($_POST['nome_plataforma'])) || empty(trim($_POST['empresa_plataforma']))) {
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Nome e empresa da plataforma são obrigatórios'));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Nome e empresa da plataforma são obrigatórios'));
             exit();
         }
 
@@ -36,25 +36,25 @@ class PlataformaController {
 
         $stmtCheck = $this->conn->prepare("SELECT id_plataforma FROM Plataforma WHERE nome_plataforma = ?");
         if (!$stmtCheck) {
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao preparar verificação: ' . $this->conn->error));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao preparar verificação: ' . $this->conn->error));
             exit();
         }
         $stmtCheck->bind_param("s", $_POST['nome_plataforma']);
         if (!$stmtCheck->execute()) {
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao executar verificação: ' . $stmtCheck->error));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao executar verificação: ' . $stmtCheck->error));
             exit();
         }
         $stmtCheck->store_result();
         if ($stmtCheck->num_rows > 0) {
             $stmtCheck->close();
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Plataforma já cadastrada'));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Plataforma já cadastrada'));
             exit();
         }
         $stmtCheck->close();
 
         $stmt = $this->conn->prepare("INSERT INTO Plataforma (nome_plataforma, empresa_plataforma) VALUES (?, ?)"); // Ajustado para 'empresa_plataforma'
         if (!$stmt) {
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao preparar inserção: ' . $this->conn->error));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao preparar inserção: ' . $this->conn->error));
             exit();
         }
 
@@ -63,9 +63,9 @@ class PlataformaController {
         $stmt->bind_param("ss", $nomePlataforma, $empresaPlataforma);
 
         if ($stmt->execute()) {
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?msg=' . urlencode('Plataforma cadastrada com sucesso!'));
+            header('Location: ../View/ADM/CadastroPlataforma.php?msg=' . urlencode('Plataforma cadastrada com sucesso!'));
         } else {
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao cadastrar plataforma: ' . $stmt->error));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Erro ao cadastrar plataforma: ' . $stmt->error));
         }
 
         $stmt->close();
@@ -86,11 +86,11 @@ if (isset($_GET['action'])) {
             $controller->create();
             break;
         default:
-            header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Ação inválida'));
+            header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Ação inválida'));
             exit();
     }
 } else {
-    header('Location: /BitCritico/View/ADM/CadastroPlataforma.php?erro=' . urlencode('Ação não especificada'));
+    header('Location: ../View/ADM/CadastroPlataforma.php?erro=' . urlencode('Ação não especificada'));
     exit();
 }
 ?>

@@ -96,14 +96,14 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 <head>
     <meta charset="UTF-8" />
     <title>Perfil - Bit Crítico</title>
-    <link rel="stylesheet" href="../View/estilos/index.css" />
-    <link rel="stylesheet" href="../View/estilos/Perfil.css" />
+    <link rel="stylesheet" href="./estilos/index.css" />
+    <link rel="stylesheet" href="./estilos/Perfil.css" />
 </head>
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="../View/jogos.php">Jogos A-Z</a>
+            <a class="teste" href="./jogos.php">Jogos A-Z</a>
         </nav>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>

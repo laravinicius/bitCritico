@@ -40,12 +40,13 @@ $stmt->bind_param(
 if ($stmt->execute()) {
     echo "Usuário cadastrado com sucesso!";
     // Redireciona para uma página após o cadastro (opcional)
-    header('Location: /bitCritico/ADM/index.html');
+    header('Location: ../View/ADM/AdminCenter023839.php');
     exit();
 } else {
+    $error = urlencode($stmt->error);
     echo "Erro ao cadastrar usuário: " . $stmt->error;
-    // Redireciona para a página de cadastro com erro (opcional)
-    header('Location: /bitCritico/ADM/cadastro.html');
+    // Redireciona para a página de edição de usuários com erro
+    header('Location: ../View/ADM/editarUsuarios.php?erro=' . $error);
     exit();
 }
 

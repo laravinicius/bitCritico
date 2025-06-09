@@ -17,12 +17,12 @@ class GeneroController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /BitCritico/View/ADM/CadastroGenero.php?erro=' . urlencode('Método não permitido'));
+            header('Location: ../View/ADM/CadastroGenero.php?erro=' . urlencode('Método não permitido'));
             exit();
         }
 
         if (!isset($_POST['nome_genero']) || empty(trim($_POST['nome_genero']))) {
-            header('Location: /BitCritico/View/ADM/CadastroGenero.php?erro=' . urlencode('Nome do gênero é obrigatório'));
+            header('Location: ../View/ADM/CadastroGenero.php?erro=' . urlencode('Nome do gênero é obrigatório'));
             exit();
         }
 
@@ -34,14 +34,14 @@ class GeneroController {
         $stmtCheck->store_result();
         if ($stmtCheck->num_rows > 0) {
             $stmtCheck->close();
-            header('Location: /BitCritico/View/ADM/CadastroGenero.php?erro=' . urlencode('Gênero já cadastrado'));
+            header('Location: ../View/ADM/CadastroGenero.php?erro=' . urlencode('Gênero já cadastrado'));
             exit();
         }
         $stmtCheck->close();
 
         $stmt = $this->conn->prepare("INSERT INTO Genero (nome_genero) VALUES (?)");
         if (!$stmt) {
-            header('Location: /BitCritico/View/ADM/CadastroGenero.php?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error));
+            header('Location: ../View/ADM/CadastroGenero.php?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error));
             exit();
         }
 
@@ -49,9 +49,9 @@ class GeneroController {
         $stmt->bind_param("s", $nomeGenero);
 
         if ($stmt->execute()) {
-            header('Location: /BitCritico/View/ADM/CadastroGenero.php?msg=' . urlencode('Gênero cadastrado com sucesso!'));
+            header('Location: ../View/ADM/CadastroGenero.php?msg=' . urlencode('Gênero cadastrado com sucesso!'));
         } else {
-            header('Location: /BitCritico/View/ADM/CadastroGenero.php?erro=' . urlencode('Erro ao cadastrar gênero: ' . $stmt->error));
+            header('Location: ../View/ADM/CadastroGenero.php?erro=' . urlencode('Erro ao cadastrar gênero: ' . $stmt->error));
         }
 
         $stmt->close();
@@ -73,11 +73,11 @@ if (isset($_GET['action'])) {
             $controller->create();
             break;
         default:
-            header('Location: /BitCritico/View/ADM/CadastroGenero.php?erro=' . urlencode('Ação inválida'));
+            header('Location: ../View/ADM/CadastroGenero.php?erro=' . urlencode('Ação inválida'));
             exit();
     }
 } else {
-    header('Location: /BitCritico/View/ADM/CadastroGenero.php?erro=' . urlencode('Ação não especificada'));
+    header('Location: ../View/ADM/CadastroGenero.php?erro=' . urlencode('Ação não especificada'));
     exit();
 }
 ?>

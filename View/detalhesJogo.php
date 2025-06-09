@@ -202,7 +202,7 @@ $stmtMedia->close();
 
                 const formData = new FormData(form);
 
-                fetch(`./Controller/${action === 'login' ? 'LoginController.php' : 'CadastroController.php'}`, {
+                fetch(`../Controller/${action === 'login' ? 'LoginController.php' : 'CadastroController.php'}`, {
                     method: 'POST',
                     body: formData
                 })
@@ -302,7 +302,6 @@ $stmtMedia->close();
             </button>
         <?php endif; ?>
 
-        <!-- Exibir Reviews -->
         <h2 style="color: var(--cor-primaria); margin-top: 40px;">Reviews dos Usuários</h2>
         <?php if ($msg): ?>
             <div class="mensagem sucesso"><?php echo $msg; ?></div>

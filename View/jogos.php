@@ -116,9 +116,9 @@ $resultadoTop5 = $mysqli->query(
 
         <div class="telas">
             <?php if (isset($_SESSION['id_usuario'])): ?>
-                <button class="login" onclick="window.location.href='../View/Perfil.php'">Perfil</button>
+                <button class="login" onclick="window.location.href='./Perfil.php'">Perfil</button>
                 <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
-                    <button class="login" onclick="window.location.href='../View/ADM/AdminCenter023839.php'">Sessão Adm</button>
+                    <button class="login" onclick="window.location.href='./ADM/AdminCenter023839.php'">Sessão Adm</button>
                 <?php endif; ?>
                 <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</button>
             <?php else: ?>

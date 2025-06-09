@@ -24,5 +24,5 @@ while ($review = $resultadoReviews->fetch_assoc()) {
 }
 
 // Inclui o HTML e passa as variáveis
-include('./view/detalhesJogo.php');
+include('../View/detalhesJogo.php');
 ?>

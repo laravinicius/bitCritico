@@ -89,7 +89,7 @@ $stmtJogo->close();
     <header>
         <div class="logo"><a class="logo titulo" href="../index.php">Bit Crítico</a></div>
         <nav>
-            <a class="teste" href="../jogos.php">Jogos A-Z</a>
+            <a class="teste" href="jogos.php">Jogos A-Z</a>
         </nav>
         <div class="telas">
             <?php if (isset($_SESSION['id_usuario'])): ?>
@@ -209,7 +209,7 @@ $stmtJogo->close();
     </header>
 
     <main class="form-box perfil">
-        <a href="/BitCritico/View/DetalhesJogo.php?id=<?= $id_jogo; ?>" style="color: var(--cor-primaria); text-decoration: none;">← Voltar</a>
+        <a href="./DetalhesJogo.php?id=<?= $id_jogo; ?>" style="color: var(--cor-primaria); text-decoration: none;">← Voltar</a>
 
         <h2 style="color: var(--cor-primaria); margin-top: 20px;">Deixar uma Review para <?= htmlspecialchars($jogo['nome_jogo']); ?></h2>
 

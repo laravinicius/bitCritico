@@ -22,14 +22,14 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
 </head>
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="/../index.php">Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="../../index.php">Bit Crítico</a></div>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
         </div>
     </header>
 
     <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
-        <form action="/BitCritico/Controller/GeneroController.php?action=create" method="POST" style="border: 1px solid #ccc; padding: 30px; border-radius: 8px; background-color: #1f1f1f; color: var(--cor-texto);">
+        <form action="../../Controller/GeneroController.php?action=create" method="POST" style="border: 1px solid #ccc; padding: 30px; border-radius: 8px; background-color: #1f1f1f; color: var(--cor-texto);">
             <h2 style="margin-bottom: 20px;">Cadastro de Gênero</h2>
             
             <?php if ($msg): ?>
@@ -49,7 +49,7 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
     <footer class="rodape">
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
         <div class="midiaSocial">
-            <a href="/../index.php">Bit Crítico</a>
+            <a href="../../index.php">Bit Crítico</a>
             <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
         </div>
     </footer>

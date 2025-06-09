@@ -42,13 +42,14 @@ $resultadoUsuarios = $mysqli->query("SELECT id_usuario, nome_usuario, email_usua
     <style>
         .user-table { width: 80%; margin: 20px auto; border-collapse: collapse; }
         .user-table th, .user-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .user-table th { background-color: #f2f2f2; }
+        .user-table th { background-color: #f2f2f2; color: #121212; }
         .user-table select { padding: 5px; }
+        main { text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo"><a class="logo titulo" href="/../index.php">Bit Crítico</a></div>
+        <div class="logo"><a class="logo titulo" href="../../index.php">Bit Crítico</a></div>
         <div class="telas">
             <button class="voltar" onclick="history.back()">⬅️</button>
         </div>
@@ -74,7 +75,7 @@ $resultadoUsuarios = $mysqli->query("SELECT id_usuario, nome_usuario, email_usua
                         <td><?= htmlspecialchars($usuario['nome_usuario']) ?></td>
                         <td><?= htmlspecialchars($usuario['email_usuario']) ?></td>
                         <td>
-                            <select name="status_usuario" onchange="this.form.submit()">
+                            <select name="status_usuario">
                                 <option value="0" <?= $usuario['status_usuario'] == 0 ? 'selected' : '' ?>>Usuário (0)</option>
                                 <option value="1" <?= $usuario['status_usuario'] == 1 ? 'selected' : '' ?>>Administrador (1)</option>
                             </select>

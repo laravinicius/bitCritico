@@ -21,14 +21,14 @@ class JogoController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Método não permitido'));
+            header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Método não permitido'));
             exit();
         }
 
         // Verificar se todos os campos necessários foram enviados
         if (!isset($_POST['nome_jogo']) || !isset($_POST['ano_lancamento_jogo']) || !isset($_POST['descricao_jogo']) ||
             !isset($_FILES['capa_jogo']) || !isset($_POST['genero_jogo']) || !isset($_POST['desenvolvedora_jogo']) || !isset($_POST['plataforma_jogo'])) {
-            header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Todos os campos são obrigatórios'));
+            header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Todos os campos são obrigatórios'));
             exit();
         }
 
@@ -48,7 +48,7 @@ class JogoController {
             $stmt = $this->conn->prepare("INSERT INTO Jogo (nome_jogo, ano_lancamento_jogo, descricao_jogo, capa_jogo) VALUES (?, ?, ?, ?)");
             if (!$stmt) {
                 unlink($capa_destino);
-                header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error));
+                header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error));
                 exit();
             }
 
@@ -94,14 +94,14 @@ class JogoController {
                 $stmt_plataforma->execute();
                 $stmt_plataforma->close();
 
-                header('Location: /BitCritico/View/ADM/CadastroJogo.php?msg=' . urlencode('Jogo cadastrado com sucesso!'));
+                header('Location: ../View/ADM/CadastroJogo.php?msg=' . urlencode('Jogo cadastrado com sucesso!'));
             } else {
                 unlink($capa_destino);
-                header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao cadastrar jogo: ' . $stmt->error));
+                header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao cadastrar jogo: ' . $stmt->error));
             }
             $stmt->close();
         } else {
-            header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao fazer upload da imagem'));
+            header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao fazer upload da imagem'));
             exit();
         }
     }
@@ -109,7 +109,7 @@ class JogoController {
     private function rollback($id_jogo, $capa_destino) {
         $this->conn->query("DELETE FROM Jogo WHERE id_jogo = $id_jogo");
         unlink($capa_destino);
-        header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao associar relacionamentos: ' . $this->conn->error));
+        header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Erro ao associar relacionamentos: ' . $this->conn->error));
         exit();
     }
 
@@ -127,11 +127,11 @@ if (isset($_GET['action'])) {
             $controller->create();
             break;
         default:
-            header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Ação inválida'));
+            header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Ação inválida'));
             exit();
     }
 } else {
-    header('Location: /BitCritico/View/ADM/CadastroJogo.php?erro=' . urlencode('Ação não especificada'));
+    header('Location: ../View/ADM/CadastroJogo.php?erro=' . urlencode('Ação não especificada'));
     exit();
 }
 ?>

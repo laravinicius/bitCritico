@@ -28,7 +28,7 @@ $stmtJogo->close();
 <head>
     <meta charset="UTF-8">
     <title>Deixar Review - <?= htmlspecialchars($jogo['nome_jogo']) ?> - Bit Crítico</title>
-    <link rel="stylesheet" href="../estilos/index.css">
+    <link rel="stylesheet" href="estilos/index.css">
     <style>
         .form-group {
             margin-bottom: 20px;

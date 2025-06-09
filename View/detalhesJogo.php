@@ -128,7 +128,7 @@ $stmtMedia->close();
                 <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] === 1): ?>
                     <button class="login" onclick="window.location.href='./ADM/AdminCenter023839.php'">Sessão Adm</button>
                 <?php endif; ?>
-                <button class="login" onclick="window.location.href='./Controller/LogoutController.php'">Sair</button>
+                <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</button>
             <?php else: ?>
                 <button class="login" onclick="abrirModal()">Entrar</button>
             <?php endif; ?>

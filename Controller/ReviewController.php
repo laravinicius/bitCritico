@@ -16,17 +16,17 @@ class ReviewController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('Método não permitido') . '&id_jogo=' . (isset($_POST['id_jogo']) ? (int)$_POST['id_jogo'] : 0));
+            header('Location: ../View/DeixarReview.php?erro=' . urlencode('Método não permitido') . '&id_jogo=' . (isset($_POST['id_jogo']) ? (int)$_POST['id_jogo'] : 0));
             exit();
         }
 
         if (!isset($_SESSION['id_usuario'])) {
-            header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('Você precisa estar logado para deixar uma review') . '&id_jogo=' . (isset($_POST['id_jogo']) ? (int)$_POST['id_jogo'] : 0));
+            header('Location: ../View/DeixarReview.php?erro=' . urlencode('Você precisa estar logado para deixar uma review') . '&id_jogo=' . (isset($_POST['id_jogo']) ? (int)$_POST['id_jogo'] : 0));
             exit();
         }
 
         if (!isset($_POST['id_jogo']) || !isset($_POST['nota_review']) || !isset($_POST['descricao_review'])) {
-            header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('Todos os campos são obrigatórios') . '&id_jogo=' . (isset($_POST['id_jogo']) ? (int)$_POST['id_jogo'] : 0));
+            header('Location: ../View/DeixarReview.php?erro=' . urlencode('Todos os campos são obrigatórios') . '&id_jogo=' . (isset($_POST['id_jogo']) ? (int)$_POST['id_jogo'] : 0));
             exit();
         }
 
@@ -38,7 +38,7 @@ class ReviewController {
 
         // Validar nota
         if ($nota_review < 0 || $nota_review > 10) {
-            header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('A nota deve estar entre 0 e 10') . '&id_jogo=' . $id_jogo);
+            header('Location: ../View/DeixarReview.php?erro=' . urlencode('A nota deve estar entre 0 e 10') . '&id_jogo=' . $id_jogo);
             exit();
         }
 
@@ -48,7 +48,7 @@ class ReviewController {
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         if ($result_check->num_rows > 0) {
-            header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('Você já deixou uma review para este jogo') . '&id_jogo=' . $id_jogo);
+            header('Location: ../View/DeixarReview.php?erro=' . urlencode('Você já deixou uma review para este jogo') . '&id_jogo=' . $id_jogo);
             exit();
         }
         $stmt_check->close();
@@ -56,34 +56,34 @@ class ReviewController {
         // Inserir a review
         $stmt = $this->conn->prepare("INSERT INTO Review (id_usuario, id_jogo, nota_review, descricao_review, likes_review, data_review) VALUES (?, ?, ?, ?, 0, ?)");
         if (!$stmt) {
-            header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error) . '&id_jogo=' . $id_jogo);
+            header('Location: ../View/DeixarReview.php?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error) . '&id_jogo=' . $id_jogo);
             exit();
         }
 
         $stmt->bind_param("iidss", $id_usuario, $id_jogo, $nota_review, $descricao_review, $data_review);
         if ($stmt->execute()) {
-            header('Location: /BitCritico/View/DetalhesJogo.php?id=' . $id_jogo . '&msg=' . urlencode('Review enviada com sucesso!'));
+            header('Location: ../View/DetalhesJogo.php?id=' . $id_jogo . '&msg=' . urlencode('Review enviada com sucesso!'));
         } else {
-            header('Location: /BitCritico/View/DeixarReview.php?erro=' . urlencode('Erro ao salvar review: ' . $stmt->error) . '&id_jogo=' . $id_jogo);
+            header('Location: ../View/DeixarReview.php?erro=' . urlencode('Erro ao salvar review: ' . $stmt->error) . '&id_jogo=' . $id_jogo);
         }
         $stmt->close();
     }
 
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $redirect = isset($_POST['id_review']) ? '/BitCritico/View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '/BitCritico/View/Perfil.php';
+            $redirect = isset($_POST['id_review']) ? '../View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '../View/Perfil.php';
             header('Location: ' . $redirect . '?erro=' . urlencode('Método não permitido'));
             exit();
         }
 
         if (!isset($_SESSION['id_usuario'])) {
-            $redirect = isset($_POST['id_review']) ? '/BitCritico/View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '/BitCritico/View/Perfil.php';
+            $redirect = isset($_POST['id_review']) ? '../View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '../View/Perfil.php';
             header('Location: ' . $redirect . '?erro=' . urlencode('Você precisa estar logado para editar uma review'));
             exit();
         }
 
         if (!isset($_POST['id_review']) || !isset($_POST['id_jogo']) || !isset($_POST['nota_review']) || !isset($_POST['descricao_review']) || !isset($_POST['source'])) {
-            $redirect = isset($_POST['id_review']) ? '/BitCritico/View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '/BitCritico/View/Perfil.php';
+            $redirect = isset($_POST['id_review']) ? '../View/VisualizarReview.php?id_review=' . (int)$_POST['id_review'] : '../View/Perfil.php';
             header('Location: ' . $redirect . '?erro=' . urlencode('Todos os campos são obrigatórios'));
             exit();
         }
@@ -98,7 +98,7 @@ class ReviewController {
 
         // Validar nota
         if ($nota_review < 0 || $nota_review > 10) {
-            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            $redirect = ($source === 'visualizar') ? '../View/VisualizarReview.php?id_review=' . $id_review : '../View/Perfil.php';
             header('Location: ' . $redirect . '?erro=' . urlencode('A nota deve estar entre 0 e 10'));
             exit();
         }
@@ -109,7 +109,7 @@ class ReviewController {
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         if ($result_check->num_rows == 0) {
-            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            $redirect = ($source === 'visualizar') ? '../View/VisualizarReview.php?id_review=' . $id_review : '../View/Perfil.php';
             header('Location: ' . $redirect . '?erro=' . urlencode('Você não tem permissão para editar esta review'));
             exit();
         }
@@ -118,17 +118,17 @@ class ReviewController {
         // Atualizar a review
         $stmt = $this->conn->prepare("UPDATE Review SET nota_review = ?, descricao_review = ?, data_review = ? WHERE id_review = ?");
         if (!$stmt) {
-            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            $redirect = ($source === 'visualizar') ? '../View/VisualizarReview.php?id_review=' . $id_review : '../View/Perfil.php';
             header('Location: ' . $redirect . '?erro=' . urlencode('Erro ao preparar query: ' . $this->conn->error));
             exit();
         }
 
         $stmt->bind_param("dssi", $nota_review, $descricao_review, $data_review, $id_review);
         if ($stmt->execute()) {
-            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            $redirect = ($source === 'visualizar') ? '../View/VisualizarReview.php?id_review=' . $id_review : '../View/Perfil.php';
             header('Location: ' . $redirect . '?msg=' . urlencode('Review atualizada com sucesso!'));
         } else {
-            $redirect = ($source === 'visualizar') ? '/BitCritico/View/VisualizarReview.php?id_review=' . $id_review : '/BitCritico/View/Perfil.php';
+            $redirect = ($source === 'visualizar') ? '../View/VisualizarReview.php?id_review=' . $id_review : '../View/Perfil.php';
             header('Location: ' . $redirect . '?erro=' . urlencode('Erro ao atualizar review: ' . $stmt->error));
         }
         $stmt->close();
@@ -136,12 +136,12 @@ class ReviewController {
 
     public function delete() {
         if (!isset($_SESSION['id_usuario'])) {
-            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('Você precisa estar logado para excluir uma review'));
+            header('Location: ../View/Perfil.php?erro=' . urlencode('Você precisa estar logado para excluir uma review'));
             exit();
         }
 
         if (!isset($_GET['id_review'])) {
-            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('ID da review não especificado'));
+            header('Location: ../View/Perfil.php?erro=' . urlencode('ID da review não especificado'));
             exit();
         }
 
@@ -154,7 +154,7 @@ class ReviewController {
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         if ($result_check->num_rows == 0) {
-            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('Você não tem permissão para excluir esta review'));
+            header('Location: ../View/Perfil.php?erro=' . urlencode('Você não tem permissão para excluir esta review'));
             exit();
         }
         $stmt_check->close();
@@ -169,21 +169,21 @@ class ReviewController {
         $stmt = $this->conn->prepare("DELETE FROM Review WHERE id_review = ?");
         $stmt->bind_param("i", $id_review);
         if ($stmt->execute()) {
-            header('Location: /BitCritico/View/Perfil.php?msg=' . urlencode('Review excluída com sucesso!'));
+            header('Location: ../View/Perfil.php?msg=' . urlencode('Review excluída com sucesso!'));
         } else {
-            header('Location: /BitCritico/View/Perfil.php?erro=' . urlencode('Erro ao excluir review: ' . $stmt->error));
+            header('Location: ../View/Perfil.php?erro=' . urlencode('Erro ao excluir review: ' . $stmt->error));
         }
         $stmt->close();
     }
 
     public function likeReview() {
         if (!isset($_SESSION['id_usuario'])) {
-            header('Location: /BitCritico/View/DetalhesJogo.php?erro=' . urlencode('Você precisa estar logado para dar like'));
+            header('Location: ../View/DetalhesJogo.php?erro=' . urlencode('Você precisa estar logado para dar like'));
             exit();
         }
 
         if (!isset($_GET['id_review']) || !isset($_GET['id_jogo'])) {
-            header('Location: /BitCritico/View/DetalhesJogo.php?erro=' . urlencode('ID da review ou jogo não especificado'));
+            header('Location: ../View/DetalhesJogo.php?erro=' . urlencode('ID da review ou jogo não especificado'));
             exit();
         }
 
@@ -197,7 +197,7 @@ class ReviewController {
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         if ($result_check->num_rows > 0) {
-            header('Location: /BitCritico/View/DetalhesJogo.php?id=' . $id_jogo . '&erro=' . urlencode('Você já deu like nesta review'));
+            header('Location: ../View/DetalhesJogo.php?id=' . $id_jogo . '&erro=' . urlencode('Você já deu like nesta review'));
             exit();
         }
         $stmt_check->close();
@@ -214,7 +214,7 @@ class ReviewController {
         $stmt_insert->execute();
         $stmt_insert->close();
 
-        header('Location: /BitCritico/View/DetalhesJogo.php?id=' . $id_jogo . '&msg=' . urlencode('Like registrado com sucesso!'));
+        header('Location: ../View/DetalhesJogo.php?id=' . $id_jogo . '&msg=' . urlencode('Like registrado com sucesso!'));
     }
 
     public function __destruct() {
@@ -240,11 +240,11 @@ if (isset($_GET['action'])) {
             $controller->likeReview();
             break;
         default:
-            header('Location: /BitCritico/View/DetalhesJogo.php?erro=' . urlencode('Ação inválida'));
+            header('Location: ../View/DetalhesJogo.php?erro=' . urlencode('Ação inválida'));
             exit();
     }
 } else {
-    header('Location: /BitCritico/View/DetalhesJogo.php?erro=' . urlencode('Ação não especificada'));
+    header('Location: ../View/DetalhesJogo.php?erro=' . urlencode('Ação não especificada'));
     exit();
 }
 ?>

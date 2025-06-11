@@ -36,7 +36,7 @@ $desenvolvedoraJogo = $mysqli->query("SELECT nome_Desenvolvedora AS nome_desenvo
 
 // Query para ordem alfabética
 $resultadoJogoGenero = $mysqli->query(
-    "SELECT 
+    "SELECT
         j.id_jogo,
         j.nome_jogo,
         j.ano_lancamento_jogo,
@@ -44,17 +44,22 @@ $resultadoJogoGenero = $mysqli->query(
         j.capa_jogo,
         j.trailer_jogo,
         g.nome_genero,
-        d.nome_desenvolvedora
-    FROM 
+        d.nome_desenvolvedora,
+        COALESCE(AVG(r.nota_review), 0) as media_nota /* Add this line */
+    FROM
         Jogo j
-    INNER JOIN 
+    INNER JOIN
         Jogo_Genero jg ON j.id_jogo = jg.id_jogo
-    INNER JOIN 
+    INNER JOIN
         Genero g ON jg.id_genero = g.id_genero
-    LEFT JOIN 
+    LEFT JOIN
         Jogo_Desenvolvedora jd ON j.id_jogo = jd.id_jogo
-    LEFT JOIN 
+    LEFT JOIN
         Desenvolvedora d ON jd.id_desenvolvedora = d.id_desenvolvedora
+    LEFT JOIN /* Add this join */
+        Review r ON j.id_jogo = r.id_jogo
+    GROUP BY /* Add this group by clause */
+        j.id_jogo, j.nome_jogo, j.ano_lancamento_jogo, j.descricao_jogo, j.capa_jogo, j.trailer_jogo, g.nome_genero, d.nome_desenvolvedora
     ORDER BY nome_jogo ASC"
 );
 
@@ -261,8 +266,7 @@ $resultadoTop5 = $mysqli->query(
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                             <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
                             <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
-                            <p>Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p>
-                        </div>
+                            <p>Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p> </div>
                     </a>
                 <?php endwhile; ?>
             </div>

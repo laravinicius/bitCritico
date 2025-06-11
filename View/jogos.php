@@ -29,10 +29,10 @@ $resultadoAnoLancamento = $mysqli->query(
 );
 
 // Query para gêneros
-$generoJogo = $mysqli->query("SELECT * FROM Genero");
+$generoJogo = $mysqli->query("SELECT * FROM Genero ORDER BY nome_genero");
 
 // Query para desenvolvedoras
-$desenvolvedoraJogo = $mysqli->query("SELECT * FROM Desenvolvedora");
+$desenvolvedoraJogo = $mysqli->query("SELECT nome_Desenvolvedora AS nome_desenvolvedora FROM Desenvolvedora ORDER BY nome_Desenvolvedora");
 
 // Query para ordem alfabética
 $resultadoJogoGenero = $mysqli->query(

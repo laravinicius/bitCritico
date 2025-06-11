@@ -261,7 +261,7 @@ $resultadoTop5 = $mysqli->query(
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
                             <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
                             <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
-                            <p>Sem nota registrada</p>
+                            <p>Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p>
                         </div>
                     </a>
                 <?php endwhile; ?>

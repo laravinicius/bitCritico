@@ -4,7 +4,7 @@
 
 A aplicação conta com um sistema de autenticação, perfis de usuário, um catálogo de jogos pesquisável e um painel administrativo para gerenciamento de conteúdo.
 
-**Link do projeto em produção:** [bitcritico.azurewebsites.net](https://bitcritico-ekgaccgyfygkd2e3.canadacentral-01.azurewebsites.net/index.html)
+**Link do projeto em produção:** [bitcritico.azurewebsites.net](https://bitcritico-ekgaccgyfygkd2e3.canadacentral-01.azurewebsites.net)
 
 ## ✨ Funcionalidades
 

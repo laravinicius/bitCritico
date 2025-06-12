@@ -34,6 +34,7 @@ $mysqli->close();
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Jogo</title>
@@ -45,26 +46,51 @@ $mysqli->close();
             border-radius: 5px;
             text-align: center;
         }
-        .sucesso { background-color: #28a745; color: white; }
-        .erro { background-color: #dc3545; color: white; }
-        .form-group { margin-bottom: 20px; }
-        .searchable-select { position: relative; }
-        .searchable-select input { width: 100%; padding: 10px; margin-bottom: 5px; }
-        .searchable-select select { width: 100%; padding: 10px; }
+
+        .sucesso {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .erro {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .searchable-select {
+            position: relative;
+        }
+
+        .searchable-select input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+
+        .searchable-select select {
+            width: 100%;
+            padding: 10px;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="../../index.php">Bit Crítico</a></div>
         <div class="telas">
-            <button class="voltar" onclick="history.back()">⬅️</button>
+            <button class="login" onclick="window.location.href='AdminCenter023839.php'">Sessão Adm</button>
+
         </div>
     </header>
 
     <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
         <form action="../../Controller/JogoController.php?action=create" method="POST" enctype="multipart/form-data" style="border: 1px solid #ccc; padding: 30px; border-radius: 8px; background-color: #1f1f1f; color: var(--cor-texto);">
             <h2 style="margin-bottom: 20px;">Cadastro de Jogo</h2>
-            
+
             <?php if ($msg): ?>
                 <div class="mensagem sucesso"><?php echo $msg; ?></div>
             <?php endif; ?>
@@ -160,4 +186,5 @@ $mysqli->close();
         }
     </script>
 </body>
+
 </html>

@@ -35,7 +35,6 @@ if ($mysqli && $mysqli instanceof mysqli) {
     if (!$resultadoTop3) {
         error_log("Erro na consulta ao banco (TOP 3): " . $mysqli->error);
     }
-
 } else {
     error_log("Falha na conexão com o banco.");
 }
@@ -43,6 +42,7 @@ if ($mysqli && $mysqli instanceof mysqli) {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,6 +53,7 @@ if ($mysqli && $mysqli instanceof mysqli) {
     <meta name="description" content="Site voltado para Reviews de todos os tipos de jogos">
     <script src="./View/scripts/bot.js"></script>
 </head>
+
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="index.php">Bit Crítico</a></div>
@@ -61,15 +62,15 @@ if ($mysqli && $mysqli instanceof mysqli) {
         </nav>
 
         <div class="telas">
-        <?php if (isset($_SESSION['id_usuario'])): ?>
-            <button class="login" onclick="window.location.href='./View/Perfil.php'">Perfil</button>
-            <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
-                <button class="login" onclick="window.location.href='./View/ADM/AdminCenter023839.php'">Sessão Adm</button>
+            <?php if (isset($_SESSION['id_usuario'])): ?>
+                <button class="login" onclick="window.location.href='./View/Perfil.php'">Perfil</button>
+                <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
+                    <button class="login" onclick="window.location.href='./View/ADM/AdminCenter023839.php'">Sessão Adm</button>
+                <?php endif; ?>
+                <button class="login" onclick="window.location.href='./Controller/LogoutController.php'">Sair</button>
+            <?php else: ?>
+                <button class="login" onclick="abrirModal()">Entrar</button>
             <?php endif; ?>
-            <button class="login" onclick="window.location.href='./Controller/LogoutController.php'">Sair</button>
-        <?php else: ?>
-            <button class="login" onclick="abrirModal()">Entrar</button>
-        <?php endif; ?>
         </div>
 
         <div class="modal-bg" id="modalLogin">
@@ -85,7 +86,8 @@ if ($mysqli && $mysqli instanceof mysqli) {
                     <div class="modal-buttons">
                         <button type="button" onclick="submitForm('login')">Login</button>
                     </div>
-                    <p>Não tem uma conta? <a href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
+                    <p>Não tem uma conta? <a style="color: var(--cor-destaque); font-weight: bold;" href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
+
                     <div id="loginError" style="color: red;"></div>
                 </form>
             </div>
@@ -141,23 +143,23 @@ if ($mysqli && $mysqli instanceof mysqli) {
                 const formData = new FormData(form);
 
                 fetch(`./Controller/${action === 'login' ? 'LoginController.php' : 'CadastroController.php'}`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = './View/Perfil.php';
-                    } else {
-                        errorDiv.textContent = data.message;
-                        if (action === 'cadastro' && data.success === false && data.message !== 'Este email já está cadastrado.') {
-                            successDiv.textContent = '';
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = './View/Perfil.php';
+                        } else {
+                            errorDiv.textContent = data.message;
+                            if (action === 'cadastro' && data.success === false && data.message !== 'Este email já está cadastrado.') {
+                                successDiv.textContent = '';
+                            }
                         }
-                    }
-                })
-                .catch(error => {
-                    errorDiv.textContent = 'Erro na requisição: ' + error.message;
-                });
+                    })
+                    .catch(error => {
+                        errorDiv.textContent = 'Erro na requisição: ' + error.message;
+                    });
 
                 return false;
             }
@@ -238,4 +240,5 @@ if ($mysqli && $mysqli instanceof mysqli) {
         </div>
     </footer>
 </body>
+
 </html>

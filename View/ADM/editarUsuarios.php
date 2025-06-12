@@ -1,11 +1,16 @@
 <?php
 session_start();
 
+// Check if user is logged in and is an administrator
 if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['status_usuario']) || $_SESSION['status_usuario'] != 1) {
     header('Location: ../../index.php');
     exit();
 }
 
+$msg = isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : '';
+$erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
+
+// Include database connection
 require_once '../../Controller/ConexaoBD.php';
 $mysqli = require '../../Controller/ConexaoBD.php';
 
@@ -13,82 +18,350 @@ if (!$mysqli || !$mysqli instanceof mysqli) {
     die("Erro: Conexão com o banco falhou.");
 }
 
-// Processar edição de status, se houver POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_status'])) {
-    $id_usuario = intval($_POST['id_usuario']);
-    $novo_status = intval($_POST['status_usuario']);
-
-    if ($novo_status == 0 || $novo_status == 1) {
-        $stmt = $mysqli->prepare("UPDATE Usuario SET status_usuario = ? WHERE id_usuario = ?");
-        if ($stmt) {
-            $stmt->bind_param("ii", $novo_status, $id_usuario);
-            $stmt->execute();
-            $stmt->close();
-        }
+// Fetch all users for listing
+$users = [];
+$stmt = $mysqli->prepare("SELECT id_usuario, nome_usuario, email_usuario, status_usuario FROM Usuario ORDER BY nome_usuario ASC");
+if ($stmt) {
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row;
     }
+    $stmt->close();
+} else {
+    $erro = "Erro ao buscar usuários: " . $mysqli->error;
 }
 
-// Buscar todos os usuários
-$resultadoUsuarios = $mysqli->query("SELECT id_usuario, nome_usuario, email_usuario, status_usuario FROM Usuario");
+$mysqli->close();
 ?>
 
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Usuários - Bit Crítico</title>
+    <title>Gerenciar Usuários</title>
     <link rel="stylesheet" href="../estilos/index.css">
     <link rel="icon" href="../assets/favicon.ico">
     <style>
-        .user-table { width: 80%; margin: 20px auto; border-collapse: collapse; }
-        .user-table th, .user-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .user-table th { background-color: #f2f2f2; color: #121212; }
-        .user-table select { padding: 5px; }
-        main { text-align: center; padding: 20px; }
+        .mensagem {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .sucesso { background-color: #28a745; color: white; }
+        .erro { background-color: #dc3545; color: white; }
+        .user-table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        .user-table th, .user-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: var(--cor-texto);
+        }
+        .user-table th {
+            background-color: var(--cor-primaria);
+            color: var(--cor-fundo);
+        }
+        .user-table td {
+            background-color: var(--cor-secundaria);
+        }
+        .user-table .action-buttons button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.3s;
+        }
+        .user-table .edit-button {
+            background-color: var(--cor-hover);
+            color: #fff;
+        }
+        .user-table .edit-button:hover {
+            background-color: #0088cc;
+        }
+        .user-table .delete-button {
+            background-color: var(--cor-destaque);
+            color: #fff;
+        }
+        .user-table .delete-button:hover {
+            background-color: #cc005f;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #1f1f1f;
+            border: 1px solid #ccc;
+            padding: 30px;
+            border-radius: 8px;
+            color: var(--cor-texto);
+        }
+
+        /* Modal Styles */
+        .modal-bg {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background-color: #2a2a2a;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            color: var(--cor-texto);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            color: var(--cor-primaria);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .modal input[type="text"],
+        .modal input[type="email"],
+        .modal select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: var(--cor-texto);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-buttons button[type="submit"] {
+            background-color: var(--cor-primaria);
+            color: white;
+        }
+
+        .modal-buttons button[type="button"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .modal-buttons button[type="submit"]:hover {
+            background-color: #0069d9;
+        }
+
+        .modal-buttons button[type="button"]:hover {
+            background-color: #5a6268;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="logo"><a class="logo titulo" href="../../index.php">Bit Crítico</a></div>
         <div class="telas">
-            <button class="voltar" onclick="history.back()">⬅️</button>
+            <button class="login" onclick="window.location.href='AdminCenter023839.php'">Sessão Adm</button>
         </div>
     </header>
 
     <main>
-        <h1>Gerenciar Usuários</h1>
-        <p>Edite o status dos usuários abaixo:</p>
+        <div class="form-container">
+            <h2 style="margin-bottom: 20px; text-align: center;">Gerenciar Usuários</h2>
 
-        <table class="user-table">
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Ação</th>
-            </tr>
-            <?php while ($usuario = $resultadoUsuarios->fetch_assoc()): ?>
-                <tr>
-                    <form method="POST" action="">
-                        <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($usuario['id_usuario']) ?>">
-                        <td><?= htmlspecialchars($usuario['id_usuario']) ?></td>
-                        <td><?= htmlspecialchars($usuario['nome_usuario']) ?></td>
-                        <td><?= htmlspecialchars($usuario['email_usuario']) ?></td>
-                        <td>
-                            <select name="status_usuario">
-                                <option value="0" <?= $usuario['status_usuario'] == 0 ? 'selected' : '' ?>>Usuário (0)</option>
-                                <option value="1" <?= $usuario['status_usuario'] == 1 ? 'selected' : '' ?>>Administrador (1)</option>
-                            </select>
-                        </td>
-                        <td><button type="submit" name="edit_status">Salvar</button></td>
-                    </form>
-                </tr>
-            <?php endwhile; ?>
-        </table>
+            <?php if ($msg): ?>
+                <div class="mensagem sucesso"><?php echo $msg; ?></div>
+            <?php endif; ?>
+            <?php if ($erro): ?>
+                <div class="mensagem erro"><?php echo $erro; ?></div>
+            <?php endif; ?>
+
+            <?php if (empty($users)): ?>
+                <p style="text-align: center;">Nenhum usuário cadastrado ainda.</p>
+            <?php else: ?>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome de Usuário</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($user['id_usuario']) ?></td>
+                                <td><?= htmlspecialchars($user['nome_usuario']) ?></td>
+                                <td><?= htmlspecialchars($user['email_usuario']) ?></td>
+                                <td><?= $user['status_usuario'] == 1 ? 'Administrador' : 'Padrão' ?></td>
+                                <td class="action-buttons">
+                                    <button class="edit-button" onclick="openEditModal(<?= htmlspecialchars(json_encode($user)) ?>)">Editar</button>
+                                    <button class="delete-button" onclick="confirmDelete(<?= $user['id_usuario'] ?>, '<?= htmlspecialchars($user['nome_usuario']) ?>')">Apagar</button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </div>
     </main>
 
     <footer class="rodape">
         <p>© 2025 Bit Crítico. Criado por Gabriel, Vinicius, Matheus, Davi, Eduardo.</p>
+        <div class="midiaSocial">
+            <a href="../../index.php">Bit Crítico</a>
+            <a href="https://www.instagram.com/bit_critico?igsh=MW0zdTdxOGpwNnk4bw==">Instagram</a>
+        </div>
     </footer>
+
+    <div id="editUserModal" class="modal-bg" style="display: none;">
+        <div class="modal">
+            <span class="close-modal" onclick="closeEditModal()">✖</span>
+            <h2>Editar Usuário</h2>
+            <form id="editUserForm" method="POST" action="../../Controller/UsuarioController.php?action=update">
+                <input type="hidden" id="edit_id_usuario" name="id_usuario">
+                <label for="edit_nome_usuario">Nome de Usuário</label><br>
+                <input type="text" id="edit_nome_usuario" name="nome_usuario" required><br>
+
+                <label for="edit_email_usuario">Email</label><br>
+                <input type="email" id="edit_email_usuario" name="email_usuario" required><br>
+
+                <label for="edit_status_usuario">Status do Usuário</label><br>
+                <select id="edit_status_usuario" name="status_usuario" required>
+                    <option value="0">Padrão</option>
+                    <option value="1">Administrador</option>
+                </select><br>
+
+                <div class="modal-buttons">
+                    <button type="submit">Salvar Alterações</button>
+                    <button type="button" onclick="closeEditModal()">Cancelar</button>
+                </div>
+                <div id="editError" style="color: red; margin-top: 10px;"></div>
+                <div id="editSuccess" style="color: green; margin-top: 10px;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(id, username) {
+            if (id == <?= $_SESSION['id_usuario'] ?>) {
+                alert("Você não pode apagar seu próprio usuário.");
+                return;
+            }
+            if (confirm("Tem certeza que deseja apagar o usuário '" + username + "'? Esta ação é irreversível.")) {
+                window.location.href = "../../Controller/UsuarioController.php?action=delete&id_usuario=" + id;
+            }
+        }
+
+        function openEditModal(user) {
+            document.getElementById('edit_id_usuario').value = user.id_usuario;
+            document.getElementById('edit_nome_usuario').value = user.nome_usuario;
+            document.getElementById('edit_email_usuario').value = user.email_usuario;
+            document.getElementById('edit_status_usuario').value = user.status_usuario; // Set selected option
+            document.getElementById('editUserModal').style.display = 'flex';
+            document.getElementById('editError').textContent = ''; // Clear previous errors
+            document.getElementById('editSuccess').textContent = ''; // Clear previous success messages
+        }
+
+        function closeEditModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        document.getElementById('editUserForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('editError');
+            const successDiv = document.getElementById('editSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    successDiv.textContent = data.message;
+                    setTimeout(() => {
+                        window.location.reload(); // Reload to show updated list
+                    }, 1500);
+                } else {
+                    errorDiv.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                errorDiv.textContent = 'Erro na requisição: ' + error.message;
+            });
+        });
+
+        // Close modal on outside click
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('editUserModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        });
+
+        // Close modal on Escape key
+        window.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeEditModal();
+            }
+        });
+    </script>
 </body>
 </html>

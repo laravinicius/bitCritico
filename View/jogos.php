@@ -144,7 +144,7 @@ $resultadoTop5 = $mysqli->query(
                     <div class="modal-buttons">
                         <button type="button" onclick="submitForm('login')">Login</button>
                     </div>
-                    <p>Não tem uma conta? <a href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
+                    <p>Não tem uma conta? <a style="color: var(--cor-destaque); font-weight: bold;" href="#" onclick="abrirCadastro()">Cadastre-se aqui</a></p>
                     <div id="loginError" style="color: red;"></div>
                 </form>
             </div>
@@ -264,9 +264,9 @@ $resultadoTop5 = $mysqli->query(
                         <div class="jogos" data-genero="<?= htmlspecialchars($jogo['nome_genero']) ?>" data-dev="<?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?>">
                             <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
-                            <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
-                            <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
-                            <p>Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p> </div>
+                            <p style="color: var(--cor-texto); font-weight: bold;"><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
+                            <p style="color: var(--cor-texto); font-weight: bold;"><?= htmlspecialchars($jogo['nome_genero']) ?></p>
+                            <p style="color: var(--cor-primaria); font-weight: bold;">Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p> </div>
                     </a>
                 <?php endwhile; ?>
             </div>
@@ -280,9 +280,9 @@ $resultadoTop5 = $mysqli->query(
                         <div class="jogos" data-genero="<?= htmlspecialchars($jogo['nome_genero']) ?>" data-dev="<?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?>">
                             <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
-                            <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
-                            <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
-                            <p><?= htmlspecialchars($jogo['ano_lancamento_jogo']) ?></p>
+                            <p style="color: var(--cor-texto); font-weight: bold;"><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
+                            <p style="color: var(--cor-texto); font-weight: bold;"><?= htmlspecialchars($jogo['nome_genero']) ?></p>
+                            <p style="color: var(--cor-destaque); font-weight: bold;"><?= htmlspecialchars($jogo['ano_lancamento_jogo']) ?></p>
                         </div>
                     </a>
                 <?php endwhile; ?>
@@ -295,9 +295,9 @@ $resultadoTop5 = $mysqli->query(
                         <div class="jogos" data-genero="<?= htmlspecialchars($jogo['nome_genero']) ?>" data-dev="<?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? '') ?>">
                             <img src="./images/<?= htmlspecialchars($jogo['capa_jogo']) ?>" alt="<?= htmlspecialchars($jogo['nome_jogo']) ?>">
                             <h3><?= htmlspecialchars($jogo['nome_jogo']) ?></h3>
-                            <p><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
-                            <p><?= htmlspecialchars($jogo['nome_genero']) ?></p>
-                            <p>Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p>
+                            <p style="color: var(--cor-texto); font-weight: bold;"><?= htmlspecialchars($jogo['nome_desenvolvedora'] ?? 'Desconhecida') ?></p>
+                            <p style="color: var(--cor-texto); font-weight: bold;"><?= htmlspecialchars($jogo['nome_genero']) ?></p>
+                            <p style="color: var(--cor-primaria); font-weight: bold;">Nota: <?= htmlspecialchars(number_format($jogo['media_nota'], 1, ',')) ?></p>
                         </div>
                     </a>
                 <?php endwhile; ?>

@@ -106,6 +106,9 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
             <a class="teste" href="./jogos.php">Jogos A-Z</a>
         </nav>
         <div class="telas">
+            <?php if (isset($_SESSION['status_usuario']) && $_SESSION['status_usuario'] == 1): ?>
+                    <button class="login" onclick="window.location.href='./ADM/AdminCenter023839.php'">Sessão Adm</button>
+                <?php endif; ?>
             <button class="voltar" onclick="history.back()">⬅️</button>
             <button class="login" onclick="window.location.href='../Controller/LogoutController.php'">Sair</button>
         </div>
@@ -115,9 +118,33 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
         <div class="form-box perfil">
             <h2>Perfil de Usuário</h2>
             <div class="perfil-container">
-                <div class="perfil-info">
+                <div class="perfil-info" id="view-mode">
                     <p><strong>Nome:</strong> <?php echo htmlspecialchars($user['nome_usuario']); ?></p>
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email_usuario']); ?></p>
+                </div>
+                <div class="perfil-info" id="edit-mode" style="display: none;">
+                    <form id="editProfileForm">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($id_usuario); ?>">
+                        <div class="form-group">
+                            <label for="nome_usuario">Nome:</label><br>
+                            <input type="text" id="editNomeUsuario" name="nome_usuario" value="<?php echo htmlspecialchars($user['nome_usuario']); ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email_usuario">Email:</label><br>
+                            <input type="email" id="editEmailUsuario" name="email_usuario" value="<?php echo htmlspecialchars($user['email_usuario']); ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="senha_usuario">Nova Senha (deixe em branco para manter a atual):</label><br>
+                            <input type="password" id="editSenhaUsuario" name="senha_usuario">
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="submit" class="action-button save-button">Salvar</button>
+                            <button type="button" class="action-button cancel-button" onclick="toggleEditMode()">Cancelar</button>
+                        </div>
+                         <div id="profileError" style="color: red; margin-top: 10px;"></div>
+                         <div id="profileSuccess" style="color: green; margin-top: 10px;"></div>
+                    </form>
                 </div>
                 <div class="perfil-foto">
                     <?php if ($user['foto_perfil_usuario']) {
@@ -127,6 +154,8 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
                     } ?>
                 </div>
             </div>
+            <button class="manage-button" onclick="toggleEditMode()" style="margin-top: 20px;">Editar Perfil</button>
+
 
             <?php if ($msg): ?>
                 <div class="mensagem sucesso"><?php echo $msg; ?></div>
@@ -238,6 +267,57 @@ $erro = isset($_GET['erro']) ? htmlspecialchars($_GET['erro']) : '';
             reviewBox.querySelector('.edit-form').style.display = 'none';
             reviewBox.querySelector('.view-mode').style.display = 'flex';
         }
+
+        function toggleEditMode() {
+            const viewMode = document.getElementById('view-mode');
+            const editMode = document.getElementById('edit-mode');
+            const editButton = document.querySelector('button[onclick="toggleEditMode()"]');
+
+            if (viewMode.style.display === 'none' || viewMode.style.display === '') {
+                viewMode.style.display = 'block';
+                editMode.style.display = 'none';
+                editButton.textContent = 'Editar Perfil';
+            } else {
+                viewMode.style.display = 'none';
+                editMode.style.display = 'block';
+                editButton.textContent = 'Cancelar Edição';
+                // Clear any previous messages
+                document.getElementById('profileError').textContent = '';
+                document.getElementById('profileSuccess').textContent = '';
+            }
+        }
+
+        document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('profileError');
+            const successDiv = document.getElementById('profileSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            fetch('../Controller/UsuarioController.php?action=update', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    successDiv.textContent = data.message;
+                    setTimeout(() => {
+                        window.location.reload(); // Reload to show updated info
+                    }, 1500);
+                } else {
+                    errorDiv.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                errorDiv.textContent = 'Erro na requisição: ' + error.message;
+            });
+        });
+
     </script>
 </body>
 </html>
